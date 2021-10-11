@@ -19,4 +19,4 @@ deploy_stage:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
     - echo $IMAGE_TAG
-    - helm upgrade --install vidoneplus-stage cicd/vidoneplus --set image.tag=$VERSION -f cicd/vidoneplus/values-stage.yaml
+    - helm upgrade --install vidoneplus-stage cicd/vidoneplus --set image.tag=$VERSION -f cicd/vidoneplus/values.yaml

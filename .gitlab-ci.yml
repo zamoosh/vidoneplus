@@ -6,4 +6,4 @@ build_all:
   script:
     - "echo starting"
 include:
-  - 'cicd/vidoneplus/deploy-stage.yml'
+  - 'cicd/vidoneplus/deploy.yml'
