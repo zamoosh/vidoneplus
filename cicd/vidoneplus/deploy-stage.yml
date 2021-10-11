@@ -1,0 +1,22 @@
+deploy_stage:
+  stage: deploy
+  variables:
+    PROJ_DIR: "."
+    IMAGE_ID: "docker-repo:31953/vidone/vidoneplus:"
+  only:
+    refs:
+      - stage
+    changes:
+      - cicd/vidoneplus/version.txt
+  environment:
+    name: $PROJECT_NAME
+  dependencies:
+    - build_all
+  script:
+    - pwd
+    - VERSION=$(cat cicd/vidoneplus/version.txt)
+    - IMAGE_TAG=$IMAGE_ID$VERSION
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+    - echo $IMAGE_TAG
+    - helm upgrade --install vidoneplus-stage cicd/vidoneplus --set image.tag=$VERSION -f cicd/vidoneplus/values-stage.yaml
