@@ -5,7 +5,7 @@ deploy_stage:
     IMAGE_ID: "docker-repo:31953/vidone/vidoneplus:"
   only:
     refs:
-      - stage
+      - master
     changes:
       - cicd/vidoneplus/version.txt
   environment:
