@@ -10,7 +10,7 @@ class User(AbstractUser):
     educational_interface_name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     dateofestablishment = models.DateTimeField()
-
+    verfication_status = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         self.cellphone = unidecode(self.cellphone)
         self.username = self.cellphone
@@ -41,18 +41,5 @@ class CourseVitrin(models.Model):
 class Status(models.Model):
     status = models.BooleanField(default=False)
     duration = models.IntegerField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-
-class Admin(models.Model):
-    organization_name = models.CharField(max_length=15)
-    organization_satatus = models.BooleanField(default=False)
-    date_of_start = models.DateTimeField()
-    date_of_finish = models.DateTimeField()
-
-
-class ViewInformation(models.Model):
-    cellphone = models.CharField(max_length=15, unique=True)
-    organization_name = models.CharField(max_length=15, unique=True)
-    educational_interface_name = models.CharField(max_length=200, unique=True)
-    description = models.TextField()
-    dateofestablishment = models.DateTimeField()
