@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+{% endblock %}
+{% block page_title %}ویدان - حساب کاربری{% endblock %}
+{% block bodyclass %} class="login"{% endblock %}
+{% block body %}
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="reset"></a>
+
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form method="post" action="{% url 'client:login' %}?next={{ next }}">
+                    <h1>فرم ورود</h1>
+                    {% csrf_token %}
+                    {% if request.method == "POST" %}
+                        <div class="alert alert-danger">
+                            رمز عبور یا نام کاربری اشتباه است
+                        </div>
+                    {% endif %}
+                    <input name="username" type="text" class="form-control mb-2"
+                           placeholder="نام کاربری | شماره تماس | ایمیل" required=""/>
+                    <input name="password" type="password" class="form-control mb-3" placeholder="رمز ورود"
+                           required=""/>
+
+                    <div>
+                        <a class="btn btn-default submit" >ورود</a>
+                        <a class="reset_pass" href="#reset">رمز ورود را از دست دادید؟</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">جدید در سایت؟
+                            <a href="#signup" class="to_register"> ایجاد حساب </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br/>
+
+                        <div>
+                            <h1>ویدان</h1>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}
