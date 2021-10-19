@@ -1,35 +1,39 @@
-from rest_framework_simplejwt.tokens import RefreshToken
 from .imports import *
-from unidecode import unidecode
 
-
-@swagger_auto_schema(method='POST', request_body=TokenCreateDto, responses={200: TokenViewDto(many=False)})
-@api_view(['POST'])
-@permission_classes((AllowAny,))
-def login(request):
+def Login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(request.GET.get("next", "/"))
     context = {}
-    username = unidecode(request.data.get('username'))
-    is_mobile_number = re.compile("^09?\d{9}$", re.IGNORECASE)
-
-    if request.data.get('code', None):
-        verify_token = VerificationCode.objects.filter(code=request.data.get('code'), name=request.data.get('username'))
-        if len(verify_token) > 0:
-            q = Q(cellphone=request.data.get('username')) | Q(email=request.data.get('username'))
-            user = User.objects.get(q)
-    elif request.data.get('password', None):
-        if is_mobile_number.match(username):
-            username = User.objects.get(cellphone=request.data.get('username')).username
+    if request.GET.get("next", None):
+        context['next'] = request.GET.get("next", None)
+    if request.method == 'POST':
+        username = request.POST['username']
+        # check if id is phone number convert it to username
+        pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
+        if pattern.match(username) is None:
+            for items in User.objects.filter(cellphone="+989" + username[2:]):
+                username = items.username
         else:
-            username = User.objects.get(email=request.data.get('username')).username
-        user = authenticate(username=username, password=request.data.get('password', None))
-    if user:
-        refresh = RefreshToken.for_user(user)
-        context['access'] = str(refresh.access_token)
-        context['refresh'] = str(refresh)
-        context['msg'] = "ورود با موفقیت انجام شد"
-        context.update(UserSerializer(user).data)
-        status_code = HTTP_200_OK
-    else:
-        context['msg'] = 'نام کاربری یا کد ارسال شده اشتباه می باشد'
-        status_code = HTTP_400_BAD_REQUEST
-    return Response(context, status=status_code)
+            for items in User.objects.filter(cellphone=username):
+                username = items.username
+        # Convert Email To username
+        try:
+            validate_email(username)
+            if User.objects.filter(email=username).exists():
+                username = User.objects.get(email=username).username
+        except forms.ValidationError:
+            pass
+
+        user = authenticate(username=username, password=request.POST['password'])
+        # request.session['password']=request.POST['password']
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                login(request, user)
+                if len(request.GET.get("next", "/")) == 0:
+                    return HttpResponseRedirect("/")
+                return HttpResponseRedirect(request.GET.get("next", "/"))
+        else:
+            # the authentication system was unable to verify the username and password
+            print("The username and password were incorrect.")
+    return render(request, "client/login.html", context)
