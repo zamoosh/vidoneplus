@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="fontiran.com:license" content="Y68A9">
     <link rel="icon" href="../build/images/favicon.ico" type="image/ico"/>
-    <title> {% block page_title %}داشبورد{% endblock %} </title>
-    <link rel="stylesheet" href="{% static 'vendors/bootstrap-rtl/dist/css/bootstrap-rtl.min.css' %}">
+    <title> {% block page_title %}ویدان - عضویت{% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap-rtl/dist/css/bootstrap-rtl.css' %}">
     <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static style %}">
     <link href="{% static 'css/custom.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet">
     {% block css %}{% endblock %}
     <!-- Custom Theme Style -->
 
@@ -22,7 +22,7 @@
 <body{% block bodyclass %}{% endblock %}>
 {% block body %}{% endblock %}
 {% include 'footer.html' %}
-<script src="{% static 'site/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 {% block js %}{% endblock %}
 </body>
 </html>

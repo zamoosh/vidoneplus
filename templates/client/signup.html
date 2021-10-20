@@ -64,35 +64,50 @@
                         </div>
                     {% endif %}
                     <div>
-<input name="firstname" type="text" class="form-control mb-2" placeholder="نام"
-                                       minlength="3"
-                                        {% if request.firstname %} value="{{ request.firstname }}"{% endif %}
-                                       required=""/>
+                        <input name="cellphone" type="text" class="form-control mb-2" placeholder="شماره موبایل"
+                               minlength="9"{% if request.cellphone %}
+                               value="{{ request.cellphone }}"{% endif %}
+                               required=""/>
                     </div>
                     <div>
-<input name="lastname" type="text" class="form-control mb-2" placeholder="نام خانوادگی"
-                                       minlength="3"{% if request.lastname %} value="{{ request.lastname }}"{% endif %}
-                                       required=""/>
+                        <input name="firstname" type="text" class="form-control mb-2" placeholder="نام"
+                               minlength="3"
+                                {% if request.firstname %} value="{{ request.firstname }}"{% endif %}
+                               required=""/>
                     </div>
                     <div>
-<input name="username" type="text" class="form-control mb-2" placeholder="نام کاربری"
-                                       minlength="6"{% if request.username %} value="{{ request.username }}"{% endif %}
-                                       required=""/>
+                        <input name="lastname" type="text" class="form-control mb-2" placeholder="نام خانوادگی"
+                               minlength="3"{% if request.lastname %} value="{{ request.lastname }}"{% endif %}
+                               required=""/>
                     </div>
-                <div>
-<input name="email" type="email" class="form-control text-start mb-2" placeholder="ایمیل"
-                                        {% if request.email %} value="{{ request.email }}"{% endif %} required=""/>
+                    <div>
+                        <input name="organization_name" type="text" class="form-control text-start mb-2" placeholder="نام شرکت"
+                                {% if request.organization_name %} value="{{ request.organization_name }}"{% endif %} required=""/>
 
                     </div>
-                <div>
-<input name="cellphone" type="text" class="form-control mb-2" placeholder="شماره موبایل"
-                                       minlength="9"{% if request.cellphone %}
-                                       value="{{ request.cellphone }}"{% endif %}
-                                       required=""/>
+                    <div>
+                        <input name="educational_interface_name" type="text" class="form-control text-start mb-2" placeholder="رابط آموزشی"
+                                {% if request.educational_interface_name %} value="{{ request.educational_interface_name }}"{% endif %} required=""/>
+
                     </div>
                     <div>
-<input name="password" type="password" class="form-control mb-3" placeholder="رمز ورود"
-                                       minlength="8" required=""/>
+                        <input name="description" type="text" class="form-control text-start mb-2" placeholder="توضیحات"
+                                {% if request.description %} value="{{ request.description }}"{% endif %} required=""/>
+
+                    </div>
+                    <div>
+                        <input name="dateofestablishment" type="date" class="form-control text-start mb-2" placeholder="تاریخ تاسیس"
+                                {% if request.dateofestablishment %} value="{{ request.dateofestablishment }}"{% endif %} required=""/>
+
+                    </div>
+                    <div>
+                        <input name="email" type="email" class="form-control text-start mb-2" placeholder="ایمیل"
+                                {% if request.email %} value="{{ request.email }}"{% endif %} required=""/>
+
+                    </div>
+                    <div>
+                        <input name="password" type="password" class="form-control mb-3" placeholder="رمز ورود"
+                               minlength="8" required=""/>
                     </div>
                     <div>
                         <button class="btn btn-default submit">ارسال</button>

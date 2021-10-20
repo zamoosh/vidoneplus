@@ -60,5 +60,10 @@ def listCheckedCount(value):
     return 1
 
 
+@register.filter(name='coursebuyed')
+def coursebuyed(value, value2):
+    return value.buyed(value2)
+
+
 register.filter('count', count)
 register.filter('toman', toman)

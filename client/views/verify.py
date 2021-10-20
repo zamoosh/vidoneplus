@@ -12,9 +12,15 @@ def verify(request):
                 pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
                 if pattern.match(context['cellphone']) is None:
                     context['cellphone'] = "+989" + context['cellphone'][2:]
-                user = User.objects.create_user(context['username'], context['email'],
-                                                context['password'], cellphone=context['cellphone'],
-                                                username_clear=context['username'].replace(".", ""))
+                user = User.objects.create_user(
+                    context['email'],
+                    cellphone = context['cellphone'],
+                    dateofestablishment = context['dateofestablishment'],
+                    description= context['description'],
+                    educational_interface_name= context['educational_interface_name'],
+                    organization_name= context['organization_name'],
+                )
+                user.set_password(context['password'])
                 user.first_name = context['firstname']
                 user.last_name = context['lastname']
                 if 'referall' in request.session:
@@ -38,6 +44,7 @@ def verify(request):
                 key = str(random.randrange(10000, 99999))
                 request.session['key'] = key
                 sms.sendwithtemplate({'verificationCode': key}, context['cellphone'], 55907)
+                return HttpResponseRedirect('/accounts')
             except:
                 context['sms'] = False
         return render(request, "client/verify.html", context)

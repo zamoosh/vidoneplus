@@ -4,7 +4,7 @@
     <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان - حساب کاربری{% endblock %}
+{% block page_title %}ویدان - ورود به حساب کاربری{% endblock %}
 {% block bodyclass %} class="login"{% endblock %}
 {% block body %}
     <a class="hiddenanchor" id="signup"></a>
@@ -14,7 +14,7 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <form method="post" action="{% url 'client:login' %}?next={{ next }}">
+                <form method="POST" action="{% url 'client:login' %}?next={{ next }}">
                     <h1>فرم ورود</h1>
                     {% csrf_token %}
                     {% if request.method == "POST" %}
@@ -26,9 +26,8 @@
                            placeholder="نام کاربری | شماره تماس | ایمیل" required=""/>
                     <input name="password" type="password" class="form-control mb-3" placeholder="رمز ورود"
                            required=""/>
-
                     <div>
-                        <a class="btn btn-default submit" >ورود</a>
+                        <button class="btn btn-default submit" >ورود</button>
                         <a class="reset_pass" href="#reset">رمز ورود را از دست دادید؟</a>
                     </div>
 

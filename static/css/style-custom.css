@@ -1,0 +1,28 @@
+.site_title{
+    text-align: center;
+}
+.dropdown-menu > li > a {
+    text-align: right;
+}
+.right_col {
+    height: 100vh;
+}
+.control-label.col-md-3.col-sm-3.col-xs-12 {
+    float: right;
+    text-align: left;
+}
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+    float: right;
+}
+.float-left {
+    float: left;
+}
+.title_left {
+    padding-bottom: 15px;
+}
+.column-title {
+    text-align: center;
+}
+td {
+    text-align: center;
+}

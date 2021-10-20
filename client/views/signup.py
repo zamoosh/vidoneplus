@@ -10,7 +10,10 @@ def signup(request):
         context['request'] = {}
         context['request']['firstname'] = request.POST.get('firstname', '').strip()
         context['request']['lastname'] = request.POST.get('lastname', '').strip()
-        context['request']['username'] = request.POST.get('username', '').strip().lower()
+        context['request']['organization_name'] = request.POST.get('organization_name', '').strip().lower()
+        context['request']['educational_interface_name'] = request.POST.get('educational_interface_name', '').strip().lower()
+        context['request']['description'] = request.POST.get('description', '').strip().lower()
+        context['request']['dateofestablishment'] = request.POST.get('dateofestablishment')
         context['request']['email'] = request.POST.get('email', '').strip().lower()
         context['request']['password'] = request.POST.get('password', '')
         context['request']['cellphone'] = request.POST.get('cellphone', '').strip()
@@ -27,9 +30,9 @@ def signup(request):
             context['error'] = 1
         # username Checking
         pattern = re.compile("^[a-zA-Z0-9.]{6,}$", re.IGNORECASE)
-        if pattern.match(context['request']['username']) is None:
-            context['username_length'] = 1
-            context['error'] = 1
+        # if pattern.match(context['request']['username']) is None:
+        #     context['username_length'] = 1
+        #     context['error'] = 1
         # else:
         #     if User.objects.filter(username_clear=context['request']['username'].replace(".", "")).exists():
         #         context['username_confilict'] = 1
