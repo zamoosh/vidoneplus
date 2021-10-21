@@ -1,5 +1,6 @@
 from .imports import *
 
+
 def Login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(request.GET.get("next", "/"))
@@ -8,6 +9,7 @@ def Login(request):
         context['next'] = request.GET.get("next", None)
     if request.method == 'POST':
         username = request.POST['username']
+        password = request.POST['password']
         # check if id is phone number convert it to username
         pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
         if pattern.match(username) is None:
@@ -24,7 +26,7 @@ def Login(request):
         except forms.ValidationError:
             pass
 
-        user = authenticate(username=username, password=request.POST['password'])
+        user = authenticate(username=username, password=password)
         # request.session['password']=request.POST['password']
         if user is not None:
             # the password verified for the user
