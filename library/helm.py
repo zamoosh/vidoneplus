@@ -5,8 +5,12 @@ import subprocess
 
 class Helm:
     def __init__(self):
+        self.pull_helm_chart()
         self.HELM = os.path.join(settings.BASE_DIR, 'library', 'helm')
         self.HELM_CONFIG = '--kubeconfig=' + os.path.join(settings.BASE_DIR, 'library', 'config')
+
+    def pull_helm_chart(self):
+        subprocess.run(['git', 'clone', 'https://gitlab.vps-vds.com/vidone/helm-chart'], stdout=subprocess.PIPE)
 
     def delete_app(self):
         return self.HELM
