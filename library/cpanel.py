@@ -24,7 +24,7 @@ class Cpanel:
     def create_acc(self):
         params = (
             ('api.version', '1'),
-            ('username', 'mmd'),
+            ('username', self.username),
             ('domain', 'example.com'),
             ('pkgname', 'resellervidone_default'),
         )
@@ -33,10 +33,9 @@ class Cpanel:
         self.response = response.text
 
     def add_or_edit_zone(self):
-        domain = 'example.com'
         params = (
             ('api.version', '1'),
-            ('domain', domain),
+            ('domain', self.domain),
             # ('ip', '185.53.143.185'),
         )
 
@@ -49,7 +48,7 @@ class Cpanel:
                 serial = i['serial']
         params = (
             ('api.version', '1'),
-            ('domain', domain),
+            ('domain', self.domain),
             ('address', '185.53.143.185'),
             ('line', line),
             ('ttl', 14400),
@@ -59,7 +58,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('serial', str(int(serial) + 1)),
-            ('zone', domain),
+            ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
         response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params)
@@ -67,7 +66,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('serial', str(int(serial) + 2)),
-            ('zone', domain),
+            ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
         response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params)
@@ -88,7 +87,7 @@ class Cpanel:
         password = str(uuid4())[start_password:start_password + length_password]
         params = (
             ('api.version', '1'),
-            ('cpanel_jsonapi_user', 'mmd'),
+            ('cpanel_jsonapi_user', self.username),
             ('cpanel_jsonapi_module', 'Mysql'),
             ('cpanel_jsonapi_func', 'create_database'),
             ('cpanel_jsonapi_apiversion', '3'),
@@ -99,7 +98,7 @@ class Cpanel:
 
         params = (
             ('api.version', '1'),
-            ('cpanel_jsonapi_user', 'mmd'),
+            ('cpanel_jsonapi_user', self.username),
             ('cpanel_jsonapi_module', 'Mysql'),
             ('cpanel_jsonapi_func', 'create_user'),
             ('cpanel_jsonapi_apiversion', '3'),
@@ -111,7 +110,7 @@ class Cpanel:
 
         params = (
             ('api.version', '1'),
-            ('cpanel_jsonapi_user', 'mmd'),
+            ('cpanel_jsonapi_user', self.username),
             ('cpanel_jsonapi_module', 'Mysql'),
             ('cpanel_jsonapi_func', 'set_privileges_on_database'),
             ('cpanel_jsonapi_apiversion', '3'),
