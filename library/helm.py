@@ -20,20 +20,18 @@ class Helm:
         subprocess.run([self.HELM, self.HELM_CONFIG, 'delete', appname], stdout=subprocess.PIPE)
 
     def install_app(self, appname):
-        params = [self.HELM, self.HELM_CONFIG, 'upgrade', '--install', appname, self.CHART_VIDONE_SITE]
-        params += ['--set database.dbengine="django.db.backends.mysql"']
-        params += ['--set database.dbname="vidone_website_stage"']
-        params += ['--set database.dbuser="vidone_website_stage"']
-        params += ['--set database.dbpassword="9!JE[Ht^)h;5"']
-        params += ['--set database.dbhost="cpanel.vidone.org"']
-        params += ['--set ingress.hosts[0].host="app.vidone.org"']
-        params += ['--set ingress.hosts[0].paths[0]="/"']
-        params += ['--set ingress.tls[0].secretName=app-vidone-cert']
-        params += ['--set nameOverride="vidone-stage"']
-        params += ['--set fullnameOverride="vidone-stage"']
-        params += ['--set image.tag=0.0.0-beta45']
+        params = [self.HELM, self.HELM_CONFIG, 'upgrade', '--install', appname, self.CHART_VIDONE_SITE, '--set',
+                  'database.dbengine="django.db.backends.mysql"', '--set', 'database.dbname="vidone_website_stage"',
+                  '--set', 'database.dbuser="vidone_website_stage"', '--set', 'database.dbpassword="9!JE[Ht^)h;5"',
+                  '--set', 'database.dbhost="cpanel.vidone.org"', '--set', 'ingress.hosts[0].host="app.vidone.org"',
+                  '--set', 'ingress.hosts[0].paths[0]="/"', '--set', 'ingress.tls[0].secretName=app-vidone-cert',
+                  '--set', 'nameOverride="vidone-stage"', '--set', 'fullnameOverride="vidone-stage"', '--set',
+                  'image.tag=0.0.0-beta45']
         try:
-            subprocess.run(params, stdout=subprocess.PIPE)
+            subprocess.run(
+                [self.HELM, self.HELM_CONFIG, 'upgrade', '--install', appname, self.CHART_VIDONE_SITE, '-f', appname,
+                 '--set', 'image.tag=0.0.0-beta45'],
+                stdout=subprocess.PIPE)
             return True
         except:
             return False
