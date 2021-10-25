@@ -26,3 +26,8 @@
 td {
     text-align: center;
 }
+.nav-sm .site_title img {
+    width: 218px;
+    position: relative;
+    right: 19px;
+}

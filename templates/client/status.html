@@ -8,7 +8,7 @@
     <link href="{% static 'css/custom.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/style-custom.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان -تنظیمات {% endblock %}
+{% block page_title %}ویدان -وضعیت اکانت{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
 {% block body %}
     <div class="container body">
@@ -18,7 +18,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>تنظیمات</h3>
+                            <h3>وضعیت اکانت</h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -26,43 +26,21 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>
-                                        تنظیمات ویدان من <small>({{ request.user.organization_name }})</small>
+                                    <h2>مشاهده وضعیت اکانت
+{#                                        <small>اطلاعات حساب کاربری شما در این بخش نمایش داده می شود.</small>#}
                                     </h2>
-                                    <a href="{% url 'client:setting_edit' %}" class="btn btn-primary float-left {% if not edit_setting == 0 %} disabled {% endif %}">ثبت/ویرایش اطلاعات</a>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    {% for isetting in settings %}
                                     <form class="form-horizontal form-label-left">
                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">دامنه</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">وضعیت</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label">{{ isetting.domain }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام اپلیکیشن</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label">{{ isetting.app_name }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ اصلی</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label">{{ isetting.org_colore }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ ثانویه</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label"
-                                                       dir="ltr">{{ isetting.sub_colore }}</label>
+                                                <label class="control-label">{{ msg }}</label>
                                             </div>
                                         </div>
                                         <div class="ln_solid"></div>
                                     </form>
-                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

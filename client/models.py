@@ -33,6 +33,8 @@ class Setting(models.Model):
     org_colore = models.CharField(max_length=50)
     sub_colore = models.CharField(max_length=50)
     app_name = models.CharField(max_length=250)
+    domain = models.CharField(max_length=50)
+    kuberid = models.CharField(max_length=250)
 
 
 class CourseVitrin(models.Model):
