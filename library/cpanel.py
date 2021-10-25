@@ -25,7 +25,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('username', self.username),
-            ('domain', 'example.com'),
+            ('domain', self.domain),
             ('pkgname', 'resellervidone_default'),
         )
 
@@ -42,7 +42,7 @@ class Cpanel:
         response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params)
         self.response = json.loads(response.text)
         for i in self.response['data']['zone'][0]['record']:
-            if i['type'] == 'A' and i['name'] == domain + '.':
+            if i['type'] == 'A' and i['name'] == self.domain + '.':
                 line = i['Line']
             if i['type'] == 'SOA' and 'serial' in i:
                 serial = i['serial']

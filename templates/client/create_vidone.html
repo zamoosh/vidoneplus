@@ -14,7 +14,7 @@
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان - انتخاب دروس{% endblock %}
+{% block page_title %}ویدان - ایجاد وبسایت{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
 {% block body %}
     <div class="container body">
@@ -24,7 +24,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>دورس</h3>
+                            <h3></h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -33,7 +33,7 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>
-                                        انتخاب دروس
+                                        ایجاد وبسایت
                                     </h2>
 
                                     <div class="clearfix"></div>
@@ -46,53 +46,10 @@
                                             </div>
                                         {% endif %}
                                     {% endif %}
-                                    <form class="form-horizontal form-label-left" method="POST" novalidate="">
-                                        {% csrf_token %}
-
-                                        <div class="table-responsive">
-                                            <table class="table table-striped jambo_table bulk_action">
-                                                <thead>
-                                                <tr class="headings">
-                                                    <th>
-                                                        {#                                                        <input type="checkbox" id="check-all" class="flat">#}
-                                                    </th>
-                                                    <th class="column-title">عنوان دوره</th>
-                                                    <th class="column-title">قیمت دوره</th>
-                                                    <th class="column-title">مدرس</th>
-                                                    <th class="column-title">تعداد دروس</th>
-                                                    <th class="column-title no-link last"><span class="nobr">عمل</span>
-                                                    </th>
-                                                    <th class="bulk-actions" colspan="7">
-                                                        <a class="antoo" style="color:#fff; font-weight:500;">عمل همگانی
-                                                            ( <span
-                                                                    class="action-cnt"> </span> ) <i
-                                                                    class="fa fa-chevron-down"></i></a>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                {% for course in courses %}
-                                                    <tr class="even pointer">
-                                                        <td class="a-center ">{% load client %}
-                                                            <input type="checkbox" name="course_records" value="{{ course.id }}"{% if course|coursebuyed:request.user %} checked disabled{% endif %}>
-                                                        </td>
-                                                        <td class=" ">{{ course.title }}</td>
-                                                        <td class=" ">{{ course.price|free }}</td>
-                                                        <td class=" ">{{ course.teacher }}</td>
-                                                        <td class=" ">{{ course.lesson_count }}</td>
-                                                        <td class=" last"><a href="#"> مشاهده دوره </a></td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-md-6 col-md-offset-3">
-                                                <button type="submit" class="btn btn-success">ثبت</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <div class="alert alert-success alert-dismissible show" role="alert">
+                                        وبسایت شما با موفقیت ساخته شد<br>
+                                        دامنه شما : {{domain}} <br>
+                                    </div>
                                 </div>
                             </div>
                         </div>

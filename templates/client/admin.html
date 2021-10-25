@@ -48,7 +48,6 @@
                                     {% endif %}
                                     <form class="form-horizontal form-label-left" method="POST" novalidate="">
                                         {% csrf_token %}
-
                                         <div class="table-responsive">
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
@@ -75,21 +74,17 @@
                                                 </thead>
 
                                                 <tbody>
-                                                {% for course in users %}
+                                                {% for user in users %}
                                                     <tr class="even pointer">
-{#                                                        <td class="a-center ">{% load client %}#}
-{#                                                            <input type="checkbox" name="course_records" value="{{ course.id }}">#}
-{##}
-{#                                                        </td>#}
-                                                        <td class=" "></td>
-                                                        <td class=" ">{{ course.first_name }} {{ course.last_name }}</td>
-                                                        <td class=" ">{{ course.cellphone }}</td>
-                                                        <td class=" ">{{ course.email }}</td>
-                                                        <td class=" ">{% for dom in domain %}{{ dom.domain }}{% endfor %}</td>
-                                                        <td class=" ">{{ course.educational_interface_name }}</td>
-                                                        <td class=" ">{% for stat in status %}{% if stat.status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}{% endfor %}</td>
+                                                        <td class=" "></td>{% load client %}
+                                                        <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
+                                                        <td class=" ">{{ user.cellphone }}</td>
+                                                        <td class=" ">{{ user.email }}</td>
+                                                        <td class=" ">{{ user|domain }}</td>
+                                                        <td class=" ">{{ user.educational_interface_name }}</td>
+                                                        <td class=" ">{% for stat in status %}{% if stat.status == 0 %}کاربر تایید شده{% endif %}{% endfor %}</td>
                                                         <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
-                                                        <td class="last"><button type="submit" class="btn btn-success">تایید</button></td>
+                                                        <td class="last"><button type="submit" name="{{ user.cellphone }}|{{ user|domain }}" class="btn btn-success">تایید</button></td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
