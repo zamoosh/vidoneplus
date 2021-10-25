@@ -14,7 +14,7 @@
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان - انتخاب دروس{% endblock %}
+{% block page_title %}ویدان - ویرایش تنظیمات{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
 {% block body %}
     <div class="container body">
@@ -24,7 +24,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>دورس</h3>
+                            <h3>تنظیمات</h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -33,7 +33,7 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>
-                                        انتخاب دروس
+                                        تنظیمات ویدان من <small>({{ request.user.organization_name }})</small>
                                     </h2>
 
                                     <div class="clearfix"></div>
@@ -45,51 +45,65 @@
                                                 {{ result }}
                                             </div>
                                         {% endif %}
+                                        {% if error %}
+                                            <div class="alert alert-warning alert-dismissible show" role="alert">
+                                                {{ error }}
+                                            </div>
+                                        {% endif %}
                                     {% endif %}
                                     <form class="form-horizontal form-label-left" method="POST" novalidate="">
                                         {% csrf_token %}
-
-                                        <div class="table-responsive">
-                                            <table class="table table-striped jambo_table bulk_action">
-                                                <thead>
-                                                <tr class="headings">
-                                                    <th>
-                                                        {#                                                        <input type="checkbox" id="check-all" class="flat">#}
-                                                    </th>
-                                                    <th class="column-title">عنوان دوره</th>
-                                                    <th class="column-title">قیمت دوره</th>
-                                                    <th class="column-title">مدرس</th>
-                                                    <th class="column-title">تعداد دروس</th>
-                                                    <th class="column-title no-link last"><span class="nobr">عمل</span>
-                                                    </th>
-                                                    <th class="bulk-actions" colspan="7">
-                                                        <a class="antoo" style="color:#fff; font-weight:500;">عمل همگانی
-                                                            ( <span
-                                                                    class="action-cnt"> </span> ) <i
-                                                                    class="fa fa-chevron-down"></i></a>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                {% for course in courses %}
-                                                    <tr class="even pointer">
-                                                        <td class="a-center ">{% load client %}
-                                                            <input type="checkbox" name="course_records" value="{{ course.id }}"{% if course|coursebuyed:request.user %} checked disabled{% endif %}>
-
-                                                        </td>
-                                                        <td class=" ">{{ course.title }}</td>
-                                                        <td class=" ">{{ course.price|free }}</td>
-                                                        <td class=" ">{{ course.teacher }}</td>
-                                                        <td class=" ">{{ course.lesson_count }}</td>
-                                                        <td class=" last"><a href="#"> مشاهده دوره </a></td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ اصلی
+                                                    سازمان</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="input-group demo2 colorpicker-element">
+                                                        <span class="input-group-addon"><i
+                                                                style="background-color: #0072BC;"></i></span>
+                                                        <input type="text" name="org_colore" value="{{ setting.org_colore }}"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ دوم
+                                                    سازمان</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="input-group demo2 colorpicker-element">
+                                                        <span class="input-group-addon"><i
+                                                                style="background-color: #0072BC;"></i></span>
+                                                        <input type="text" name="sub_colore"
+                                                               value="{{ setting.sub_colore }}" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                       for="newpassword2">
+                                                    نام اپلیکیشن
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text"
+                                                           id="newpassword2" name="app_name"
+                                                           value="{{ setting.app_name }}" placeholder="application_name"
+                                                           class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                             <div class="item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                       for="newpassword2">
+                                                    دامنه
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text"
+                                                           id="newpassword2" name="domain"
+                                                           value="{{ setting.domain }}" placeholder="دامنه سایت : example.com"
+                                                           class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
                                         <div class="form-group">
                                             <div class="col-md-6 col-md-offset-3">
+                                                <a href="{% url 'client:setting' %}" class="btn btn-primary">بازگشت</a>
                                                 <button type="submit" class="btn btn-success">ثبت</button>
                                             </div>
                                         </div>

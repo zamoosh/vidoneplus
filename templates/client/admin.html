@@ -56,10 +56,13 @@
                                                     <th>
                                                         {#                                                        <input type="checkbox" id="check-all" class="flat">#}
                                                     </th>
-                                                    <th class="column-title">عنوان دوره</th>
-                                                    <th class="column-title">قیمت دوره</th>
-                                                    <th class="column-title">مدرس</th>
-                                                    <th class="column-title">تعداد دروس</th>
+                                                    <th class="column-title">نام و نام خانوادگی</th>
+                                                    <th class="column-title">شماره تماس</th>
+                                                    <th class="column-title">ایمیل</th>
+                                                    <th class="column-title">دامنه</th>
+                                                    <th class="column-title">رابط آموزش</th>
+                                                    <th class="column-title">وضعیت کاربر</th>
+                                                    <th class="column-title">لیست دروس انتخاب شده</th>
                                                     <th class="column-title no-link last"><span class="nobr">عمل</span>
                                                     </th>
                                                     <th class="bulk-actions" colspan="7">
@@ -72,17 +75,21 @@
                                                 </thead>
 
                                                 <tbody>
-                                                {% for course in courses %}
+                                                {% for course in users %}
                                                     <tr class="even pointer">
-                                                        <td class="a-center ">{% load client %}
-                                                            <input type="checkbox" name="course_records" value="{{ course.id }}"{% if course|coursebuyed:request.user %} checked disabled{% endif %}>
-
-                                                        </td>
-                                                        <td class=" ">{{ course.title }}</td>
-                                                        <td class=" ">{{ course.price|free }}</td>
-                                                        <td class=" ">{{ course.teacher }}</td>
-                                                        <td class=" ">{{ course.lesson_count }}</td>
-                                                        <td class=" last"><a href="#"> مشاهده دوره </a></td>
+{#                                                        <td class="a-center ">{% load client %}#}
+{#                                                            <input type="checkbox" name="course_records" value="{{ course.id }}">#}
+{##}
+{#                                                        </td>#}
+                                                        <td class=" "></td>
+                                                        <td class=" ">{{ course.first_name }} {{ course.last_name }}</td>
+                                                        <td class=" ">{{ course.cellphone }}</td>
+                                                        <td class=" ">{{ course.email }}</td>
+                                                        <td class=" ">{% for dom in domain %}{{ dom.domain }}{% endfor %}</td>
+                                                        <td class=" ">{{ course.educational_interface_name }}</td>
+                                                        <td class=" ">{% for stat in status %}{% if stat.status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}{% endfor %}</td>
+                                                        <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
+                                                        <td class="last"><button type="submit" class="btn btn-success">تایید</button></td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>

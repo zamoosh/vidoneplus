@@ -2,6 +2,9 @@ from .imports import *
 from library.smsir import Smsir
 from random import randrange
 
+from ..models import Status
+
+
 def verify(request):
     context = {}
     if 'user' in request.session:
@@ -20,6 +23,7 @@ def verify(request):
                     educational_interface_name= context['educational_interface_name'],
                     organization_name= context['organization_name'],
                 )
+                user.email = context['email']
                 user.set_password(context['password'])
                 user.first_name = context['firstname']
                 user.last_name = context['lastname']
@@ -27,13 +31,18 @@ def verify(request):
                     if User.objects.filter(username_clear=request.session['referall']).exists():
                         user.extra['referall'] = request.session['referall']
                 user.save()
+                status = Status()
+                status.status = False
+                status.user = user
+                status.duration = 0
+                status.save()
                 del request.session['user']
-                try:
-                    sms = Smsir()
-                    code = randrange(1000, 9999, 1)
-                    sms.sendwithtemplate({'verificationCode': code}, context['cellphone'], 55907)
-                except:
-                    pass
+                # try:
+                #     sms = Smsir()
+                #     code = randrange(1000, 9999, 1)
+                #     sms.sendwithtemplate({'verificationCode': code}, context['cellphone'], 55907)
+                # except:
+                #     pass
                 context['register'] = 1
             else:
                 context['error'] = 1
@@ -44,7 +53,7 @@ def verify(request):
                 key = str(random.randrange(10000, 99999))
                 request.session['key'] = key
                 sms.sendwithtemplate({'verificationCode': key}, context['cellphone'], 55907)
-                return HttpResponseRedirect('/accounts')
+                return render(request, "client/verify.html", context)
             except:
                 context['sms'] = False
         return render(request, "client/verify.html", context)

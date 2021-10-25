@@ -28,14 +28,14 @@
                            required=""/>
                     <div>
                         <button class="btn btn-default submit" >ورود</button>
-                        <a class="reset_pass" href="#reset">رمز ورود را از دست دادید؟</a>
+{#                        <a class="reset_pass" href="#reset">رمز ورود را از دست دادید؟</a>#}
                     </div>
 
                     <div class="clearfix"></div>
 
                     <div class="separator">
                         <p class="change_link">جدید در سایت؟
-                            <a href="#signup" class="to_register"> ایجاد حساب </a>
+                            <a href="{% url 'client:signup' %}" class="to_register"> ایجاد حساب </a>
                         </p>
 
                         <div class="clearfix"></div>
