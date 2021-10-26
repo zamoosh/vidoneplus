@@ -50,11 +50,11 @@ nameOverride: "app-%s"
 fullnameOverride: "app-%s"
 ingress:
   hosts:
-    - host: %s
+    - host: admin.%s
       paths: ["/"]
   tls:
   - hosts:
-    - %s
+    - admin.%s
     secretName: %s
 """%(context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
         pwayaml = """
@@ -62,11 +62,11 @@ nameOverride: "pwa-%s"
 fullnameOverride: "pwa-%s"
 ingress:
   hosts:
-    - host: %s
+    - host: site.%s
       paths: ["/"]
   tls:
   - hosts:
-    - %s
+    - site.%s
     secretName: %s
 """%(context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
         dbdata = """
