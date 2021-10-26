@@ -69,11 +69,18 @@ ingress:
     - %s
     secretName: %s
 """%(context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
+        dbdata = """
+dbname: '%s'
+dbuser: '%s'
+dbpassword: '%s'
+"""%(dbname, dbuser, dbpass)
         with open(os.path.join(dirtemp, 'site-Chart.yml'), 'w') as yaml_file:
             yaml_file.write(siteyaml)
         with open(os.path.join(dirtemp, 'app-Chart.yml'), 'w') as yaml_file:
             yaml_file.write(appyaml)
         with open(os.path.join(dirtemp, 'pwa-Chart.yml'), 'w') as yaml_file:
             yaml_file.write(pwayaml)
+        with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
+            yaml_file.write(dbdata)
         return render(request, "client/create_vidone.html", context)
     return render(request, "client/admin.html", context)
