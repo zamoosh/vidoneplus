@@ -6,6 +6,7 @@ from .imports import *
 from ..models import *
 import uuid
 
+
 @login_required
 def admin(request):
     context = {}
@@ -17,17 +18,18 @@ def admin(request):
         context['cellphone'] = data[0]
         context['username'] = ''.join(data[1].split('.')[:-1]) + uid[:4]
         context['domain'] = data[1]
-        createVidone = Cpanel(context['username'],context['domain'])
+        context['tld'] = data[1].split('.')[0]
+        context['secretName'] = data[1].replace('.', '-')
+        createVidone = Cpanel(context['username'], context['domain'])
         createVidone.create_acc()
         createVidone.add_or_edit_zone()
-        dbname,dbpass,dbuser = createVidone.create_db()
+        dbname, dbpass, dbuser = createVidone.create_db()
         dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
         if not os.path.exists(dirtemp):
             direct = os.makedirs(dirtemp)
-        print(dirtemp)
-        datayaml ="""
-nameOverride: "vidone-stage"
-fullnameOverride: "vidone-stage"
+        siteyaml = """
+nameOverride: "site-%s"
+fullnameOverride: "site-%s"
 database:
   dbengine: 'django.db.backends.mysql'
   dbname: '%s'
@@ -36,14 +38,42 @@ database:
   dbhost: 'cpanel.vidone.org'
 ingress:
   hosts:
-    - host: app.vidone.org
+    - host: %s
       paths: ["/"]
   tls:
   - hosts:
-    - app.vidone.org
-    secretName: app-vidone-cert
-"""%(dbname,dbuser,dbpass)
-        with open(os.path.join(dirtemp, 'Chart.yml'), 'w') as yaml_file:
-            yaml_file.write(datayaml)
+    - %s
+    secretName: %s
+"""%(context['tld'], context['tld'], dbname, dbuser, dbpass, context['domain'], context['domain'], context['secretName'])
+        appyaml = """
+nameOverride: "app-%s"
+fullnameOverride: "app-%s"
+ingress:
+  hosts:
+    - host: %s
+      paths: ["/"]
+  tls:
+  - hosts:
+    - %s
+    secretName: %s
+"""%(context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
+        pwayaml = """
+nameOverride: "pwa-%s"
+fullnameOverride: "pwa-%s"
+ingress:
+  hosts:
+    - host: %s
+      paths: ["/"]
+  tls:
+  - hosts:
+    - %s
+    secretName: %s
+"""%(context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
+        with open(os.path.join(dirtemp, 'site-Chart.yml'), 'w') as yaml_file:
+            yaml_file.write(siteyaml)
+        with open(os.path.join(dirtemp, 'app-Chart.yml'), 'w') as yaml_file:
+            yaml_file.write(appyaml)
+        with open(os.path.join(dirtemp, 'pwa-Chart.yml'), 'w') as yaml_file:
+            yaml_file.write(pwayaml)
         return render(request, "client/create_vidone.html", context)
     return render(request, "client/admin.html", context)
