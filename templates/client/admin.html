@@ -82,7 +82,7 @@
                                                         <td class=" ">{{ user.email }}</td>
                                                         <td class=" ">{{ user|domain }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
-                                                        <td class=" ">{% for stat in status %}{% if stat.status == 0 %}کاربر تایید شده{% endif %}{% endfor %}</td>
+                                                        <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
                                                         <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
                                                         <td class="last"><button type="submit" name="{{ user.cellphone }}|{{ user|domain }}" class="btn btn-success">تایید</button></td>
                                                     </tr>

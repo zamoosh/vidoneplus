@@ -9,7 +9,7 @@ class User(AbstractUser):
     organization_name = models.CharField(max_length=15, unique=True)
     educational_interface_name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
-    dateofestablishment = models.DateTimeField(null=True)
+    dateofestablishment = models.DateField(null=True)
     verfication_status = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):

@@ -31,3 +31,10 @@ td {
     position: relative;
     right: 19px;
 }
+input, button, select, textarea{
+    font-family: IRANYekan !important;
+}
+.form-control {
+    font-family: IRANYekan;
+    font-weight: lighter;
+}

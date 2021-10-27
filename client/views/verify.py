@@ -1,9 +1,9 @@
+import time
 from .imports import *
 from library.smsir import Smsir
 from random import randrange
-
 from ..models import Status
-
+import jdatetime
 
 def verify(request):
     context = {}
@@ -15,6 +15,8 @@ def verify(request):
                 pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
                 if pattern.match(context['cellphone']) is None:
                     context['cellphone'] = "+989" + context['cellphone'][2:]
+                context['dateofestablishment'] = jdatetime.datetime.strptime(context['dateofestablishment'],
+                                                                             "%Y/%m/%d").togregorian()
                 user = User.objects.create_user(
                     context['email'],
                     cellphone = context['cellphone'],
@@ -56,6 +58,8 @@ def verify(request):
                 return render(request, "client/verify.html", context)
             except:
                 context['sms'] = False
+                time.sleep(5)
+                return HttpResponseRedirect("/accounts/login")
         return render(request, "client/verify.html", context)
     else:
         return HttpResponseRedirect("/accounts/signup")
