@@ -22,90 +22,6 @@
     src: url('../fonts/YekanBakh/Yekan Bakh FaNum 03 Light.eot?#iefix') format('embedded-opentype'), url('../fonts/YekanBakh/Yekan Bakh FaNum 03 Light.woff') format('woff'), url('../fonts/YekanBakh/Yekan Bakh FaNum 03 Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal}
-@font-face {
-    font-family: "IRANYekan";
-    src: url('../fonts/eot/IRANSansWeb_UltraLight.eot');
-    src: url('../fonts/eot/IRANSansWeb_UltraLight.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_UltraLight.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_UltraLight.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_UltraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal}
-@font-face {
-    font-family: "IRANYekan";
-    src: url('../fonts/eot/IRANSansWeb.eot');
-    src: url('../fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb.woff') format('woff'), url('../fonts/ttf/IRANSansWeb.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Black.eot');
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Black.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum)_Black.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum)_Black.woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum)_Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Bold.eot');
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum)_Bold.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum)_Bold.woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum)_Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Medium.eot');
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum)_Medium.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum)_Medium.woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum)_Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Light.eot');
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_Light.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum)_Light.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum)_Light.woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum)_Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style:  normal;}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_UltraLight.eot');
-    src: url('../fonts/eot/IRANSansWeb(FaNum)_UltraLight.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum)_UltraLight.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum)_UltraLight.woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum)_UltraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style:  normal;}
-@font-face {
-    font-family: "IRANSans_FaNum";
-    src: url('../fonts/eot/IRANSansWeb.eot');
-    src: url('../fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb(FaNum).woff2') format('woff2'), url('../fonts/woff/IRANSansWeb(FaNum).woff') format('woff'), url('../fonts/ttf/IRANSansWeb(FaNum).ttf') format('truetype');
-    font-weight:  normal;
-    font-style:  normal;}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir.eot');
-    src: url('../fonts/Vazir/Vazir.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir.woff2') format('woff2'), url('../fonts/Vazir/Vazir.woff') format('woff'), url('../fonts/Vazir/Vazir.ttf') format('truetype');
-    font-weight:  normal;
-    font-style:  normal;}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir-Bold.eot');
-    src: url('../fonts/Vazir/Vazir-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir-Bold.woff2') format('woff2'), url('../fonts/Vazir/Vazir-Bold.woff') format('woff'), url('../fonts/Vazir/Vazir-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style:  normal;}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir-Black.eot');
-    src: url('../fonts/Vazir/Vazir-Black.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir-Black.woff2') format('woff2'), url('../fonts/Vazir/Vazir-Black.woff') format('woff'), url('../fonts/Vazir/Vazir-Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style:  normal;}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir-Medium.eot');
-    src: url('../fonts/Vazir/Vazir-Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir-Medium.woff2') format('woff2'), url('../fonts/Vazir/Vazir-Medium.woff') format('woff'), url('../fonts/Vazir/Vazir-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style:  normal;}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir-Light.eot');
-    src: url('../fonts/Vazir/Vazir-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir-Light.woff2') format('woff2'), url('../fonts/Vazir/Vazir-Light.woff') format('woff'), url('../fonts/Vazir/Vazir-Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal}
-@font-face {
-    font-family: "Vazir";
-    src: url('../fonts/Vazir/Vazir-Thin.eot');
-    src: url('../fonts/Vazir/Vazir-Thin.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir/Vazir-Thin.woff2') format('woff2'), url('../fonts/Vazir/Vazir-Thin.woff') format('woff'), url('../fonts/Vazir/Vazir-Thin.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal}
 .blue {
     color: #3498db;
 }
@@ -605,16 +521,16 @@ pre, code {
 body {
     color: #73879c;
     background: #34495e;
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.471;
 }
 body.iransans {
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.persian_num {
-    font-family: IRANSans_FaNum, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.vazir {
     font-family: Vazir, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
@@ -626,13 +542,13 @@ body .container.body .right_col {
     background: #f7f7f7;
 }
 .tooltip {
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.iransans .tooltip {
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.persian_num .tooltip {
-    font-family: IRANSans_FaNum, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.vazir .tooltip {
     font-family: Vazir, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
@@ -2176,13 +2092,13 @@ span.tag {
     margin-right: 5px;
     font-weight: 500;
     margin-bottom: 5px;
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.iransans span.tag {
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.persian_num span.tag {
-    font-family: IRANSans_FaNum, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
 }
 body.vazir span.tag {
     font-family: Vazir, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif;
@@ -3205,7 +3121,7 @@ textarea:focus {
     padding: 0 4px;
 }
 .view p {
-    font-family: IRANSans, Georgia, serif;
+    font-family: IRANYekan, Georgia, serif;
     font-style: italic;
     font-size: 12px;
     position: relative;
@@ -3214,10 +3130,10 @@ textarea:focus {
     text-align: center;
 }
 body.iransans .view p {
-    font-family: IRANSans, Georgia, serif;
+    font-family: IRANYekan, Georgia, serif;
 }
 body.persian_num .view p {
-    font-family: IRANSans_FaNum, Georgia, serif;
+    font-family: IRANYekan, Georgia, serif;
 }
 body.vazir .view p {
     font-family: Vazir, Georgia, serif;
@@ -3489,16 +3405,16 @@ body.yekan .view p {
     text-decoration: underline;
 }
 .login_content h1 {
-    font: normal 25px IRANSans, Helvetica, Arial, sans-serif;
+    font: normal 25px IRANYekan, Helvetica, Arial, sans-serif;
     letter-spacing: -0.05em;
     line-height: 20px;
     margin: 10px 0 30px;
 }
 body.iransans .login_content h1 {
-    font: normal 25px IRANSans, Helvetica, Arial, sans-serif;
+    font: normal 25px IRANYekan, Helvetica, Arial, sans-serif;
 }
 body.persian_num .login_content h1 {
-    font: normal 25px IRANSans_FaNum, Helvetica, Arial, sans-serif;
+    font: normal 25px IRANYekan, Helvetica, Arial, sans-serif;
 }
 body.vazir .login_content h1 {
     font: normal 25px Vazir, Helvetica, Arial, sans-serif;
@@ -4516,13 +4432,13 @@ form:after {
     border-bottom-left-radius: 4px;
 }
 div#graph_donut svg text {
-    font-family: IRANSans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
 }
 body.iransans div#graph_donut svg text {
     font-family: body, body.iransans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
 }
 body.persian_num div#graph_donut svg text {
-    font-family: IRANSans_FaNum, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
+    font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
 }
 body.vazir div#graph_donut svg text {
     font-family: Vazir, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
@@ -4560,5 +4476,5 @@ body.lock #lock_screen .unlock {
     cursor: pointer;
 }
 .count {
-    font-family: IRANSans_FaNum;
+    font-family: IRANYekan;
 }

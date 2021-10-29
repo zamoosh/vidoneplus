@@ -1,5 +1,5 @@
 from .imports import *
-
+import jdatetime
 
 def signup(request):
     if request.user.is_authenticated:
@@ -17,6 +17,9 @@ def signup(request):
         context['request']['email'] = request.POST.get('email', '').strip().lower()
         context['request']['password'] = request.POST.get('password', '')
         context['request']['cellphone'] = request.POST.get('cellphone', '').strip()
+        context['request']['cellphone'] = request.POST.get('cellphone', '').strip()
+        if context['request']['dateofestablishment']:
+            context['dateofestablishment'] = jdatetime.datetime.strptime(context['request']['dateofestablishment'], "%Y/%m/%d").togregorian()
         # FirstName Checking
         # if recaptcha(request)['success']==False:
         #     context['captcha']=1

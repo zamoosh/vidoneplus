@@ -14,6 +14,7 @@
     <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static style %}">
     <link href="{% static 'css/custom.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/kamadatepicker.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet">
     {% block css %}{% endblock %}
     <!-- Custom Theme Style -->
@@ -22,7 +23,12 @@
 <body{% block bodyclass %}{% endblock %}>
 {% block body %}{% endblock %}
 {% include 'footer.html' %}
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/kamadatepicker.min.js' %}"></script>
+<script>
+    kamaDatepicker('data-input');
+</script>
 {% block js %}{% endblock %}
 </body>
 </html>
