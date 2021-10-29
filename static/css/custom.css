@@ -2163,7 +2163,7 @@ span.tag a {
     width: 12px;
 }
 @media (min-width: 992px) {
-    .tile_count .tile_stats_count: first-child:before {
+    .tile_count .tile_stats_count:first-child:before {
     border-right: 0;
 }
 }@media (min-width: 768px) {
@@ -4435,7 +4435,7 @@ div#graph_donut svg text {
     font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
 }
 body.iransans div#graph_donut svg text {
-    font-family: body, body.iransans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
+    font-family: body, body,iransans, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;
 }
 body.persian_num div#graph_donut svg text {
     font-family: IRANYekan, Helvetica Neue, Roboto, Arial, Droid Sans, sans-serif !important;

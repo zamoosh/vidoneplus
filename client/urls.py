@@ -1,6 +1,5 @@
 from django.urls import path
 
-from .views.admin import admin
 from .views.status import status
 from .views.courses import courses
 from .views.index import index
@@ -11,6 +10,7 @@ from .views.setting import settings
 from .views.signup import signup
 from .views.verify import verify
 from .views.changepassword import changepassword
+from .views.admin import admin, admininstall, adminremove
 
 app_name = 'client'
 
@@ -29,4 +29,7 @@ urlpatterns = [
     path('logout/', Logout, name="logout"),
     path('status/', status, name="status"),
     path('admin/', admin, name="admin"),
+    path('admin/<int:id>/', admin, name="admin"),
+    path('admin/<int:id>/install/', admininstall, name="admininstall"),
+    path('admin/<int:id>/remove/', adminremove, name="adminremove"),
 ]

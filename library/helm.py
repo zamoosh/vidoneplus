@@ -11,7 +11,7 @@ class Helm:
         self.HELM_CONFIG = '--kubeconfig=' + os.path.join(settings.BASE_DIR, 'library', 'config')
 
     def pull_helm_chart(self):
-        if os.path.isdir('/app/helm-chart'):
+        if os.path.isdir(os.path.join(settings.BASE_DIR,'helm-chart')):
             subprocess.run(['git', '--git-dir=helm-chart/.git', 'pull'], stdout=subprocess.PIPE)
         else:
             subprocess.run(['git', 'clone', 'https://gitlab.vps-vds.com/vidone/helm-chart'], stdout=subprocess.PIPE)
@@ -31,7 +31,7 @@ class Helm:
         try:
             subprocess.run(
                 [self.HELM, self.HELM_CONFIG, 'upgrade', '--install', appname,
-                 os.path.join(self.self.HELM_CHART, prj), '-f', path, '--set', 'image.tag=' + tagimage],
+                 os.path.join(self.HELM_CHART, prj), '-f', path, '--set', 'image.tag=' + tagimage],
                 stdout=subprocess.PIPE)
             return True
         except:

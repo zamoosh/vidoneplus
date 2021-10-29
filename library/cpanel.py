@@ -41,6 +41,7 @@ class Cpanel:
 
         response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params)
         self.response = json.loads(response.text)
+
         for i in self.response['data']['zone'][0]['record']:
             if i['type'] == 'A' and i['name'] == self.domain + '.':
                 line = i['Line']
@@ -81,7 +82,7 @@ class Cpanel:
         length_password = random.randrange(8, 16, 1)
         start_password = random.randrange(1, 36 - length_password, 1)
         dbname = str(uuid4())[:6]
-        dbuser = str(uuid4())[:6]
+        dbuser = str(uuid4())[:6].replace("-", "")
         dbname = '%s_%s' % (self.username, dbname)
         dbuser = '%s_%s' % (self.username, dbuser)
         password = str(uuid4())[start_password:start_password + length_password]
@@ -107,7 +108,7 @@ class Cpanel:
         )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
         self.response = response.text
-
+        print(self.response)
         params = (
             ('api.version', '1'),
             ('cpanel_jsonapi_user', self.username),
