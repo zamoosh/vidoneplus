@@ -83,7 +83,8 @@
                                                         <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
                                                         <td class="last">
                                                             <a href="{%  url 'client:admininstall' user.id %}" class="btn btn-success">نصب</a>
-                                                            <a href="{%  url 'client:adminremove' user.id %}" class="btn btn-danger">حذف</a>
+                                                            <a href="{%  url 'client:adminremove' user.id %}" class="btn btn-danger">غیرفعال</a>
+                                                            <a href="{%  url 'client:createuser' user|domain %}" class="btn btn-info">ساخت یوزر</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

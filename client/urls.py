@@ -10,7 +10,7 @@ from .views.setting import settings
 from .views.signup import signup
 from .views.verify import verify
 from .views.changepassword import changepassword
-from .views.admin import admin, admininstall, adminremove
+from .views.admin import admin, admininstall, adminremove, createuser
 
 app_name = 'client'
 
@@ -32,4 +32,5 @@ urlpatterns = [
     path('admin/<int:id>/', admin, name="admin"),
     path('admin/<int:id>/install/', admininstall, name="admininstall"),
     path('admin/<int:id>/remove/', adminremove, name="adminremove"),
+    path('admin/<str:domain>/createuser/', createuser, name="createuser"),
 ]

@@ -1,37 +1,43 @@
 import os
-import yaml
-from django.conf import settings
+from django.contrib.auth.models import User
 from library.cpanel import Cpanel
 from library.helm import Helm
+from library.kubectl import Kubectl
 from .imports import *
+from ..models import Setting as usetting
 from ..models import *
 import uuid
 
 
-@login_required
+def _configpodname(tld):
+    return tld + "-site", tld + "-app", tld + "-pwa"
+
+
+# @login_required
 def admin(request):
     context = {}
     context['users'] = User.objects.filter(is_staff=False)
     context['status'] = Status.objects.filter(user__in=context['users'])
     return render(request, "client/admin.html", context)
 
-def admininstall(request,id):
+
+def admininstall(request, id):
     uid = uuid.uuid4().hex
     context = {}
-    context['domain'] = Setting.objects.get(user__id=id).domain
+    context['domain'] = usetting.objects.get(user__id=id).domain
+    print(context['domain'])
     context['status'] = Status.objects.get(user__id=id)
     context['curent_user'] = User.objects.get(id=id)
+    print(context['curent_user'])
+    context['useremail'] = context['curent_user'].email
     context['username'] = ''.join(context['domain'].split('.')[:-1]) + uid[:4]
-    context['tld'] = context['domain'].split('.')[0]
-    context['site_name'] = "site-" + context['tld']
-    context['app_name'] = "app-" + context['tld']
-    context['pwa_name'] = "pwa-" + context['tld']
-    save_setting = Setting.objects.get(id=context['curent_user'].id)
-    save_setting.site_name = context['site_name']
-    save_setting.admin_name = context['app_name']
-    save_setting.pwa_name = context['pwa_name']
-    save_setting.fullname = context['username']
-    save_setting.save()
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
+    # save_setting = usetting.objects.get(id=context['curent_user'].id)
+    # save_setting.site_name = context['site_name']
+    # save_setting.admin_name = context['app_name']
+    # save_setting.pwa_name = context['pwa_name']
+    # save_setting.fullname = context['username']
+    # save_setting.save()
     context['secretName'] = context['domain'].replace('.', '-')
     createVidone = Cpanel(context['username'], context['domain'])
     createVidone.create_acc()
@@ -41,8 +47,8 @@ def admininstall(request,id):
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
     siteyaml = """
-nameOverride: "site-%s"
-fullnameOverride: "site-%s"
+nameOverride: "%s"
+fullnameOverride: "%s"
 database:
   dbengine: 'django.db.backends.mysql'
   dbname: '%s'
@@ -57,11 +63,11 @@ ingress:
   - hosts:
     - %s
     secretName: %s
-    """ % (context['tld'], context['tld'], dbname, dbuser, dbpass, context['domain'], context['domain'],
+    """ % (context['site_name'], context['site_name'], dbname, dbuser, dbpass, context['domain'], context['domain'],
            context['secretName'])
     appyaml = """
-nameOverride: "app-%s"
-fullnameOverride: "app-%s"
+nameOverride: "%s"
+fullnameOverride: "%s"
 ingress:
   hosts:
     - host: admin.%s
@@ -70,10 +76,10 @@ ingress:
   - hosts:
     - admin.%s
     secretName: %s
-    """ % (context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
+    """ % (context['app_name'], context['app_name'], context['domain'], context['domain'], context['secretName'])
     pwayaml = """
-nameOverride: "pwa-%s"
-fullnameOverride: "pwa-%s"
+nameOverride: "%s"
+fullnameOverride: "%s"
 ingress:
   hosts:
     - host: site.%s
@@ -82,7 +88,7 @@ ingress:
   - hosts:
     - site.%s
     secretName: %s
-    """ % (context['tld'], context['tld'], context['domain'], context['domain'], context['secretName'])
+    """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
     dbdata = """
 dbname: '%s'
 dbuser: '%s'
@@ -97,15 +103,30 @@ dbpassword: '%s'
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata)
     helm_install = Helm()
-    helm_install.install_app("website", "site-" + context['tld'], dirtemp + "/site-Chart.yaml", "0.0.0-beta59")
-    helm_install.install_app("admindashvidone", "app-" + context['tld'], dirtemp + "/app-Chart.yaml", "0.0.1")
-    helm_install.install_app("frontvidone", "pwa-" + context['tld'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta70")
+    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.1")
+    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
     userStatus = context['status']
     userStatus.status = 1
     userStatus.save()
     return render(request, "client/create_vidone.html")
 
-def adminremove(request,id):
+
+def createuser(request, domain):
+    context = {}
+    user_domain = usetting.objects.get(domain=domain)
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(domain.split('.')[0])
+    kubectl = Kubectl()
+    kubectl.vidone_getsuperuser(context['app_name'])
+    import secrets
+    import string
+    alphabet = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(alphabet) for i in range(8))
+    print(password, user_domain.user.username, user_domain.user.email, context['site_name'])
+    kubectl.vidone_createsuperuser(context['site_name'], user_domain.user.username, user_domain.user.email, password)
+
+
+def adminremove(request, id):
     context = {}
     context['domain'] = Setting.objects.get(user__id=id)
     context['dellApp'] = context['domain'].admin_name
@@ -116,3 +137,9 @@ def adminremove(request,id):
     helm_remove.delete_app(context['dellSite'])
     helm_remove.delete_app(context['dellPwa'])
     return render(request, "client/create_vidone.html")
+
+
+def deleteuser(request, id):
+    context = {}
+    context['user'] = User.objects.get(id=id)
+    context['user'].delete()
