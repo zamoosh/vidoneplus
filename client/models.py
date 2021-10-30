@@ -10,23 +10,11 @@ class User(AbstractUser):
     educational_interface_name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     dateofestablishment = models.DateField(null=True)
-    verfication_status = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.cellphone = unidecode(self.cellphone)
         self.username = self.cellphone
         super(User, self).save()
-
-
-class VerificationCode(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    code = models.IntegerField()
-
-    def save(self, *args, **kwargs):
-        self.name = unidecode(self.name)
-        super(VerificationCode, self).save()
-
 
 class Setting(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,6 +23,11 @@ class Setting(models.Model):
     app_name = models.CharField(max_length=250)
     domain = models.CharField(max_length=50)
     kuberid = models.CharField(max_length=250)
+    site_name = models.CharField(max_length=250)
+    admin_name = models.CharField(max_length=250)
+    pwa_name = models.CharField(max_length=250)
+    fullname = models.CharField(max_length=250)
+
 
 
 class CourseVitrin(models.Model):

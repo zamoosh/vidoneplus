@@ -24,7 +24,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>دورس</h3>
+                            <h3>کاربران</h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -32,9 +32,6 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>
-                                        انتخاب دروس
-                                    </h2>
 
                                     <div class="clearfix"></div>
                                 </div>
@@ -84,7 +81,10 @@
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
                                                         <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
                                                         <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
-                                                        <td class="last"><button type="submit" name="{{ user.cellphone }}|{{ user|domain }}" class="btn btn-success">تایید</button></td>
+                                                        <td class="last">
+                                                            <a href="{%  url 'client:admininstall' user.id %}" class="btn btn-success">تایید</a>
+                                                            <a href="{%  url 'client:adminremove' user.id %}" class="btn btn-danger">حذف</a>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -93,6 +93,7 @@
                                         <div class="form-group">
                                             <div class="col-md-6 col-md-offset-3">
                                                 <button type="submit" class="btn btn-success">ثبت</button>
+                                                <button type="submit" name="delete" class="btn btn-success">حذف</button>
                                             </div>
                                         </div>
                                     </form>
