@@ -96,7 +96,13 @@ class Cpanel:
         )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
         self.response = response.text
+        self.create_db_user(dbuser, password)
+        self.create_remote_allow()
+        self.privileges_on_database(dbname, dbuser)
 
+        return dbname, dbuser, password
+
+    def create_db_user(self, dbuser, password):
         params = (
             ('api.version', '1'),
             ('cpanel_jsonapi_user', self.username),
@@ -108,7 +114,21 @@ class Cpanel:
         )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
         self.response = response.text
-        print(self.response)
+
+    def create_remote_allow(self):
+        params = (
+            ('api.version', '1'),
+            ('cpanel_jsonapi_user', self.username),
+            ('cpanel_jsonapi_module', 'Mysql'),
+            ('cpanel_jsonapi_func', 'add_host'),
+            ('cpanel_jsonapi_apiversion', '3'),
+            ('host', '185.53.143.185'),
+            ('note', 'added with VidonePlus'),
+        )
+        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
+        self.response = response.text
+
+    def privileges_on_database(self, dbname, dbuser):
         params = (
             ('api.version', '1'),
             ('cpanel_jsonapi_user', self.username),
@@ -121,4 +141,3 @@ class Cpanel:
         )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
         self.response = response.text
-        return dbname, dbuser, password
