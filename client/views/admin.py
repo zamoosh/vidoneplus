@@ -19,6 +19,7 @@ def admininstall(request,id):
     uid = uuid.uuid4().hex
     context = {}
     context['domain'] = Setting.objects.get(user__id=id).domain
+    context['status'] = Status.objects.get(user__id=id)
     context['curent_user'] = User.objects.get(id=id)
     context['username'] = ''.join(context['domain'].split('.')[:-1]) + uid[:4]
     context['tld'] = context['domain'].split('.')[0]
@@ -99,6 +100,9 @@ dbpassword: '%s'
     helm_install.install_app("website", "site-" + context['tld'], dirtemp + "/site-Chart.yaml", "0.0.0-beta59")
     helm_install.install_app("admindashvidone", "app-" + context['tld'], dirtemp + "/app-Chart.yaml", "0.0.1")
     helm_install.install_app("frontvidone", "pwa-" + context['tld'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+    userStatus = context['status']
+    userStatus.status = 1
+    userStatus.save()
     return render(request, "client/create_vidone.html")
 
 def adminremove(request,id):
