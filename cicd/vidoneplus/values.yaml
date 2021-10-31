@@ -45,12 +45,15 @@ ingress:
     #   cert-manager.io/issuer: "letsencrypt-staging"
     cert-manager.io/issuer: "letsencrypt-prod"
   hosts:
-    - host: plus.vidone.ir
+    - host: vidoneplus.ir
+      paths: ["/"]
+    - host: www.vidoneplus.ir
       paths: ["/"]
 
   tls:
   - hosts:
-    - plus.vidone.ir
+    - vidoneplus.ir
+    - www.vidoneplus.ir
     secretName: plus-vidone-cert
 
 resources: {}
