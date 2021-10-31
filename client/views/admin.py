@@ -12,13 +12,15 @@ import uuid
 def _configpodname(tld):
     return tld + "-site", tld + "-app", tld + "-pwa"
 
-@login_required
+
+# @login_required
 def admin(request):
     context = {}
     context['users'] = User.objects.filter(is_staff=False)
+    context['status'] = Status.objects.filter(user__in=context['users'])
     return render(request, "client/admin.html", context)
 
-@login_required
+
 def admininstall(request, id):
     uid = uuid.uuid4().hex
     context = {}
@@ -30,12 +32,12 @@ def admininstall(request, id):
     context['useremail'] = context['curent_user'].email
     context['username'] = ''.join(context['domain'].split('.')[:-1]) + uid[:4]
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
-    save_setting = usetting.objects.get(user=context['curent_user'])
-    save_setting.site_name = context['site_name']
-    save_setting.admin_name = context['app_name']
-    save_setting.pwa_name = context['pwa_name']
-    save_setting.fullname = context['username']
-    save_setting.save()
+    # save_setting = usetting.objects.get(id=context['curent_user'].id)
+    # save_setting.site_name = context['site_name']
+    # save_setting.admin_name = context['app_name']
+    # save_setting.pwa_name = context['pwa_name']
+    # save_setting.fullname = context['username']
+    # save_setting.save()
     context['secretName'] = context['domain'].replace('.', '-')
     createVidone = Cpanel(context['username'], context['domain'])
     createVidone.create_acc()
@@ -73,7 +75,7 @@ ingress:
   tls:
   - hosts:
     - admin.%s
-    secretName: %s
+    secretName: app-%s
     """ % (context['app_name'], context['app_name'], context['domain'], context['domain'], context['secretName'])
     pwayaml = """
 nameOverride: "%s"
@@ -85,7 +87,7 @@ ingress:
   tls:
   - hosts:
     - site.%s
-    secretName: %s
+    secretName: pwa-%s
     """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
     dbdata = """
 dbname: '%s'
@@ -101,30 +103,29 @@ dbpassword: '%s'
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata)
     helm_install = Helm()
-    helm_install.install_app("website", context['site_name'], os.path.join(dirtemp + "site-Chart.yaml"), "0.0.0-beta73")
-    helm_install.install_app("admindashvidone", context['app_name'], os.path.join(dirtemp + "site-Chart.yaml"), "0.0.1")
-    helm_install.install_app("frontvidone", context['pwa_name'], os.path.join(dirtemp + "site-Chart.yaml"), "0.0.25")
-    userstatus = context['status']
-    userstatus.status = 1
-    userstatus.save()
+    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta70")
+    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.1")
+    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+    userStatus = context['status']
+    userStatus.status = 1
+    userStatus.save()
     return render(request, "client/create_vidone.html")
 
-@login_required
+
 def createuser(request, domain):
     context = {}
     user_domain = usetting.objects.get(domain=domain)
-    context['usercu'] = user_domain.user
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(domain.split('.')[0])
     kubectl = Kubectl()
     kubectl.vidone_getsuperuser(context['app_name'])
     import secrets
     import string
     alphabet = string.ascii_letters + string.digits
-    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
-    kubectl.vidone_createsuperuser(context['site_name'], user_domain.user.username, user_domain.user.email, context['password'])
-    return render(request, "client/create_vidone.html")
+    password = ''.join(secrets.choice(alphabet) for i in range(8))
+    print(password, user_domain.user.username, user_domain.user.email, context['site_name'])
+    kubectl.vidone_createsuperuser(context['site_name'], user_domain.user.username, user_domain.user.email, password)
 
-@login_required
+
 def adminremove(request, id):
     context = {}
     context['domain'] = Setting.objects.get(user__id=id)
@@ -136,3 +137,9 @@ def adminremove(request, id):
     helm_remove.delete_app(context['dellSite'])
     helm_remove.delete_app(context['dellPwa'])
     return render(request, "client/create_vidone.html")
+
+
+def deleteuser(request, id):
+    context = {}
+    context['user'] = User.objects.get(id=id)
+    context['user'].delete()
