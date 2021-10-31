@@ -6,7 +6,7 @@ from .views.index import index
 from .views.login import Login
 from .views.logout import Logout
 from .views.profile import profile
-from .views.setting import settings
+from .views.setting import settings, configs
 from .views.signup import signup
 from .views.verify import verify
 from .views.changepassword import changepassword
@@ -21,6 +21,7 @@ urlpatterns = [
     path('profile/', profile, name="profile"),
     path('profile/password/', changepassword, name="password"),
     path('setting/', settings, name="setting"),
+    path('setting/<str:domain>', configs, name="configs"),
     path('setting/edit', settings, {'action': 'edit'}, name="setting_edit"),
     path('courses/', courses, name="courses"),
     path('login/', Login, name="login"),

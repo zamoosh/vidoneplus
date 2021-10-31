@@ -1,6 +1,8 @@
-from .imports import *
-from ..models import Setting
+from django.core import serializers
 
+from .imports import *
+from django.http import JsonResponse, HttpResponse
+from ..models import Setting as usetting
 
 @login_required
 def settings(request, action=None):
@@ -19,9 +21,9 @@ def settings(request, action=None):
                 context['domain'] = context['domain'][4:]
             context['kuberid'] = context['domain'].split('.')[0]
             print(context['kuberid'])
-            if not Setting.objects.filter(user=request.user):
+            if not usetting.objects.filter(user=request.user):
                 context['edit_setting'] = 1
-                seeting = Setting()
+                seeting = usetting()
                 seeting.user = context['user']
                 seeting.org_colore = context['org_colore']
                 seeting.sub_colore = context['sub_colore']
@@ -32,7 +34,7 @@ def settings(request, action=None):
                 context['result'] = "تنظیمات با موفقیت ثبت شد."
             else:
                 try:
-                    setting = Setting.objects.get(id=request.user.id)
+                    setting = usetting.objects.get(id=request.user.id)
                     setting.org_colore = context['org_colore']
                     setting.sub_colore = context['sub_colore']
                     setting.app_name = context['app_name']
@@ -42,7 +44,21 @@ def settings(request, action=None):
                 except:
                     context['error'] = "خطا در ثبت اطلاعات"
         return render(request, "client/edit-setting.html", context)
-    context['settings'] = Setting.objects.filter(user=request.user)
-    if not Setting.objects.filter(user=request.user):
+    context['settings'] = usetting.objects.filter(user=request.user)
+    if not usetting.objects.filter(user=request.user):
         context['edit_setting'] = 0
     return render(request, "client/setting.html", context)
+
+
+def configs(request, domain):
+    context = {}
+    config = usetting.objects.get(domain=domain)
+    context['domain'] = config.domain
+    context['org_colore'] = config.org_colore
+    context['sub_colore'] = config.sub_colore
+    context['app_name'] = config.app_name
+    context['site_name'] = config.site_name
+    context['admin_name'] = config.admin_name
+    context['pwa_name'] = config.pwa_name
+    context['fullname'] = config.fullname
+    return JsonResponse(context)

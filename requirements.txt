@@ -3,3 +3,4 @@ mysqlclient
 unidecode
 suds-py3
 requests
+jdatetime

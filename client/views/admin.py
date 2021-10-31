@@ -75,7 +75,7 @@ ingress:
   tls:
   - hosts:
     - admin.%s
-    secretName: %s
+    secretName: app-%s
     """ % (context['app_name'], context['app_name'], context['domain'], context['domain'], context['secretName'])
     pwayaml = """
 nameOverride: "%s"
@@ -87,7 +87,7 @@ ingress:
   tls:
   - hosts:
     - site.%s
-    secretName: %s
+    secretName: pwa-%s
     """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
     dbdata = """
 dbname: '%s'
