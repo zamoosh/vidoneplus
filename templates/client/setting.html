@@ -30,6 +30,7 @@
                                         تنظیمات ویدان من <small>({{ request.user.organization_name }})</small>
                                     </h2>
                                     <a href="{% url 'client:setting_edit' %}" class="btn btn-primary float-left {% if not edit_setting == 0 %} disabled {% endif %}">ثبت/ویرایش اطلاعات</a>
+                                    <a href="{% load client %}{% url 'client:createuser' user|domain %}" class="btn btn-info float-left">ساخت یوزر</a>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
