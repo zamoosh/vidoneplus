@@ -64,47 +64,29 @@
                         </div>
                     {% endif %}
                     <div>
+                        <input name="firstname" type="text" class="form-control mb-2" placeholder="نام"
+                               minlength="9"{% if request.first_name %}
+                               value="{{ request.first_name }}"{% endif %}
+                               required=""/>
+                    </div>
+                    <div>
+                        <input name="lastname" type="text" class="form-control mb-2" placeholder="نام خانوادگی"
+                               minlength="9"{% if request.last_name %}
+                               value="{{ request.last_name }}"{% endif %}
+                               required=""/>
+                    </div>
+                    <div>
                         <input name="cellphone" type="text" class="form-control mb-2" placeholder="شماره موبایل"
                                minlength="9"{% if request.cellphone %}
                                value="{{ request.cellphone }}"{% endif %}
                                required=""/>
                     </div>
                     <div>
-                        <input name="firstname" type="text" class="form-control mb-2" placeholder="نام"
-                               minlength="3"
-                                {% if request.firstname %} value="{{ request.firstname }}"{% endif %}
-                               required=""/>
-                    </div>
-                    <div>
-                        <input name="lastname" type="text" class="form-control mb-2" placeholder="نام خانوادگی"
-                               minlength="3"{% if request.lastname %} value="{{ request.lastname }}"{% endif %}
-                               required=""/>
-                    </div>
-                    <div>
-                        <input name="organization_name" type="text" class="form-control text-start mb-2" placeholder="نام شرکت"
-                                {% if request.organization_name %} value="{{ request.organization_name }}"{% endif %} required=""/>
-
-                    </div>
-                    <div>
-                        <input name="educational_interface_name" type="text" class="form-control text-start mb-2" placeholder="رابط آموزشی"
-                                {% if request.educational_interface_name %} value="{{ request.educational_interface_name }}"{% endif %} required=""/>
-
-                    </div>
-                    <div>
-                        <input name="description" type="text" class="form-control text-start mb-2" placeholder="توضیحات"
-                                {% if request.description %} value="{{ request.description }}"{% endif %} required=""/>
-
-                    </div>
-                    <div>
-                        <input name="dateofestablishment" id="data-input" type="text" class="form-control text-start mb-2" placeholder="تاریخ تاسیس"
-                                {% if request.dateofestablishment %} value="{{ request.dateofestablishment }}"{% endif %} required=""/>
-                    </div>
-                    <div>
-                        <input name="email" type="email" class="form-control text-start mb-2" placeholder="ایمیل"
-                                {% if request.email %} value="{{ request.email }}"{% endif %} required=""/>
-                    </div>
-                    <div>
                         <input name="password" type="password" class="form-control mb-3" placeholder="رمز ورود"
+                               minlength="8" required=""/>
+                    </div>
+                    <div>
+                        <input name="confirm_password" type="password" class="form-control mb-3" placeholder="تکرار رمز ورود"
                                minlength="8" required=""/>
                     </div>
                     <div>

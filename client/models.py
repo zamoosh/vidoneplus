@@ -2,6 +2,11 @@ from unidecode import unidecode
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from PIL import Image
+
+
+def user_image(instance, filename):
+    return "%s/%s/%s" % ('setting', instance.user.id, filename)
 
 
 class User(AbstractUser):
@@ -16,18 +21,23 @@ class User(AbstractUser):
         self.username = self.cellphone
         super(User, self).save()
 
+
 class Setting(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     org_colore = models.CharField(max_length=50)
     sub_colore = models.CharField(max_length=50)
     app_name = models.CharField(max_length=250)
     domain = models.CharField(max_length=50)
-    kuberid = models.CharField(max_length=250)
-    site_name = models.CharField(max_length=250)
-    admin_name = models.CharField(max_length=250)
-    pwa_name = models.CharField(max_length=250)
-    fullname = models.CharField(max_length=250)
-
+    kuberid = models.CharField(max_length=250, null=True)
+    site_name = models.CharField(max_length=250, null=True)
+    admin_name = models.CharField(max_length=250, null=True)
+    pwa_name = models.CharField(max_length=250, null=True)
+    fullname = models.CharField(max_length=250, null=True)
+    contact_phone = models.CharField(max_length=250)
+    download_link = models.CharField(max_length=500)
+    company_logo = models.ImageField(upload_to=user_image)
+    splashscreen = models.ImageField(upload_to=user_image)
+    image_tag = models.CharField(max_length=20, null=True)
 
 
 class CourseVitrin(models.Model):
@@ -59,3 +69,9 @@ class CourseUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(CourseVitrin, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+
+
+class Imagetag(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    currenttag = models.CharField(null=True, max_length=20)
+    releasetag = models.CharField(null=True, max_length=20)

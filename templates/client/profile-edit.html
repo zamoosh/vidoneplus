@@ -14,7 +14,7 @@
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان - ویرایش تنظیمات{% endblock %}
+{% block page_title %}ویدان - ویرایش حستب کاربری{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
 {% block body %}
     <div class="container body">
@@ -24,7 +24,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>تنظیمات</h3>
+                            <h3>حساب کاربری</h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -33,7 +33,7 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>
-                                        تنظیمات ویدان من <small>({{ request.user.organization_name }})</small>
+                                        تنظیمات حساب کاربری <small>({{ request.user.first_name }})</small>
                                     </h2>
 
                                     <div class="clearfix"></div>
@@ -52,142 +52,96 @@
                                         {% endif %}
                                     {% endif %}
 
-                                    <form class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
+                                    <form class="form-horizontal form-label-left" method="POST"
+                                          enctype="multipart/form-data" novalidate="">
                                         {% csrf_token %}
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ اصلی
-                                                سازمان</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group demo2 colorpicker-element">
-                                                        <span class="input-group-addon"><i
-                                                                style="background-color: #0072BC;"></i></span>
-                                                    <input type="text" name="org_colore"
-                                                           value="{{ settings.org_colore }}"
-                                                           class="form-control">
-                                                </div>
+                                                <input name="firstname" type="text" class="form-control mb-2"
+                                                       placeholder="نام"
+                                                       minlength="3"
+                                                       value="{{ request.user.first_name }}"
+                                                       required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ دوم
-                                                سازمان</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام
+                                                خانوادگی</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group demo2 colorpicker-element">
-                                                        <span class="input-group-addon"><i
-                                                                style="background-color: #0072BC;"></i></span>
-                                                    <input type="text" name="sub_colore"
-                                                           value="{{ settings.sub_colore }}" class="form-control">
-                                                </div>
+                                                <input name="lastname" type="text" class="form-control mb-2"
+                                                       placeholder="نام خانوادگی"
+                                                       minlength="3"
+                                                       value="{{ request.user.last_name }}"
+                                                       required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
-                                                نام اپلیکیشن
+                                                نام شرکت
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text"
-                                                       id="newpassword2" name="app_name"
-                                                       value="{{ settings.app_name }}" placeholder="application_name"
-                                                       class="form-control col-md-7 col-xs-12">
+                                                <input name="organization_name" type="text"
+                                                       class="form-control mb-2" placeholder="نام شرکت"
+                                                       value="{{ request.user.organization_name }}" required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
-                                                دامنه
+                                                رابط اموزشی
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text"
-                                                       id="newpassword2" name="domain"
-                                                       value="{{ settings.domain }}"
-                                                       placeholder="دامنه سایت : example.com"
-                                                       class="form-control col-md-7 col-xs-12">
+                                                <input name="educational_interface_name" type="text"
+                                                       class="form-control mb-2" placeholder="رابط آموزشی"
+                                                       value="{{ request.user.educational_interface_name }}"
+                                                       required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
-                                                شماره تماس پشتیبانی
+                                                توضیحات
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text"
-                                                       name="contact_phone"
-                                                       value="{{ settings.contact_phone }}"
-                                                       placeholder="شماره تماس"
-                                                       class="form-control col-md-7 col-xs-12">
+                                                <input name="description" type="text"
+                                                       class="form-control mb-2" placeholder="توضیحات"
+                                                       value="{{ request.user.description }}" required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
-                                                لینک دانلود اپلیکیشن
+                                                تاریخ ثبت شرکت
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text"
-                                                       name="download_link"
-                                                       value="{{ settings.download_link }}"
-                                                       placeholder="https://"
-                                                       class="form-control col-md-7 col-xs-12">
+                                                <input name="dateofestablishment" id="data-input" type="text"
+                                                       class="form-control mb-2" placeholder="تاریخ تاسیس"
+                                                       value="{{ request.user.dateofestablishment|date }}"
+                                                       required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
-                                                تصویر لوگو
+                                                ایمیل
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="file-upload">
-                                                <div class="image-upload-wrap">
-                                                    <input name="company_logo" value="{{ isetting.company_logo }}" class="file-upload-input" type='file'
-                                                           onchange="readURL(this);"/>
-                                                    <div class="drag-text">
-                                                        <h3>تصویر لوگو را آپلود کنید</h3>
-                                                    </div>
-                                                </div>
-                                                <div class="file-upload-content">
-                                                    <img class="file-upload-image" src="#" alt="your image"/>
-                                                    <div class="image-title-wrap">
-                                                        <button type="button" onclick="removeUpload()"
-                                                                class="remove-image">حذف <span class="image-title">Uploaded Image</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                   for="newpassword2">
-                                                اسپلش اسکرین
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="splash-file-upload">
-                                                <div class="splash-image-upload-wrap">
-                                                    <input name="splashscreen" value="{{ isetting.splashscreen }}" class="splash-file-upload-input" type='file'
-                                                           onchange="readURL2(this);" accept="image/*"/>
-                                                    <div class="drag-text">
-                                                        <h3>تصویر اسپلش را آپلود کنید</h3>
-                                                    </div>
-                                                </div>
-                                                <div class="splash-file-upload-content">
-                                                    <img class="splash-file-upload-image" src="#" alt="your image"/>
-                                                    <div class="splash-image-title-wrap">
-                                                        <button type="button" onclick="removeUpload()"
-                                                                class="remove-image">حذف <span class="splash-image-title">Uploaded Image</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <input name="email" type="email" class="form-control mb-2"
+                                                       placeholder="ایمیل"
+                                                       value="{{ request.user.email }}"
+                                                       required=""/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-6 col-md-offset-3">
-                                                <a href="{% url 'client:setting' %}" class="btn btn-primary">بازگشت</a>
+                                                <a href="{% url 'client:setting' %}"
+                                                   class="btn btn-primary">بازگشت</a>
                                                 <button type="submit" class="btn btn-success">ثبت</button>
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
                             </div>
                         </div>

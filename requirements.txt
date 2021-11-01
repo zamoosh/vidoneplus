@@ -4,3 +4,4 @@ unidecode
 suds-py3
 requests
 jdatetime
+pillow

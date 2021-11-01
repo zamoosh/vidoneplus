@@ -36,29 +36,26 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    {% if request.method == "POST" %}
-                                        {% if result %}
+
+                                        {% if msg %}
                                             <div class="alert alert-success alert-dismissible show" role="alert">
-                                                {{ result }}
+                                                {{ msg }}
                                             </div>
                                         {% endif %}
-                                    {% endif %}
+
                                     <form class="form-horizontal form-label-left" method="POST" novalidate="">
                                         {% csrf_token %}
                                         <div class="table-responsive">
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
                                                 <tr class="headings">
-                                                    <th>
-                                                        {#                                                        <input type="checkbox" id="check-all" class="flat">#}
-                                                    </th>
                                                     <th class="column-title">نام و نام خانوادگی</th>
                                                     <th class="column-title">شماره تماس</th>
+                                                    <th class="column-title">شماره تماس پشتیبانی</th>
                                                     <th class="column-title">ایمیل</th>
-                                                    <th class="column-title">دامنه</th>
+                                                    <th class="column-title">نام شرکت</th>
                                                     <th class="column-title">رابط آموزش</th>
-                                                    <th class="column-title">وضعیت کاربر</th>
-                                                    <th class="column-title">لیست دروس انتخاب شده</th>
+                                                    <th class="column-title">تاریخ ثبت شرکت</th>
                                                     <th class="column-title no-link last"><span class="nobr">عمل</span>
                                                     </th>
                                                     <th class="bulk-actions" colspan="7">
@@ -69,22 +66,19 @@
                                                     </th>
                                                 </tr>
                                                 </thead>
-
                                                 <tbody>
                                                 {% for user in users %}
                                                     <tr class="even pointer">
-                                                        <td class=" "></td>{% load client %}
                                                         <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
                                                         <td class=" ">{{ user.cellphone }}</td>
+                                                        <td class=" ">{{ user.contact_phone }}</td>
                                                         <td class=" ">{{ user.email }}</td>
-                                                        <td class=" ">{{ user|domain }}</td>
+                                                        <td class=" ">{{ user.organization_name }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
-                                                        <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
-                                                        <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
+                                                        <td class=" ">{{ user.dateofestablishment }}</td>
                                                         <td class="last">
-                                                            <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">نصب</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:createuser' user|domain %}{% endif %}" class="btn btn-info">ساخت یوزر</a>
+                                                            <a href="{% url 'client:activeuser' user.id %}" class="btn btn-success">فعال</a>
+                                                            <a href="{% url 'client:deactiveuser' user.id %}" class="btn btn-danger">غیرفعال</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

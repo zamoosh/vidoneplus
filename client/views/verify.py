@@ -15,17 +15,18 @@ def verify(request):
                 pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
                 if pattern.match(context['cellphone']) is None:
                     context['cellphone'] = "+989" + context['cellphone'][2:]
-                context['dateofestablishment'] = jdatetime.datetime.strptime(context['dateofestablishment'],
-                                                                             "%Y/%m/%d").togregorian()
+                # context['dateofestablishment'] = jdatetime.datetime.strptime(context['dateofestablishment'],
+                #                                                              "%Y/%m/%d").togregorian()
                 user = User.objects.create_user(
-                    context['email'],
+                    # context['email'],
                     cellphone = context['cellphone'],
-                    dateofestablishment = context['dateofestablishment'],
-                    description= context['description'],
-                    educational_interface_name= context['educational_interface_name'],
-                    organization_name= context['organization_name'],
+                    username= context['cellphone']
+                    # dateofestablishment = context['dateofestablishment'],
+                    # description= context['description'],
+                    # educational_interface_name= context['educational_interface_name'],
+                    # organization_name= context['organization_name'],
                 )
-                user.email = context['email']
+                # user.email = context['email']
                 user.set_password(context['password'])
                 user.first_name = context['firstname']
                 user.last_name = context['lastname']
