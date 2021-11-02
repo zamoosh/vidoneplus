@@ -6,10 +6,14 @@ from ..models import Setting as Usetting, Status
 def index(request):
     # from domainholder.models import Domainns
     context = {}
-    context['settings'] = Usetting.objects.get(user=request.user).domain
-    context['status'] = Status.objects.get(user=request.user).status
-    if not context['settings']:
-        context['msg'] = "شما هنوز دامنه ای ثبت نکرده اید"
-    if not context['status']:
-        context['msg'] = "حساب کاربری شما فعال نشده است"
+    try:
+        context['settings'] = Usetting.objects.get(user=request.user).domain
+        context['status'] = Status.objects.get(user=request.user).status
+        if not context['settings']:
+            context['msg'] = "شما هنوز دامنه ای ثبت نکرده اید"
+        if not context['status']:
+            context['msg'] = "حساب کاربری شما فعال نشده است"
+    except:
+        pass
     return render(request, 'client/index.html', context)
+
