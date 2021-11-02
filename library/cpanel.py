@@ -18,7 +18,7 @@ class Cpanel:
             ('api.version', '1'),
         )
 
-        response = requests.get(self.SERVER + 'json-api/applist', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/applist', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
     def create_acc(self):
@@ -29,7 +29,7 @@ class Cpanel:
             ('pkgname', 'resellervidone_default'),
         )
 
-        response = requests.get(self.SERVER + 'json-api/createacct', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/createacct', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
     def add_or_edit_zone(self):
@@ -39,7 +39,7 @@ class Cpanel:
             # ('ip', '185.53.143.185'),
         )
 
-        response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params, verify=False)
         self.response = json.loads(response.text)
 
         for i in self.response['data']['zone'][0]['record']:
@@ -54,7 +54,7 @@ class Cpanel:
             ('line', line),
             ('ttl', 14400),
         )
-        response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params)
+        response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params, verify=False)
         add_zone = {"dname": "site", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
         params = (
             ('api.version', '1'),
@@ -62,7 +62,7 @@ class Cpanel:
             ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
-        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params)
+        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params, verify=False)
         add_zone = {"dname": "admin", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
         params = (
             ('api.version', '1'),
@@ -70,7 +70,7 @@ class Cpanel:
             ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
-        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params)
+        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params, verify=False)
 
         self.response = response.text
 
@@ -94,7 +94,7 @@ class Cpanel:
             ('cpanel_jsonapi_apiversion', '3'),
             ('name', dbname),
         )
-        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
         self.create_db_user(dbuser, password)
         self.create_remote_allow()
@@ -112,7 +112,7 @@ class Cpanel:
             ('name', dbuser),
             ('password', password),
         )
-        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
     def create_remote_allow(self):
@@ -125,7 +125,7 @@ class Cpanel:
             ('host', '185.53.143.185'),
             ('note', 'added with VidonePlus'),
         )
-        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
     def privileges_on_database(self, dbname, dbuser):
@@ -139,5 +139,5 @@ class Cpanel:
             ('user', dbuser),
             ('privileges', 'ALL PRIVILEGES'),
         )
-        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params)
+        response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
