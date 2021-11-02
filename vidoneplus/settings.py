@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'client',
+    'django_jalali',
 ]
 AUTH_USER_MODEL = "client.User"
 MIDDLEWARE = [

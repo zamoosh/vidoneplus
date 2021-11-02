@@ -48,15 +48,10 @@
                                     {% endif %}
                                     <div class="alert alert-success alert-dismissible show" role="alert">
                                         وبسایت شما با موفقیت ساخته شد<br>
-                                         پسورد شما : {{password}} <br>
+                                        یورز شما : {{ username }} <br>
+                                        پسورد شما : {{ password }} <br>
+                                        ایمیل شما : {{ email }} <br>
                                     </div>
-                                    {% if password %}
-                                    <div class="alert alert-success alert-dismissible show" role="alert">
-                                        وبسایت شما با موفقیت ساخته شد<br>
-                                         پسورد شما : {{password}} <br>
-                                    </div>
-                                    {% endif %}
-                                <a href="{% url 'client:admin' %}" class="btn btn-primary">بازگشت به ادمین</a>
                                 </div>
                             </div>
                         </div>

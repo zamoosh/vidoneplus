@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load jformat %}
 {% block css %}
     <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
@@ -118,7 +119,7 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input name="dateofestablishment" id="data-input" type="text"
                                                        class="form-control mb-2" placeholder="تاریخ تاسیس"
-                                                       value="{{ request.user.dateofestablishment|date }}"
+                                                       value="{{ request.user.dateofestablishment|jformat:"%Y/%m/%d" }}"
                                                        required=""/>
                                             </div>
                                         </div>
