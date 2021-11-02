@@ -30,9 +30,9 @@ def admininstall(request, id):
     context['curent_user'] = User.objects.get(id=id)
     print(context['curent_user'])
     context['useremail'] = context['curent_user'].email
-    context['username'] = ''.join(context['domain'].split('.')[:-1]) + uid[:4]
+    context['username'] = ''.join(context['domain'].split('.')[:-1])[:10] + uid[:4]
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
-    save_setting = usetting.objects.get(id=context['curent_user'].id)
+    save_setting = usetting.objects.get(user=context['curent_user'])
     save_setting.site_name = context['site_name']
     save_setting.admin_name = context['app_name']
     save_setting.pwa_name = context['pwa_name']
@@ -122,8 +122,14 @@ def createuser(request, domain):
     import string
     alphabet = string.ascii_letters + string.digits
     password = ''.join(secrets.choice(alphabet) for i in range(8))
-    print(password, user_domain.user.username, user_domain.user.email, context['site_name'])
-    kubectl.vidone_createsuperuser(context['site_name'], user_domain.user.username, user_domain.user.email, password)
+    username = user_domain.user.username
+    email = user_domain.user.email,
+    print(password, username, email, context['site_name'])
+    kubectl.vidone_createsuperuser(context['site_name'], username, user_domain.user.email, password)
+    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
+    context['username'] = user_domain.user.username
+    context['email'] = user_domain.user.email,
+    return render(request, "client/create_vidone.html", context )
 
 
 def adminremove(request, id):
@@ -137,4 +143,3 @@ def adminremove(request, id):
     helm_remove.delete_app(context['dellSite'])
     helm_remove.delete_app(context['dellPwa'])
     return render(request, "client/create_vidone.html")
-

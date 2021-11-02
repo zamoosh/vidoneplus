@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load jformat %}
 {% block css %}
     <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
@@ -75,7 +76,7 @@
                                                         <td class=" ">{{ user.email }}</td>
                                                         <td class=" ">{{ user.organization_name }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
-                                                        <td class=" ">{{ user.dateofestablishment }}</td>
+                                                        <td class=" ">{{ user.dateofestablishment|jformat:"%Y/%m/%d" }}</td>
                                                         <td class="last">
                                                             <a href="{% url 'client:activeuser' user.id %}" class="btn btn-success">فعال</a>
                                                             <a href="{% url 'client:deactiveuser' user.id %}" class="btn btn-danger">غیرفعال</a>
