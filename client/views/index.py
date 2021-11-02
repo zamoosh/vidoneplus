@@ -6,7 +6,7 @@ from ..models import Setting as Usetting, Status
 def index(request):
     # from domainholder.models import Domainns
     context = {}
-    context['settings'] = Usetting.objects.filter(user=request.user)
+    context['settings'] = Usetting.objects.get(user=request.user).domain
     context['status'] = Status.objects.get(user=request.user).status
     if not context['settings']:
         context['msg'] = "شما هنوز دامنه ای ثبت نکرده اید"

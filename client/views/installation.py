@@ -32,12 +32,12 @@ def admininstall(request, id):
     context['useremail'] = context['curent_user'].email
     context['username'] = ''.join(context['domain'].split('.')[:-1]) + uid[:4]
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
-    # save_setting = usetting.objects.get(id=context['curent_user'].id)
-    # save_setting.site_name = context['site_name']
-    # save_setting.admin_name = context['app_name']
-    # save_setting.pwa_name = context['pwa_name']
-    # save_setting.fullname = context['username']
-    # save_setting.save()
+    save_setting = usetting.objects.get(id=context['curent_user'].id)
+    save_setting.site_name = context['site_name']
+    save_setting.admin_name = context['app_name']
+    save_setting.pwa_name = context['pwa_name']
+    save_setting.fullname = context['username']
+    save_setting.save()
     context['secretName'] = context['domain'].replace('.', '-')
     createVidone = Cpanel(context['username'], context['domain'])
     createVidone.create_acc()
@@ -138,8 +138,3 @@ def adminremove(request, id):
     helm_remove.delete_app(context['dellPwa'])
     return render(request, "client/create_vidone.html")
 
-
-def deleteuser(request, id):
-    context = {}
-    context['user'] = User.objects.get(id=id)
-    context['user'].delete()

@@ -29,12 +29,26 @@
                                     <h2>مشاهده حساب کاربری
 {#                                        <small>اطلاعات حساب کاربری شما در این بخش نمایش داده می شود.</small>#}
                                     </h2>
-                                    <a href="#" class="btn btn-primary float-left disabled">ویرایش</a>
+                                    <a href="{% url 'client:profile-edit' %}" class="btn btn-primary float-left">ویرایش</a>
                                     <a href="{% url 'client:password' %}" class="btn btn-success float-left">تغییر گذرواژه</a>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
                                     <form class="form-horizontal form-label-left">
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام کاربری</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label class="control-label"
+                                                       dir="ltr">{{ request.user.username }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">شماره تماس</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label class="control-label"
+                                                       dir="ltr">{{ request.user.cellphone }}</label>
+                                            </div>
+                                        </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">نام</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -55,17 +69,21 @@
                                             </div>
                                         </div>
                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">شماره تماس</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام شرکت</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label"
-                                                       dir="ltr">{{ request.user.cellphone }}</label>
+                                                <label class="control-label">{{ request.user.organization_name }}</label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">نام کاربری</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">رابط آموزشی</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <label class="control-label"
-                                                       dir="ltr">{{ request.user.username }}</label>
+                                                <label class="control-label">{{ request.user.educational_interface_name }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">تاریخ ثبت شرکت</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label class="control-label">{{ request.user.dateofestablishment }}</label>
                                             </div>
                                         </div>
                                         <div class="ln_solid"></div>
