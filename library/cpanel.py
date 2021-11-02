@@ -32,6 +32,16 @@ class Cpanel:
         response = requests.get(self.SERVER + 'json-api/createacct', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
+    def update_acc_domain(self,domain):
+        params = (
+            ('api.version', '1'),
+            ('user', self.username),
+            ('domain', domain),
+        )
+
+        response = requests.get(self.SERVER + 'json-api/modifyacct', headers=self.headers, params=params, verify=False)
+        self.response = response.text
+
     def add_or_edit_zone(self):
         params = (
             ('api.version', '1'),
@@ -54,7 +64,8 @@ class Cpanel:
             ('line', line),
             ('ttl', 14400),
         )
-        response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params, verify=False)
+        response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params,
+                                 verify=False)
         add_zone = {"dname": "site", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
         params = (
             ('api.version', '1'),
@@ -62,7 +73,8 @@ class Cpanel:
             ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
-        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params, verify=False)
+        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params,
+                                 verify=False)
         add_zone = {"dname": "admin", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
         params = (
             ('api.version', '1'),
@@ -70,7 +82,8 @@ class Cpanel:
             ('zone', self.domain),
             ('add', json.dumps(add_zone)),
         )
-        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params, verify=False)
+        response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params,
+                                 verify=False)
 
         self.response = response.text
 
