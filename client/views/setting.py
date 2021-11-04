@@ -63,6 +63,7 @@ def settings(request, action=None):
                         setting.splashscreen = request.FILES['splashscreen']
                     setting.save()
                     context['result'] = "تنظیمات با موفقیت تغییر کرد."
+                context['settings'] = usetting.objects.get(user=request.user)
             return render(request, "client/edit-setting.html", context)
     else:
         context['msg'] = "حساب کاربری شما تایید نشده است"
