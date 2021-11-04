@@ -12,7 +12,7 @@ def user_image(instance, filename):
 class User(AbstractUser):
     cellphone = models.CharField(max_length=15, unique=True)
     organization_name = models.CharField(max_length=15, unique=True)
-    educational_interface_name = models.CharField(max_length=200, unique=True)
+    educational_interface_name = models.CharField(max_length=200, unique=True, null=True)
     description = models.TextField()
     dateofestablishment = models.DateField(null=True)
 
