@@ -12,14 +12,12 @@ import uuid
 def _configpodname(tld):
     return tld + "-site", tld + "-app", tld + "-pwa"
 
-
 # @login_required
 def admin(request):
     context = {}
     context['users'] = User.objects.filter(is_staff=False)
     context['status'] = Status.objects.filter(user__in=context['users'])
     return render(request, "client/admin.html", context)
-
 
 def admininstall(request, id):
     uid = uuid.uuid4().hex
@@ -90,9 +88,9 @@ ingress:
     secretName: pwa-%s
     """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
     dbdata = """
-dbname: '%s'
-dbuser: '%s'
-dbpassword: '%s'
+dbname: %s
+dbuser: %s
+dbpassword: %s
     """ % (dbname, dbuser, dbpass)
     with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
         yaml_file.write(siteyaml)
@@ -111,26 +109,43 @@ dbpassword: '%s'
     userStatus.save()
     return render(request, "client/create_vidone.html")
 
-
-def createuser(request, domain):
+def check_or_createuser(request, id):
     context = {}
-    user_domain = usetting.objects.get(domain=domain)
-    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(domain.split('.')[0])
-    kubectl = Kubectl()
-    kubectl.vidone_getsuperuser(context['app_name'])
     import secrets
     import string
     alphabet = string.ascii_letters + string.digits
     password = ''.join(secrets.choice(alphabet) for i in range(8))
-    username = user_domain.user.username
-    email = user_domain.user.email,
-    print(password, username, email, context['site_name'])
-    kubectl.vidone_createsuperuser(context['site_name'], username, user_domain.user.email, password)
-    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
-    context['username'] = user_domain.user.username
-    context['email'] = user_domain.user.email,
-    return render(request, "client/create_vidone.html", context )
+    kubectl = Kubectl()
+    context['domain'] = usetting.objects.get(user__id=id).domain
+    context['setting'] = usetting.objects.get(user__id=id)
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
+    context['super_user'] = kubectl.vidone_getsuperuser(context['site_name'])
+    if context['super_user'] is None:
+        username = context['setting'].user.username
+        email = context['setting'].user.email
+        kubectl.vidone_createsuperuser(context['site_name'], username, context['setting'].user.email, password)
+        print(password, username, email, context['site_name'])
+    else:
+        context['superusers'] = kubectl.vidone_getsuperuser(context['site_name'])
+        # vidone_updateuser(self, appname, username, password)
+    return render(request, "client/create_vidone.html", context)
 
+def resetpassword(request, user):
+    context = {}
+    import secrets
+    import string
+    alphabet = string.ascii_letters + string.digits
+    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
+    kubectl = Kubectl()
+    context['username'] = user
+    context['domain'] = usetting.objects.get(user__cellphone=user).domain
+    print(context['domain'])
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
+    print(context['site_name'])
+    context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
+    print(context['updateuser'])
+    print(context['username'])
+    return render(request, "client/create_vidone.html", context)
 
 def adminremove(request, id):
     context = {}

@@ -6,10 +6,11 @@ from .views.index import index
 from .views.login import Login
 from .views.logout import Logout
 from .views.profile import profile
-from .views.setting import settings, configs
+from .views.setting import user_settings, configs
 from .views.verify import verify
 from .views.changepassword import changepassword
-from .views.installation import admin, admininstall, adminremove, createuser
+from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword
+
 app_name = 'client'
 urlpatterns = [
     path('', index, name="index"),
@@ -18,8 +19,8 @@ urlpatterns = [
     path('profile/edit/', profile, {'action': 'edit'}, name="profile-edit"),
     path('profile/password/', changepassword, name="password"),
 
-    path('setting/', settings, name="setting"),
-    path('setting/edit/', settings, {'action': 'edit'}, name="setting_edit"),
+    path('setting/', user_settings, name="setting"),
+    path('setting/edit/', user_settings, {'action': 'edit'}, name="setting_edit"),
     path('setting/<str:domain>', configs, name="configs"),
 
     path('courses/', courses, name="courses"),
@@ -38,5 +39,6 @@ urlpatterns = [
     path('admin/<int:id>/', admin, name="admin"),
     path('admin/<int:id>/install/', admininstall, name="admininstall"),
     path('admin/<int:id>/remove/', adminremove, name="adminremove"),
-    path('admin/<str:domain>/createuser/', createuser, name="createuser"),
+    path('admin/<int:id>/siteuser/', check_or_createuser, name="siteuser"),
+    path('admin/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
 ]
