@@ -112,6 +112,7 @@ def install_sites(request, id):
     helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta70")
     helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.1")
     helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+    context['status'] = Status.objects.get(user__id=id)
     userStatus = context['status']
     userStatus.status = 1
     userStatus.save()
