@@ -99,6 +99,7 @@ dbpassword: %s
         yaml_file.write(pwayaml)
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata)
+    context['result'] = "هاست با موفقیت ایجاد شد."
     return render(request, "client/create_vidone.html")
 
 def install_sites(request, id):
@@ -116,6 +117,7 @@ def install_sites(request, id):
     userStatus = context['status']
     userStatus.status = 1
     userStatus.save()
+    context['result'] = "سایت ها با موفقیت نصب شدند."
     return render(request, "client/create_vidone.html")
 
 def check_or_createuser(request, id):
@@ -123,26 +125,31 @@ def check_or_createuser(request, id):
     import secrets
     import string
     alphabet = string.ascii_letters + string.digits
-    password = ''.join(secrets.choice(alphabet) for i in range(8))
+    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
     context['domain'] = usetting.objects.get(user__id=id).domain
     context['setting'] = usetting.objects.get(user__id=id)
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['super_user'] = kubectl.vidone_getsuperuser(context['site_name'])
-    if context['super_user'] is None:
-        username = context['setting'].user.username
-        email = context['setting'].user.email
-        kubectl.vidone_createsuperuser(context['site_name'], username, context['setting'].user.email, password)
-        print(password, username, email, context['site_name'])
-    else:
+    print(context['super_user'])
+    if context['super_user'] is not None:
         context['superusers'] = kubectl.vidone_getsuperuser(context['site_name'])
+        print(context['superusers'])
         # vidone_updateuser(self, appname, username, password)
-    return render(request, "client/create_vidone.html", context)
+    if not context['super_user']:
+        context['create_user'] = True
+        context['username'] = context['setting'].user.username
+        print(context['username'])
+        email = context['setting'].user.email
+        kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].user.email, context['password'])
+        print(context['password'], context['username'], email, context['site_name'])
+    return render(request, "client/create_super_user.html", context)
 
 def resetpassword(request, user):
     context = {}
     import secrets
     import string
+    context['update_user'] = True
     alphabet = string.ascii_letters + string.digits
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
@@ -154,7 +161,7 @@ def resetpassword(request, user):
     context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
     print(context['updateuser'])
     print(context['username'])
-    return render(request, "client/create_vidone.html", context)
+    return render(request, "client/create_super_user.html", context)
 
 def adminremove(request, id):
     context = {}

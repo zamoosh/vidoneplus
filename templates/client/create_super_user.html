@@ -33,18 +33,66 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>
-                                        ایجاد وبسایت
+                                        ایجاد/ویرایش حساب کاربری ادمین سایت
                                     </h2>
 
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    {% if request.method == "POST" %}
-                                        {% if result %}
-                                            <div class="alert alert-success alert-dismissible show" role="alert">
-                                                {{ result }}
+                                    {% if create_user %}
+                                        <div class="alert alert-success alert-dismissible show" role="alert">
+                                            {% if username %}
+                                                یورز  :<br> {{ username }} <br>
+                                            {% endif %}
+                                            {% if password %}
+                                                پسورد  :<br> {{ password }} <br>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% if update_user %}
+                                        <div class="alert alert-success alert-dismissible show" role="alert">
+                                            {% if username %}
+                                                یورز  :<br> {{ username }} <br>
+                                            {% endif %}
+                                            {% if password %}
+                                                پسورد  :<br> {{ password }} <br>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    {% if super_user %}
+                                        <form class="form-horizontal form-label-left" method="POST" novalidate="">
+                                            {% csrf_token %}
+                                            <div class="table-responsive">
+                                                <table class="table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                    <tr class="headings">
+                                                        <th class="column-title">یوزر</th>
+                                                        <th class="column-title no-link last"><span
+                                                                class="nobr">عمل</span>
+                                                        </th>
+                                                        <th class="bulk-actions" colspan="7">
+                                                            <a class="antoo" style="color:#fff; font-weight:500;">عمل
+                                                                همگانی
+                                                                ( <span
+                                                                        class="action-cnt"> </span> ) <i
+                                                                        class="fa fa-chevron-down"></i></a>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for user in super_user %}
+                                                        <tr class="even pointer">
+                                                            <td>{{ user }}</td>
+                                                            <td class="last">
+                                                                <a href="{% url 'client:resetpassword' user %}"
+                                                                   class="btn btn-success">ریست پسورد</a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                        {% endif %}
+                                        </form>
                                     {% endif %}
                                 </div>
                             </div>
