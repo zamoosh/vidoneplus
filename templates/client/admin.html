@@ -84,7 +84,7 @@
                                                         <td class="last">
                                                             <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">نصب</a>
                                                             <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:createuser' user|domain %}{% endif %}" class="btn btn-info">ساخت یوزر</a>
+                                                            <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">تنظیمات سایت</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

@@ -41,6 +41,29 @@ class Cpanel:
 
         response = requests.get(self.SERVER + 'json-api/modifyacct', headers=self.headers, params=params, verify=False)
         self.response = response.text
+        params = (
+            ('api.version', '1'),
+            ('domain', self.domain),
+            # ('ip', '185.53.143.185'),
+        )
+
+        response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params, verify=False)
+        self.response = json.loads(response.text)
+
+        for i in self.response['data']['zone'][0]['record']:
+            if i['type'] == 'A' and i['name'] == self.domain + '.':
+                line = i['Line']
+            if i['type'] == 'SOA' and 'serial' in i:
+                serial = i['serial']
+        params = (
+            ('api.version', '1'),
+            ('domain', self.domain),
+            ('address', '185.53.143.185'),
+            ('line', line),
+            ('ttl', 14400),
+        )
+        response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params,
+                                 verify=False)
 
     def add_or_edit_zone(self):
         params = (
