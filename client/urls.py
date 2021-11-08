@@ -9,7 +9,7 @@ from .views.profile import profile
 from .views.setting import user_settings, configs
 from .views.verify import verify
 from .views.changepassword import changepassword
-from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword
+from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites
 
 app_name = 'client'
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     path('admin/', admin, name="admin"),
     path('admin/<int:id>/', admin, name="admin"),
     path('admin/<int:id>/install/', admininstall, name="admininstall"),
+    path('admin/<int:id>/install-sites/', install_sites, name="install-sites"),
     path('admin/<int:id>/remove/', adminremove, name="adminremove"),
     path('admin/<int:id>/siteuser/', check_or_createuser, name="siteuser"),
     path('admin/<str:user>/resetpassword/', resetpassword, name="resetpassword"),

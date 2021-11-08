@@ -54,7 +54,6 @@
                                                     </th>
                                                     <th class="column-title">نام و نام خانوادگی</th>
                                                     <th class="column-title">شماره تماس</th>
-                                                    <th class="column-title">ایمیل</th>
                                                     <th class="column-title">دامنه</th>
                                                     <th class="column-title">رابط آموزش</th>
                                                     <th class="column-title">وضعیت کاربر</th>
@@ -75,12 +74,12 @@
                                                         <td class=" "></td>{% load client %}
                                                         <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
                                                         <td class=" ">{{ user.cellphone }}</td>
-                                                        <td class=" ">{{ user.email }}</td>
                                                         <td class=" ">{{ user|domain }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
                                                         <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
                                                         <td class="last">
-                                                            <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">نصب</a>
+                                                            <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">ساخت هاست</a>
+                                                            <a href="{% if user|domain %}{%  url 'client:install-sites' user.id %}{% endif %}" class="btn btn-success">ایجاد وبسایت ها</a>
                                                             <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
                                                             <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">ساخت یوزر</a>
                                                         </td>

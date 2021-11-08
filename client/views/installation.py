@@ -12,7 +12,6 @@ import uuid
 def _configpodname(tld):
     return tld + "-site", tld + "-app", tld + "-pwa"
 
-# @login_required
 def admin(request):
     context = {}
     context['users'] = User.objects.filter(is_staff=False)
@@ -100,6 +99,15 @@ dbpassword: %s
         yaml_file.write(pwayaml)
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata)
+    return render(request, "client/create_vidone.html")
+
+def install_sites(request, id):
+    context = {}
+    context['domain'] = usetting.objects.get(user__id=id).domain
+    context['username'] = usetting.objects.get(user__id=id).fullname
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
+    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
+    print(dirtemp)
     helm_install = Helm()
     helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta70")
     helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.1")
