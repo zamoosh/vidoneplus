@@ -16,6 +16,7 @@ def user_settings(request, action=None):
     if Status.objects.get(user=request.user).status:
         try:
             context['settings'] = usetting.objects.get(user=request.user)
+            context['site_created'] = Status.objects.get(user=request.user)
         except usetting.DoesNotExist:
             action = "edit"
         if action == "edit":

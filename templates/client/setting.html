@@ -35,11 +35,10 @@
                                                {#% endif %#}">ثبت/ویرایش
                                         اطلاعات</a>
 
-                                        {% if settings.domain %}
+                                        {% if site_created.status %}
                                             <a href="{% url 'client:siteuser' request.user.id %}"
-                                               class="btn btn-info float-left">ساخت یوزر</a>
+                                               class="btn btn-info float-left">یوزر ادمین</a>
                                         {% endif %}
-
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
