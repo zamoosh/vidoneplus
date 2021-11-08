@@ -1,3 +1,6 @@
+from django.contrib import messages
+from django.urls import reverse
+
 from .imports import *
 import jdatetime
 
@@ -13,7 +16,6 @@ def profile(request, action=None):
             context['req']['organization_name'] = request.POST.get('organization_name', None)
             context['req']['educational_interface_name'] = request.POST.get('educational_interface_name').strip()
             context['req']['description'] = request.POST.get('description').strip()
-            context['req']['dateofestablishment'] = request.POST.get('dateofestablishment').strip()
             user = User.objects.get(id=request.user.id)
             user.first_name = context['req']['first_name']
             user.last_name = context['req']['last_name']
@@ -21,8 +23,10 @@ def profile(request, action=None):
             user.description = context['req']['description']
             user.organization_name = context['req']['organization_name']
             user.educational_interface_name = context['req']['educational_interface_name']
-            if 'dateofestablishment' in request.POST:
-                user.dateofestablishment = jdatetime.datetime.strptime(context['req']['dateofestablishment'],"%Y/%m/%d").togregorian()
+            if request.POST.get('dateofestablishment') :
+                user.dateofestablishment = jdatetime.datetime.strptime(request.POST.get('dateofestablishment'),"%Y/%m/%d").togregorian()
             user.save()
+            messages.success(request, "Profile is Change!")
+            return HttpResponseRedirect(reverse('client:profile'))
         return render(request, 'client/profile-edit.html', context)
     return render(request, 'client/profile.html', context)

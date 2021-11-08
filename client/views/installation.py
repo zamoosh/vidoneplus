@@ -43,8 +43,7 @@ def admininstall(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
-    siteyaml = """
-nameOverride: "%s"
+    siteyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 database:
   dbengine: 'django.db.backends.mysql'
@@ -62,8 +61,7 @@ ingress:
     secretName: %s
     """ % (context['site_name'], context['site_name'], dbname, dbuser, dbpass, context['domain'], context['domain'],
            context['secretName'])
-    appyaml = """
-nameOverride: "%s"
+    appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
   hosts:
@@ -74,8 +72,7 @@ ingress:
     - admin.%s
     secretName: app-%s
     """ % (context['app_name'], context['app_name'], context['domain'], context['domain'], context['secretName'])
-    pwayaml = """
-nameOverride: "%s"
+    pwayaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
   hosts:
@@ -86,11 +83,9 @@ ingress:
     - site.%s
     secretName: pwa-%s
     """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
-    dbdata = """
-dbname: %s
+    dbdata = """dbname: %s
 dbuser: %s
-dbpassword: %s
-    """ % (dbname, dbuser, dbpass)
+dbpassword: %s""" % (dbname, dbuser, dbpass)
     with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
         yaml_file.write(siteyaml)
     with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:

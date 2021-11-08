@@ -1,7 +1,7 @@
 import os
 from django.core import serializers
 from django.urls import reverse
-
+from django.contrib import messages
 from library.cpanel import Cpanel
 from library.helm import Helm
 from .imports import *
@@ -53,30 +53,29 @@ def user_settings(request, action=None):
                     seeting.save()
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
-                    if context['domain'] is not usetting.objects.get(user=request.user).domain:
-                        print(context['domain'])
-                        context['usreq'] = usetting.objects.get(user=request.user)
-                        print(context['usreq'])
-                        context['username'] = context['usreq'].fullname
-                        print(context['username'])
+                    context['usreq'] = usetting.objects.get(user=request.user)
+                    context['username'] = context['usreq'].fullname
+                    if context['domain'] and context['username']  and context['domain'] is not usetting.objects.get(user=request.user).domain:
                         context['app_name'] = context['usreq'].admin_name
                         context['pwa_name'] = context['usreq'].pwa_name
                         context['site_name'] = context['usreq'].site_name
                         context['secretName'] = context['domain'].replace('.', '-')
-                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
                         mylist = []
+                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
                         with open(os.path.join(dirtemp, 'dbdata.txt')) as f:
                             lines = f.readlines()
                             for line in lines:
                                mylist.append(line)
                         newlist = []
                         for i in mylist:
+                            if ':' not in i:
+                                continue
                             newlist.append(i.split("\n")[0].split(": ")[1])
+                            print(newlist)
                         context['dbname'] = newlist[0]
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
-                        siteyaml = """
-nameOverride: "%s"
+                        siteyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 database:
   dbengine: 'django.db.backends.mysql'
@@ -91,13 +90,11 @@ ingress:
   tls:
   - hosts:
     - %s
-    secretName: %s
-                            """ % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],
+    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],
                                    context['dbpassword'], context['domain'],
                                    context['domain'],
                                    context['secretName'])
-                        appyaml = """
-nameOverride: "%s"
+                        appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
   hosts:
@@ -106,11 +103,9 @@ ingress:
   tls:
   - hosts:
     - admin.%s
-    secretName: app-%s
-                            """ % (context['app_name'], context['app_name'], context['domain'], context['domain'],
+    secretName: app-%s""" % (context['app_name'], context['app_name'], context['domain'], context['domain'],
                                    context['secretName'])
-                        pwayaml = """
-nameOverride: "%s"
+                        pwayaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
   hosts:
@@ -119,8 +114,7 @@ ingress:
   tls:
   - hosts:
     - site.%s
-    secretName: pwa-%s
-                            """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
+    secretName: pwa-%s""" % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
                                    context['secretName'])
                         with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
                             yaml_file.write(siteyaml)
@@ -148,7 +142,8 @@ ingress:
                     if 'splashscreen' in request.FILES:
                         setting.splashscreen = request.FILES['splashscreen']
                     setting.save()
-                    context['result'] = "تنظیمات با موفقیت تغییر کرد."
+                    messages.success(request, "Setting is Change!")
+                    return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(user=request.user)
             return render(request, "client/edit-setting.html", context)
     else:
