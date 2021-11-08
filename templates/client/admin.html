@@ -58,7 +58,6 @@
                                                     <th class="column-title">دامنه</th>
                                                     <th class="column-title">رابط آموزش</th>
                                                     <th class="column-title">وضعیت کاربر</th>
-                                                    <th class="column-title">لیست دروس انتخاب شده</th>
                                                     <th class="column-title no-link last"><span class="nobr">عمل</span>
                                                     </th>
                                                     <th class="bulk-actions" colspan="7">
@@ -80,11 +79,10 @@
                                                         <td class=" ">{{ user|domain }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
                                                         <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
-                                                        <td class="last"><a href="#"> مشاهده دوره های کاربر </a></td>
                                                         <td class="last">
                                                             <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">نصب</a>
                                                             <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">تنظیمات سایت</a>
+                                                            <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">ساخت یوزر</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
