@@ -36,7 +36,7 @@
                                         اطلاعات</a>
 
                                         {% if settings.domain %}
-                                            <a href="#"
+                                            <a href="{% url 'client:siteuser' request.user.id %}"
                                                class="btn btn-info float-left">ساخت یوزر</a>
                                         {% endif %}
 
