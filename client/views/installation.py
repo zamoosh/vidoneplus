@@ -12,20 +12,22 @@ import uuid
 def _configpodname(tld):
     return tld + "-site", tld + "-app", tld + "-pwa"
 
+
+@login_required
 def admin(request):
     context = {}
     context['users'] = User.objects.filter(is_staff=False)
     context['status'] = Status.objects.filter(user__in=context['users'])
     return render(request, "client/admin.html", context)
 
+
+@login_required
 def admininstall(request, id):
     uid = uuid.uuid4().hex
     context = {}
     context['domain'] = usetting.objects.get(user__id=id).domain
-    print(context['domain'])
     context['status'] = Status.objects.get(user__id=id)
     context['curent_user'] = User.objects.get(id=id)
-    print(context['curent_user'])
     context['useremail'] = context['curent_user'].email
     context['username'] = ''.join(context['domain'].split('.')[:-1])[:10] + uid[:4]
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
@@ -37,7 +39,9 @@ def admininstall(request, id):
     save_setting.save()
     context['secretName'] = context['domain'].replace('.', '-')
     createVidone = Cpanel(context['username'], context['domain'])
+    print('cp class generated', context['username'], context['domain'])
     createVidone.create_acc()
+    print('acc created.')
     createVidone.add_or_edit_zone()
     dbname, dbuser, dbpass = createVidone.create_db()
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
@@ -95,8 +99,10 @@ dbpassword: %s""" % (dbname, dbuser, dbpass)
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata)
     context['result'] = "هاست با موفقیت ایجاد شد."
-    return render(request, "client/create_vidone.html")
+    return render(request, "client/create_vidone.html", context)
 
+
+@login_required
 def install_sites(request, id):
     context = {}
     context['domain'] = usetting.objects.get(user__id=id).domain
@@ -110,11 +116,13 @@ def install_sites(request, id):
     helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
     context['status'] = Status.objects.get(user__id=id)
     userStatus = context['status']
-    userStatus.status = 1
+    userStatus.site_created = 1
     userStatus.save()
     context['result'] = "سایت ها با موفقیت نصب شدند."
-    return render(request, "client/create_vidone.html")
+    return render(request, "client/create_vidone.html", context)
 
+
+@login_required
 def check_or_createuser(request, id):
     context = {}
     import secrets
@@ -136,10 +144,13 @@ def check_or_createuser(request, id):
         context['username'] = context['setting'].user.username
         print(context['username'])
         email = context['setting'].user.email
-        kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].user.email, context['password'])
+        kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].user.email,
+                                       context['password'])
         print(context['password'], context['username'], email, context['site_name'])
     return render(request, "client/create_super_user.html", context)
 
+
+@login_required
 def resetpassword(request, user):
     context = {}
     import secrets
@@ -158,6 +169,8 @@ def resetpassword(request, user):
     print(context['username'])
     return render(request, "client/create_super_user.html", context)
 
+
+@login_required
 def adminremove(request, id):
     context = {}
     context['domain'] = Setting.objects.get(user__id=id)

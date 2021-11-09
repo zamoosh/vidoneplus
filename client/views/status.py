@@ -1,7 +1,7 @@
 from .imports import *
 from ..models import Status
 
-
+@login_required
 def status(request):
     context = {}
     try:

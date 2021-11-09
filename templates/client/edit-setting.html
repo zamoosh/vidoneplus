@@ -17,6 +17,7 @@
 
     <!-- jQuery -->
     <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'vendors/validator/validator.js' %}"></script>
     <!-- Bootstrap -->
     <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <!-- FastClick -->
@@ -44,6 +45,18 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{% static 'js/custom.min.js' %}"></script>
+<script type="text/javascript">
+        $('input[type="radio"]').click(function () {
+          var inputValue = $(this).attr("value");
+          if (inputValue == "vidondomain") {
+            $("#single").hide();
+            $("#team").show();
+          } else {
+            $("#team").hide();
+            $("#single").show();
+          }
+        });
+      </script>
 {% endblock %}
 {% block page_title %}ویدان - ویرایش تنظیمات{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
@@ -84,7 +97,7 @@
                                     {% endif %}
 
                                     <form class="form-horizontal form-label-left" method="POST"
-                                          enctype="multipart/form-data">
+                                          enctype="multipart/form-data" novalidate="">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ اصلی
@@ -123,17 +136,34 @@
                                                        class="form-control col-md-7 col-xs-12">
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                   for="newpassword2">
+                                                   for="website">
                                                 دامنه
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text"
-                                                       id="newpassword2" name="domain"
+                                                <label class="radiobtn"><input type="radio" name="domain_type" value="mydomain" checked>دامنه
+                                                    خودم رو ثبت میکنم</label>
+                                                <label class="radiobtn"><input type="radio" name="domain_type" value="vidondomain"/>از دامنه ویدان
+                                                    استفاده میکنم</label>
+                                                <div class="single select" id="single">
+                                                    <input type="url" id="domain" required="required"
+                                                       name="domain"
                                                        value="{{ settings.domain }}"
                                                        placeholder="دامنه سایت : example.com"
                                                        class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                                <div class="team select" id="team">
+                                                    <input type="text"
+                                                       name="domain_fix" disabled
+                                                       value="vidoneplus.ir"
+                                                       placeholder="vidoneplus.ir"
+                                                       class="form-control domains col-md-7 col-xs-12">
+                                                    <input type="text" name="sub_domain"
+                                                       value="{{ settings.sub_domain }}"
+                                                       placeholder="نام ساب دامنه، مثال : example"
+                                                       class="form-control domains col-md-7 col-xs-12">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">

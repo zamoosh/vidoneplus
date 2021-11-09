@@ -4,15 +4,14 @@ from ..models import Setting as Usetting, Status
 
 @login_required
 def index(request):
-    # from domainholder.models import Domainns
     context = {}
     try:
         context['settings'] = Usetting.objects.get(user=request.user).domain
-        context['status'] = Status.objects.get(user=request.user).status
+        context['status'] = Status.objects.get(user=request.user).site_created
         if not context['settings']:
             context['msg'] = "شما هنوز دامنه ای ثبت نکرده اید"
         if not context['status']:
-            context['msg'] = "حساب کاربری شما فعال نشده است"
+            context['site'] = False
     except:
         pass
     return render(request, 'client/index.html', context)

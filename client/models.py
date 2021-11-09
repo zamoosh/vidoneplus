@@ -60,7 +60,8 @@ class CourseVitrin(models.Model):
 
 
 class Status(models.Model):
-    status = models.BooleanField(default=False)
+    active_user = models.BooleanField(default=False)
+    site_created = models.BooleanField(default=False)
     duration = models.IntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
