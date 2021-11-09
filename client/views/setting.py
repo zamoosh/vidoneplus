@@ -1,5 +1,4 @@
 import os
-from django.core import serializers
 from django.urls import reverse
 from django.contrib import messages
 from library.cpanel import Cpanel
@@ -13,7 +12,7 @@ from ..models import Setting as usetting, Status
 @login_required
 def user_settings(request, action=None):
     context = {}
-    if Status.objects.get(user=request.user).status:
+    if Status.objects.get(user=request.user).active_user:
         try:
             context['settings'] = usetting.objects.get(user=request.user)
             context['site_created'] = Status.objects.get(user=request.user)
@@ -26,9 +25,17 @@ def user_settings(request, action=None):
                 context['org_colore'] = request.POST.get('org_colore', '').strip()
                 context['sub_colore'] = request.POST.get('sub_colore', '').strip()
                 context['app_name'] = request.POST.get('app_name', '').strip()
-                context['domain'] = request.POST.get('domain', '').strip()
+                context['domain_type'] = request.POST.get('domain_type', '').strip()
+                context['domain_fix'] = "vidoneplus.ir"
+                if 'mydomain' in context['domain_type']:
+                    context['domain'] = request.POST.get('domain', '').strip()
+                if 'vidondomain' in context['domain_type']:
+                    context['sub_domain'] = request.POST.get('sub_domain', '').strip()
+                    context['domain'] = context['sub_domain'] + '.' + context['domain_fix']
                 context['contact_phone'] = request.POST.get('contact_phone', '').strip()
                 context['download_link'] = request.POST.get('download_link', '').strip()
+                if '.' in context['domain'] and 'vidoneplus.ir' in context['domain']:
+                    context['domain'] = context['domain'].split('.')[0] + '.' + context['domain_fix']
                 if len(context['domain'].split("/")) > 1:
                     context['domain'] = context['domain'].split("/")[2]
                 if context['domain'][:4] == "www.":
@@ -36,7 +43,6 @@ def user_settings(request, action=None):
                 context['kuberid'] = context['domain'].split('.')[0]
                 if not usetting.objects.filter(user=request.user):
                     context['edit_setting'] = 1
-                    print(context['domain'])
                     seeting = usetting()
                     seeting.user = context['user']
                     seeting.org_colore = context['org_colore']
@@ -55,7 +61,8 @@ def user_settings(request, action=None):
                 else:
                     context['usreq'] = usetting.objects.get(user=request.user)
                     context['username'] = context['usreq'].fullname
-                    if context['domain'] and context['username']  and context['domain'] is not usetting.objects.get(user=request.user).domain:
+                    if context['domain'] and context['username'] and context['domain'] is not usetting.objects.get(
+                            user=request.user).domain:
                         context['app_name'] = context['usreq'].admin_name
                         context['pwa_name'] = context['usreq'].pwa_name
                         context['site_name'] = context['usreq'].site_name
@@ -65,13 +72,12 @@ def user_settings(request, action=None):
                         with open(os.path.join(dirtemp, 'dbdata.txt')) as f:
                             lines = f.readlines()
                             for line in lines:
-                               mylist.append(line)
+                                mylist.append(line)
                         newlist = []
                         for i in mylist:
                             if ':' not in i:
                                 continue
                             newlist.append(i.split("\n")[0].split(": ")[1])
-                            print(newlist)
                         context['dbname'] = newlist[0]
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
@@ -90,10 +96,7 @@ ingress:
   tls:
   - hosts:
     - %s
-    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],
-                                   context['dbpassword'], context['domain'],
-                                   context['domain'],
-                                   context['secretName'])
+    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],context['dbpassword'], context['domain'],context['domain'],context['secretName'])
                         appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
@@ -103,8 +106,9 @@ ingress:
   tls:
   - hosts:
     - admin.%s
-    secretName: app-%s""" % (context['app_name'], context['app_name'], context['domain'], context['domain'],
-                                   context['secretName'])
+    secretName: app-%s""" % (
+                        context['app_name'], context['app_name'], context['domain'], context['domain'],
+                        context['secretName'])
                         pwayaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
@@ -114,8 +118,9 @@ ingress:
   tls:
   - hosts:
     - site.%s
-    secretName: pwa-%s""" % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
-                                   context['secretName'])
+    secretName: pwa-%s""" % (
+                        context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
+                        context['secretName'])
                         with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
                             yaml_file.write(siteyaml)
                         with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
@@ -123,13 +128,15 @@ ingress:
                         with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
                             yaml_file.write(pwayaml)
                         upcpanel = Cpanel(context['username'], context['domain'])
+                        print(context['username'],context['domain'])
                         upcpanel.update_acc_domain(context['domain'])
                         helm_install = Helm()
                         helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
                                                  "0.0.0-beta70")
                         helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
                                                  "0.0.1")
-                        helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+                        helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
+                                                 "0.0.25")
                     setting = usetting.objects.get(user=request.user)
                     setting.org_colore = context['org_colore']
                     setting.sub_colore = context['sub_colore']

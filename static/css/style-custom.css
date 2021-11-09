@@ -219,3 +219,27 @@ li.disabled:hover {
 .noacvtive span {
     margin: auto;
 }
+.single {
+    display: block;
+}
+.team {
+    display: none;
+}
+.radiobtn {
+    padding-left: 25px;
+    font-size: 14px;
+    font-weight: 400;
+}
+.radiobtn input {
+    margin-left: 5px;
+}
+#single input,#team input {
+    margin-bottom: 10px !important;
+}
+.domains:last-child {
+    float: left;
+    width: 39%;
+}
+.domains {
+    width: 60%;
+}

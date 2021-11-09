@@ -44,7 +44,6 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('domain', self.domain),
-            # ('ip', '185.53.143.185'),
         )
 
         response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params, verify=False)

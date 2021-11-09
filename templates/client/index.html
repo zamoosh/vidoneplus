@@ -54,12 +54,14 @@
                 {#                </div>#}
                 <div class="row tile_count">
                     <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-                        <span class="count_top">مشخصات وبسایت شما :</span>
+                        <span class="count_top">مشخصات وبسایت شما :
+                            <span class="badge bg-red">سایت شما غیر فعال است</span>
+                        </span>
                         <div class="sites_url">
                             <ul>
                                 {{ msg }}
-                                {% if settings and status %}
-                                    <li><a href="https://{{ settings }}" target="_blank"> وبسایت :
+                                {% if settings %}
+                                    <li><a class="disabled" href="https://{{ settings }}" target="_blank"> وبسایت :
                                         <span>{{ settings }}</span>
                                     </a></li>
                                     <li><a href="https://site.{{ settings }}" target="_blank">نسخه موبایل(pwa) :

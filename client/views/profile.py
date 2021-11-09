@@ -4,6 +4,7 @@ from django.urls import reverse
 from .imports import *
 import jdatetime
 
+@login_required
 def profile(request, action=None):
     context = {}
     context['user'] = User.objects.filter(id=request.user.id)

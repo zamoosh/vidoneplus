@@ -10,7 +10,7 @@ def coursebuyed(value, value2):
 @register.filter(name='status')
 def status(value):
     try:
-        return Usstatus.objects.get(user=value).status
+        return Usstatus.objects.get(user=value).site_created
     except:
         return None
 
