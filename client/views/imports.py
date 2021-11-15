@@ -4,10 +4,11 @@ import re
 from django.core.validators import validate_email
 from django import forms
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.http.response import HttpResponseRedirect
 import datetime
+from client.models import Setting as usetting, Status
 
 from django.contrib.auth import get_user_model
 

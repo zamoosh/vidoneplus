@@ -1,12 +1,10 @@
+from .imports import *
 import os
 from django.urls import reverse
 from django.contrib import messages
 from library.cpanel import Cpanel
 from library.helm import Helm
-from .imports import *
-from django.conf import settings
-from django.http import JsonResponse, HttpResponse
-from ..models import Setting as usetting, Status
+import mimetypes
 
 
 @login_required
@@ -96,7 +94,8 @@ ingress:
   tls:
   - hosts:
     - %s
-    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],context['dbpassword'], context['domain'],context['domain'],context['secretName'])
+    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],
+                         context['dbpassword'], context['domain'], context['domain'], context['secretName'])
                         appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
@@ -107,8 +106,8 @@ ingress:
   - hosts:
     - admin.%s
     secretName: app-%s""" % (
-                        context['app_name'], context['app_name'], context['domain'], context['domain'],
-                        context['secretName'])
+                            context['app_name'], context['app_name'], context['domain'], context['domain'],
+                            context['secretName'])
                         pwayaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
@@ -119,8 +118,8 @@ ingress:
   - hosts:
     - site.%s
     secretName: pwa-%s""" % (
-                        context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
-                        context['secretName'])
+                            context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
+                            context['secretName'])
                         with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
                             yaml_file.write(siteyaml)
                         with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
@@ -128,7 +127,7 @@ ingress:
                         with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
                             yaml_file.write(pwayaml)
                         upcpanel = Cpanel(context['username'], context['domain'])
-                        print(context['username'],context['domain'])
+                        print(context['username'], context['domain'])
                         upcpanel.update_acc_domain(context['domain'])
                         helm_install = Helm()
                         helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
@@ -157,6 +156,7 @@ ingress:
         context['msg'] = "حساب کاربری شما تایید نشده است"
     return render(request, "client/setting.html", context)
 
+
 def configs(request, domain):
     context = {}
     try:
@@ -169,6 +169,34 @@ def configs(request, domain):
         context['admin_name'] = config.admin_name
         context['pwa_name'] = config.pwa_name
         context['fullname'] = config.fullname
+        if config.splashscreen:
+            context['splashscreen'] = request.build_absolute_uri() + config.splashscreen.url.split('/')[-1]
+        else:
+            context['splashscreen'] = ''
+        if config.company_logo:
+            context['company_logo'] = request.build_absolute_uri() + config.company_logo.url.split('/')[-1]
+        else:
+            context['company_logo'] = ''
     except:
         pass
     return JsonResponse(context)
+
+
+def static_files(request, domain, path=''):
+    try:
+        config = usetting.objects.get(domain=domain)
+        if config.splashscreen.url.split('/')[-1] == path:
+            path = config.splashscreen.path
+        elif config.company_logo.url.split('/')[-1] == path:
+            path = config.company_logo.path
+        # config.company_logo
+        # config.splashscreen
+        if os.path.exists(path):
+            with open(path, 'rb') as f:
+                content = f.read()
+                f.close()
+            mimetypes.init()
+            mime = mimetypes.types_map["." + path.split(".")[-1]]
+            return HttpResponse(content, status=200, content_type=mime)
+    except:
+        pass
