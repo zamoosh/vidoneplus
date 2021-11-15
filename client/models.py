@@ -73,6 +73,15 @@ class CourseUser(models.Model):
 
 
 class Imagetag(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    currenttag = models.CharField(null=True, max_length=20)
-    releasetag = models.CharField(null=True, max_length=20)
+    status = models.BooleanField(default=True)
+    forceupdate = models.BooleanField(default=False)
+    pwa_version = models.CharField(max_length=20)
+    pwa_description = models.CharField(max_length=200)
+    admin_version = models.CharField(max_length=20)
+    admin_description = models.CharField(max_length=200)
+    site_version = models.CharField(max_length=20)
+    site_description = models.CharField(max_length=200)
+    android_version = models.CharField(max_length=20)
+    android_description = models.CharField(max_length=200)
+    ios_version = models.CharField(max_length=20)
+    ios_description = models.CharField(max_length=200)

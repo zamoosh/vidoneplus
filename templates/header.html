@@ -22,8 +22,9 @@
                     <li><a href="{% url 'client:profile' %}"><i class="fa fa-edit"></i>حساب کاربری</a> </li>
                     <li><a href="{% url 'client:setting' %}"><i class="fa fa-desktop"></i>تنظیمات</a></li>
                     <li class="disabled"><a href="#"><i class="fa fa-table"></i>انتخاب دروس</a></li>
-                {% if request.user.is_superuser %}<li><a href="{% url 'client:users' %}"><i class="fa fa-bar-chart-o"></i>کاربران</a></li>{% endif %}
+                {% if request.user.is_superuser %}<li><a href="{% url 'client:users' %}"><i class="fa fa-user"></i>کاربران</a></li>{% endif %}
                     {% if request.user.is_superuser %}<li><a href="{% url 'client:admin' %}"><i class="fa fa-bar-chart-o"></i>منوی ادمین</a></li>{% endif %}
+                    {% if request.user.is_superuser %}<li><a href="{% url 'client:view_verion' %}"><i class="fa fa-bar-chart-o"></i>ورژن ها</a></li>{% endif %}
                 </ul>
             </div>
         </div>

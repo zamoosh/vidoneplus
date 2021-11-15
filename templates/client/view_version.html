@@ -14,7 +14,7 @@
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css' %}" rel="stylesheet">
 {% endblock %}
-{% block page_title %}ویدان - انتخاب دروس{% endblock %}
+{% block page_title %}ویدان - ایجاد وبسایت{% endblock %}
 {% block bodyclass %} class="nav-md"{% endblock %}
 {% block body %}
     <div class="container body">
@@ -24,7 +24,9 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>کاربران</h3>
+                            <h3>
+                                ورژن های ایجاد شده
+                            </h3>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -32,36 +34,31 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                        <a href="{% url 'client:view_verion' %}" class="btn btn-info float-left">لیست ورژن ها</a>
-                                        <a href="{% url 'client:create_verion' %}" class="btn btn-success float-left">ساخت ورژن جدید</a>
+                                    <a href="{% url 'client:create_verion' %}" class="btn btn-success float-left">ساخت
+                                        ورژن جدید</a>
                                     <div class="clearfix"></div>
                                 </div>
+                                <div class="clearfix"></div>
                                 <div class="x_content">
-                                    {% if request.method == "POST" %}
-                                        {% if result %}
-                                            <div class="alert alert-success alert-dismissible show" role="alert">
-                                                {{ result }}
-                                            </div>
-                                        {% endif %}
-                                    {% endif %}
                                     <form class="form-horizontal form-label-left" method="POST" novalidate="">
                                         {% csrf_token %}
                                         <div class="table-responsive">
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
                                                 <tr class="headings">
-                                                    <th>
-                                                        {#                                                        <input type="checkbox" id="check-all" class="flat">#}
-                                                    </th>
-                                                    <th class="column-title">نام و نام خانوادگی</th>
-                                                    <th class="column-title">شماره تماس</th>
-                                                    <th class="column-title">دامنه</th>
-                                                    <th class="column-title">رابط آموزش</th>
-                                                    <th class="column-title">وضعیت کاربر</th>
-                                                    <th class="column-title no-link last"><span class="nobr">عمل</span>
+                                                    <th class="column-title">ورژن site</th>
+                                                    <th class="column-title">ورژن admin</th>
+                                                    <th class="column-title">ورژن pwa</th>
+                                                    <th class="column-title">ورژن android</th>
+                                                    <th class="column-title">ورژن ios</th>
+                                                    <th class="column-title">آپدیت اجباری</th>
+                                                    <th class="column-title">وضعیت ورژن</th>
+                                                    <th class="column-title no-link last"><span
+                                                            class="nobr">عمل</span>
                                                     </th>
                                                     <th class="bulk-actions" colspan="7">
-                                                        <a class="antoo" style="color:#fff; font-weight:500;">عمل همگانی
+                                                        <a class="antoo" style="color:#fff; font-weight:500;">عمل
+                                                            همگانی
                                                             ( <span
                                                                     class="action-cnt"> </span> ) <i
                                                                     class="fa fa-chevron-down"></i></a>
@@ -69,21 +66,27 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for user in users %}
+                                                {% for ver in show_versions %}
                                                     <tr class="even pointer">
-                                                        <td class=" "></td>{% load client %}
-                                                        <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
-                                                        <td class=" ">{{ user.cellphone }}</td>
-                                                        <td class=" ">{{ user|domain }}</td>
-                                                        <td class=" ">{{ user.educational_interface_name }}</td>
-                                                        <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
+                                                        <td>{{ ver.site_version }}</td>
+                                                        <td>{{ ver.admin_version }}</td>
+                                                        <td>{{ ver.pwa_version }}</td>
+                                                        <td>{{ ver.android_version }}</td>
+                                                        <td>{{ ver.ios_version }}</td>
+                                                        <td>{% if ver.forceupdate %}<i class="fa fa-check-square"
+                                                                                       style="color:#26b99a;position:relative;top:5px"></i>{% else %}
+                                                            <i class="fa fa-close"
+                                                               style="color:#d9534f;position:relative;top:5px"></i>{% endif %}
+                                                        </td>
+                                                    <td>{% if ver.status %}<span style="color:#26b99a;">فعال</span>{% else %}
+                                                            <span
+                                                               style="color:#d9534f;">غیر فعال</span>{% endif %}
+                                                        </td>
                                                         <td class="last">
-                                                        {% if user|domain %}
-                                                            <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">ساخت هاست</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:install-sites' user.id %}{% endif %}" class="btn btn-success">ایجاد وبسایت ها</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">یوزر</a>
-                                                        {% endif %}
+                                                            <a href="{% url 'client:active_verion' ver.id %}" class="btn btn-success">فعال</a>
+                                                            <a href="{% url 'client:deactive_verion' ver.id %}" class="btn btn-danger">غیرفعال</a>
+                                                            <a href="{% url 'client:edit_verion' ver.id %}"
+                                                               class="btn btn-info">ویرایش</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

@@ -9,7 +9,8 @@ from .views.profile import profile
 from .views.setting import user_settings, configs
 from .views.verify import verify
 from .views.changepassword import changepassword
-from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites
+from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites, \
+    verion, edit_verion, create_verion
 
 app_name = 'client'
 urlpatterns = [
@@ -42,4 +43,10 @@ urlpatterns = [
     path('admin/<int:id>/remove/', adminremove, name="adminremove"),
     path('admin/<int:id>/siteuser/', check_or_createuser, name="siteuser"),
     path('admin/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
+
+    path('version/', verion, name="view_verion"),
+    path('version/edit/<int:id>/', edit_verion, name="edit_verion"),
+    path('version/create/', create_verion, name="create_verion"),
+    path('version/active/<int:id>/', edit_verion, {'action' : 'active'}, name="active_verion"),
+    path('version/deactive/<int:id>/', edit_verion, {'action' : 'deactive'}, name="deactive_verion"),
 ]

@@ -103,6 +103,95 @@ dbpassword: %s""" % (dbname, dbuser, dbpass)
 
 
 @login_required
+def verion(request):
+    context = {}
+    try:
+        context['show_versions'] = Imagetag.objects.all()
+        print(context['versions'])
+    except:
+        pass
+
+    return render(request, "client/view_version.html", context)
+
+
+@login_required
+def edit_verion(request, id, action=None):
+    context = {}
+    context['version'] = Imagetag.objects.get(id=id)
+    if action == "active":
+        imagetag = Imagetag.objects.get(id=id)
+        imagetag.status = True
+        return render(request, "client/view_version.html")
+
+    if action == "deactive":
+        imagetag = Imagetag.objects.get(id=id)
+        imagetag.status = False
+        return render(request, "client/view_version.html")
+
+    if request.method == "POST":
+        context['req'] = {}
+        context['req']['pwa_version'] = request.POST.get('pwa_version', '').strip()
+        context['req']['pwa_description'] = request.POST.get('pwa_description', '').strip()
+        context['req']['admin_version'] = request.POST.get('admin_version', '').strip()
+        context['req']['admin_description'] = request.POST.get('admin_description', '').strip()
+        context['req']['site_version'] = request.POST.get('site_version', '').strip()
+        context['req']['site_description'] = request.POST.get('site_description', '').strip()
+        context['req']['android_version'] = request.POST.get('android_version', '').strip()
+        context['req']['android_description'] = request.POST.get('android_description', '').strip()
+        context['req']['ios_version'] = request.POST.get('ios_version', '').strip()
+        context['req']['ios_description'] = request.POST.get('ios_description', '').strip()
+        context['req']['force_update'] = request.POST.get('force_update', '').strip()
+        imagetag = Imagetag.objects.get(id=id)
+        imagetag.pwa_version = context['req']['pwa_version']
+        imagetag.pwa_description = context['req']['pwa_description']
+        imagetag.admin_version = context['req']['admin_version']
+        imagetag.admin_description = context['req']['admin_description']
+        imagetag.site_version = context['req']['site_version']
+        imagetag.site_description = context['req']['site_description']
+        imagetag.android_version = context['req']['android_version']
+        imagetag.android_description = context['req']['android_description']
+        imagetag.ios_version = context['req']['ios_version']
+        imagetag.ios_description = context['req']['ios_description']
+        if 'force' in context['req']['force_update']:
+            imagetag.forceupdate = True
+        else:
+            imagetag.forceupdate = False
+        imagetag.save()
+    return render(request, "client/create_version.html", context)
+
+@login_required
+def create_verion(request):
+    context = {}
+    if request.method == "POST":
+        context['req'] = {}
+        context['req']['pwa_version'] = request.POST.get('pwa_version', '').strip()
+        context['req']['pwa_description'] = request.POST.get('pwa_description', '').strip()
+        context['req']['admin_version'] = request.POST.get('admin_version', '').strip()
+        context['req']['admin_description'] = request.POST.get('admin_description', '').strip()
+        context['req']['site_version'] = request.POST.get('site_version', '').strip()
+        context['req']['site_description'] = request.POST.get('site_description', '').strip()
+        context['req']['android_version'] = request.POST.get('android_version', '').strip()
+        context['req']['android_description'] = request.POST.get('android_description', '').strip()
+        context['req']['ios_version'] = request.POST.get('ios_version', '').strip()
+        context['req']['ios_description'] = request.POST.get('ios_description', '').strip()
+        context['req']['force_update'] = request.POST.get('force_update', '').strip()
+        imagetag = Imagetag()
+        imagetag.pwa_version = context['req']['pwa_version']
+        imagetag.pwa_description = context['req']['pwa_description']
+        imagetag.admin_version = context['req']['admin_version']
+        imagetag.admin_description = context['req']['admin_description']
+        imagetag.site_version = context['req']['site_version']
+        imagetag.site_description = context['req']['site_description']
+        imagetag.android_version = context['req']['android_version']
+        imagetag.android_description = context['req']['android_description']
+        imagetag.ios_version = context['req']['ios_version']
+        imagetag.ios_description = context['req']['ios_description']
+        if 'force' in context['req']['force_update']:
+            imagetag.forceupdate = True
+        imagetag.save()
+    return render(request, "client/create_version.html", context)
+
+@login_required
 def install_sites(request, id):
     context = {}
     context['domain'] = usetting.objects.get(user__id=id).domain
