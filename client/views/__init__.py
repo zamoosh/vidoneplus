@@ -9,4 +9,4 @@ from .profile import profile
 from .setting import user_settings, configs
 from .verify import verify
 from .changepassword import changepassword
-from .installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites
+from .installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites, verion, edit_verion, create_verion
