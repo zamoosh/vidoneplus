@@ -38,6 +38,14 @@ class Setting(models.Model):
     company_logo = models.ImageField(upload_to=user_image)
     splashscreen = models.ImageField(upload_to=user_image)
     image_tag = models.CharField(max_length=20, null=True)
+    instagram = models.CharField(max_length=50, null=True)
+    aparat = models.CharField(max_length=50, null=True)
+    facebook = models.CharField(max_length=50, null=True)
+    twitter = models.CharField(max_length=70, null=True)
+    youtube = models.CharField(max_length=70, null=True)
+    favicon = models.ImageField(upload_to=user_image)
+    short_title = models.CharField(max_length=50, null=True)
+    slogan = models.CharField(max_length=50, null=True)
 
 
 class CourseVitrin(models.Model):

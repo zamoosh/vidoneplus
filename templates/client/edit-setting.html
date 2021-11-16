@@ -182,6 +182,97 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                    for="newpassword2">
+                                                اینستاگرام
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="instagram"
+                                                       value="{{ settings.instagram }}"
+                                                       placeholder="instagram"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                توئیتر
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="twitter"
+                                                       value="{{ settings.twitter }}"
+                                                       placeholder="twitter"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                آپارات
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="aparat"
+                                                       value="{{ settings.aparat }}"
+                                                       placeholder="aparat"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                فیسبوک
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="facebook"
+                                                       value="{{ settings.facebook }}"
+                                                       placeholder="facebook"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                یوتیوب
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="youtube"
+                                                       value="{{ settings.youtube }}"
+                                                       placeholder="youtube"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                شعار
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="slogan"
+                                                       value="{{ settings.slogan }}"
+                                                       placeholder="شعار"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                عنوان کوتاه
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text"
+                                                       name="short_title"
+                                                       value="{{ settings.short_title }}"
+                                                       placeholder="عنوان کوتاه"
+                                                       class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
                                                 لینک دانلود اپلیکیشن
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -239,6 +330,33 @@
                                                             <button type="button" onclick="removeUpload()"
                                                                     class="remove-image">حذف <span
                                                                     class="splash-image-title">Uploaded Image</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="newpassword2">
+                                                فاوآیکن
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="favicon-file-upload">
+                                                    <div class="favicon-image-upload-wrap">
+                                                        <input name="favicon" value="{{ isetting.favicon }}"
+                                                               class="favicon-file-upload-input" type='file'
+                                                               onchange="readURL3(this);" accept="image/*"/>
+                                                        <div class="drag-text">
+                                                            <h3>تصویر اسپلش را آپلود کنید</h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="favicon-file-upload-content">
+                                                        <img class="favicon-file-upload-image" src="#" alt="your image"/>
+                                                        <div class="favicon-image-title-wrap">
+                                                            <button type="button" onclick="removeUpload()"
+                                                                    class="remove-image">حذف <span
+                                                                    class="favicon-image-title">Uploaded Image</span>
                                                             </button>
                                                         </div>
                                                     </div>
