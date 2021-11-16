@@ -23,6 +23,13 @@ def user_settings(request, action=None):
                 context['org_colore'] = request.POST.get('org_colore', '').strip()
                 context['sub_colore'] = request.POST.get('sub_colore', '').strip()
                 context['app_name'] = request.POST.get('app_name', '').strip()
+                context['instagram'] = request.POST.get('instagram', '').strip()
+                context['twitter'] = request.POST.get('twitter', '').strip()
+                context['facebook'] = request.POST.get('facebook', '').strip()
+                context['aparat'] = request.POST.get('aparat', '').strip()
+                context['youtube'] = request.POST.get('youtube', '').strip()
+                context['short_title'] = request.POST.get('short_title', '').strip()
+                context['slogan'] = request.POST.get('slogan', '').strip()
                 context['domain_type'] = request.POST.get('domain_type', '').strip()
                 context['domain_fix'] = "vidoneplus.ir"
                 if 'mydomain' in context['domain_type']:
@@ -46,6 +53,13 @@ def user_settings(request, action=None):
                     seeting.org_colore = context['org_colore']
                     seeting.sub_colore = context['sub_colore']
                     seeting.app_name = context['app_name']
+                    seeting.instagram = context['instagram']
+                    seeting.twitter = context['twitter']
+                    seeting.aparat = context['aparat']
+                    seeting.facebook = context['facebook']
+                    seeting.youtube = context['youtube']
+                    seeting.short_title = context['short_title']
+                    seeting.slogan = context['slogan']
                     seeting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         seeting.company_logo = request.FILES['company_logo']
@@ -53,6 +67,8 @@ def user_settings(request, action=None):
                     seeting.download_link = context['download_link']
                     if 'splashscreen' in request.FILES:
                         seeting.splashscreen = request.FILES['splashscreen']
+                    if 'favicon' in request.FILES:
+                        seeting.favicon = request.FILES['favicon']
                     seeting.kuberid = context['kuberid'] + str(context['user'])[9:]
                     seeting.save()
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
@@ -116,7 +132,7 @@ ingress:
       paths: ["/"]
   tls:
   - hosts:
-    - site.%s
+    - site.%s/home/morteza/venv/vidoneplus/lib/python3.9/site-packages/MySQLdb/cursors.py
     secretName: pwa-%s""" % (
                             context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
                             context['secretName'])
@@ -139,6 +155,13 @@ ingress:
                     setting = usetting.objects.get(user=request.user)
                     setting.org_colore = context['org_colore']
                     setting.sub_colore = context['sub_colore']
+                    setting.instagram = context['instagram']
+                    setting.twitter = context['twitter']
+                    setting.aparat = context['aparat']
+                    setting.facebook = context['facebook']
+                    setting.youtube = context['youtube']
+                    setting.short_title = context['short_title']
+                    setting.slogan = context['slogan']
                     setting.app_name = context['app_name']
                     setting.domain = context['domain']
                     if 'company_logo' in request.FILES:
@@ -147,6 +170,8 @@ ingress:
                     setting.download_link = context['download_link']
                     if 'splashscreen' in request.FILES:
                         setting.splashscreen = request.FILES['splashscreen']
+                    if 'favicon' in request.FILES:
+                        setting.favicon = request.FILES['favicon']
                     setting.save()
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
@@ -169,12 +194,21 @@ def configs(request, domain):
         context['admin_name'] = config.admin_name
         context['pwa_name'] = config.pwa_name
         context['fullname'] = config.fullname
+        context['instagram'] = config.instagram
+        context['twitter'] = config.twitter
+        context['aparat'] = config.aparat
+        context['facebook'] = config.facebook
+        context['youtube'] = config.youtube
+        context['slogan'] = config.slogan
+        context['short_title'] = config.short_title
         if config.splashscreen:
             context['splashscreen'] = request.build_absolute_uri() + config.splashscreen.url.split('/')[-1]
         else:
             context['splashscreen'] = ''
         if config.company_logo:
             context['company_logo'] = request.build_absolute_uri() + config.company_logo.url.split('/')[-1]
+        if config.favicon:
+            context['favicon'] = request.build_absolute_uri() + config.favicon.url.split('/')[-1]
         else:
             context['company_logo'] = ''
     except:
