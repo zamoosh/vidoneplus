@@ -16,7 +16,6 @@ import os
 import client
 import datetime
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,6 +121,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STATIC_URL = os.environ.get("STATIC_URL", '/static/')
 
@@ -131,13 +132,12 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.environ.get("MEDIA_ROOT", '/storage/')
 
-MEDIA_URL = os.environ.get("MEDIA_URL", '/storasge/')
+MEDIA_URL = os.environ.get("MEDIA_URL", '/storage/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 SMSIR_APIKEY = '278a88dfede55fc1d8488df'
 SMSIR_SECRETKEY = '@qwer3!!234TebyA'

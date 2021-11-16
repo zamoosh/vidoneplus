@@ -1,8 +1,12 @@
-# from .api_login import login
-# from .register import get_verify_code
-# from .update_profile import update_profile
-# from .user_info import *
-# from .user import user
-# from .user_permission import *
-# from .group_perimission import *
-# from .get_permission import *
+from .setting import static_files
+from .activeuser import activeuser, users, deactiveuser
+from .status import status
+from .courses import courses
+from .index import index
+from .login import Login
+from .logout import Logout
+from .profile import profile
+from .setting import user_settings, configs
+from .verify import verify
+from .changepassword import changepassword
+from .installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites

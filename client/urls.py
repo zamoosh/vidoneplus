@@ -1,16 +1,5 @@
 from django.urls import path
-from .views.activeuser import activeuser, users, deactiveuser
-from .views.status import status
-from .views.courses import courses
-from .views.index import index
-from .views.login import Login
-from .views.logout import Logout
-from .views.profile import profile
-from .views.setting import user_settings, configs
-from .views.verify import verify
-from .views.changepassword import changepassword
-from .views.installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites, \
-    verion, edit_verion, create_verion
+from .views import *
 
 app_name = 'client'
 urlpatterns = [
@@ -22,7 +11,8 @@ urlpatterns = [
 
     path('setting/', user_settings, name="setting"),
     path('setting/edit/', user_settings, {'action': 'edit'}, name="setting_edit"),
-    path('setting/<str:domain>', configs, name="configs"),
+    path('setting/<str:domain>/', configs, name="configs"),
+    path('setting/<str:domain>/<path:path>', static_files, name="static_files"),
 
     path('courses/', courses, name="courses"),
 
