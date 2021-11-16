@@ -1,3 +1,5 @@
+import requests
+
 from .imports import *
 import os
 from django.urls import reverse
@@ -71,7 +73,7 @@ def user_settings(request, action=None):
                         seeting.favicon = request.FILES['favicon']
                     seeting.kuberid = context['kuberid'] + str(context['user'])[9:]
                     seeting.save()
-                    app_update = request.get("https://app.vidone.org/update/")
+                    app_update = requests.get("https://app.vidone.org/update/")
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
                     context['usreq'] = usetting.objects.get(user=request.user)
@@ -174,7 +176,7 @@ ingress:
                     if 'favicon' in request.FILES:
                         setting.favicon = request.FILES['favicon']
                     setting.save()
-                    app_update = request.get("https://app.vidone.org/update/")
+                    app_update = requests.get("https://app.vidone.org/update/")
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(user=request.user)
