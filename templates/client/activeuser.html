@@ -69,10 +69,10 @@
                                                 </thead>
                                                 <tbody>
                                                 {% for user in users %}
-                                                    <tr class="even pointer">
+                                                    <tr class="even pointer">{% load client %}
                                                         <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
                                                         <td class=" ">{{ user.cellphone }}</td>
-                                                        <td class=" ">{{ user.contact_phone }}</td>
+                                                        <td class=" ">{{ user|contact_phone }}</td>
                                                         <td class=" ">{{ user.email }}</td>
                                                         <td class=" ">{{ user.organization_name }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>

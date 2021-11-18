@@ -74,7 +74,7 @@
                                                 <tbody>
                                                 {% for course in courses %}
                                                     <tr class="even pointer">
-                                                        <td class="a-center ">{% load client %}
+                                                        <td class="a-center ">{% load course %}
                                                             <input type="checkbox" name="course_records" value="{{ course.id }}"{% if course|coursebuyed:request.user %} checked disabled{% endif %}>
                                                         </td>
                                                         <td class=" ">{{ course.title }}</td>

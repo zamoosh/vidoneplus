@@ -62,6 +62,8 @@ def user_settings(request, action=None):
                     seeting.youtube = context['youtube']
                     seeting.short_title = context['short_title']
                     seeting.slogan = context['slogan']
+                    seeting.zarinpal = context['zarinpal']
+                    seeting.smsir_key = context['smsir_key']
                     seeting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         seeting.company_logo = request.FILES['company_logo']
@@ -166,6 +168,8 @@ ingress:
                     setting.short_title = context['short_title']
                     setting.slogan = context['slogan']
                     setting.app_name = context['app_name']
+                    setting.zarinpal = context['zarinpal']
+                    setting.smsir_key = context['smsir_key']
                     setting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         setting.company_logo = request.FILES['company_logo']
@@ -193,11 +197,7 @@ def configs(request, domain):
         context['domain'] = config.domain
         context['org_colore'] = config.org_colore
         context['sub_colore'] = config.sub_colore
-        context['app_name'] = config.app_name
-        context['site_name'] = config.site_name
-        context['admin_name'] = config.admin_name
-        context['pwa_name'] = config.pwa_name
-        context['fullname'] = config.fullname
+        context['contact_phone'] = config.contact_phone
         context['instagram'] = config.instagram
         context['twitter'] = config.twitter
         context['aparat'] = config.aparat

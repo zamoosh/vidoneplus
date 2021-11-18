@@ -1,5 +1,4 @@
 from unidecode import unidecode
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
@@ -28,43 +27,45 @@ class Setting(models.Model):
     sub_colore = models.CharField(max_length=50)
     app_name = models.CharField(max_length=250)
     domain = models.CharField(max_length=50)
-    kuberid = models.CharField(max_length=250, null=True)
-    site_name = models.CharField(max_length=250, null=True)
-    admin_name = models.CharField(max_length=250, null=True)
-    pwa_name = models.CharField(max_length=250, null=True)
-    fullname = models.CharField(max_length=250, null=True)
+    kuberid = models.CharField(max_length=250, null=True, blank=True)
+    site_name = models.CharField(max_length=250, null=True, blank=True)
+    admin_name = models.CharField(max_length=250, null=True, blank=True)
+    pwa_name = models.CharField(max_length=250, null=True, blank=True)
+    fullname = models.CharField(max_length=250, null=True, blank=True)
     contact_phone = models.CharField(max_length=250)
     download_link = models.CharField(max_length=500)
     company_logo = models.ImageField(upload_to=user_image)
     splashscreen = models.ImageField(upload_to=user_image)
-    image_tag = models.CharField(max_length=20, null=True)
-    instagram = models.CharField(max_length=50, null=True)
-    aparat = models.CharField(max_length=50, null=True)
-    facebook = models.CharField(max_length=50, null=True)
-    twitter = models.CharField(max_length=70, null=True)
-    youtube = models.CharField(max_length=70, null=True)
+    image_tag = models.CharField(max_length=20, null=True, blank=True)
+    instagram = models.CharField(max_length=50, null=True, blank=True)
+    aparat = models.CharField(max_length=50, null=True, blank=True)
+    facebook = models.CharField(max_length=50, null=True, blank=True)
+    twitter = models.CharField(max_length=70, null=True, blank=True)
+    youtube = models.CharField(max_length=70, null=True, blank=True)
     favicon = models.ImageField(upload_to=user_image)
-    short_title = models.CharField(max_length=50, null=True)
-    slogan = models.CharField(max_length=50, null=True)
+    short_title = models.CharField(max_length=50, null=True, blank=True)
+    slogan = models.CharField(max_length=50, null=True, blank=True)
+    zarinpal = models.CharField(max_length=50, null=True, blank=True)
+    smsir_key = models.CharField(max_length=50, null=True, blank=True)
 
 
-class CourseVitrin(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    price = models.BigIntegerField()
-    price_with_discount = models.BigIntegerField(default=0)
-    teacher = models.CharField(max_length=200)
-    lesson_count = models.IntegerField(default=0)
-
-    def save(self, *args, **kwargs):
-        super(CourseVitrin, self).save()
-
-    def buyed(self, user):
-        try:
-            CourseUser.objects.get(course=self, user=user)
-            return True
-        except:
-            return False
+# class CourseVitrin(models.Model):
+#     title = models.CharField(max_length=200)
+#     description = models.TextField()
+#     price = models.BigIntegerField()
+#     price_with_discount = models.BigIntegerField(default=0)
+#     teacher = models.CharField(max_length=200)
+#     lesson_count = models.IntegerField(default=0)
+#
+#     def save(self, *args, **kwargs):
+#         super(CourseVitrin, self).save()
+#
+#     def buyed(self, user):
+#         try:
+#             CourseUser.objects.get(course=self, user=user)
+#             return True
+#         except:
+#             return False
 
 
 class Status(models.Model):
@@ -74,10 +75,10 @@ class Status(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class CourseUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(CourseVitrin, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
+# class CourseUser(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+#     status = models.BooleanField(default=False)
 
 
 class Imagetag(models.Model):

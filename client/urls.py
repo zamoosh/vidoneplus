@@ -14,8 +14,6 @@ urlpatterns = [
     path('setting/<str:domain>/', configs, name="configs"),
     path('setting/<str:domain>/<path:path>', static_files, name="static_files"),
 
-    path('courses/', courses, name="courses"),
-
     path('login/', Login, name="login"),
     path('verify/', verify, name="verify"),
     path('logout/', Logout, name="logout"),

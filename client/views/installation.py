@@ -47,49 +47,52 @@ def admininstall(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
-    siteyaml = """nameOverride: "%s"
-fullnameOverride: "%s"
+    siteyaml = """nameOverride: "{sitename}"
+fullnameOverride: {sitename}
 database:
   dbengine: 'django.db.backends.mysql'
-  dbname: '%s'
-  dbuser: '%s'
-  dbpassword: '%s'
-  dbhost: 'cpanel.vidone.org'
+  dbname: '{dbname}'
+  dbuser: '{dbuser}'
+  dbpassword: '{dbpass}'
+  dbhost: 'cpanel.vidone.org
+storage:
+  media_root: '/storage/{username}'
+  buket: '{username}'
+domain: '{domain}'
 ingress:
   hosts:
-    - host: %s
+    - host: {domain}
       paths: ["/"]
   tls:
   - hosts:
-    - %s
-    secretName: %s
-    """ % (context['site_name'], context['site_name'], dbname, dbuser, dbpass, context['domain'], context['domain'],
-           context['secretName'])
-    appyaml = """nameOverride: "%s"
-fullnameOverride: "%s"
+    - {domain}
+    secretName: {secretname}
+    """.format(sitename = context['site_name'],username = context['username'], domain = context['domain'], dbuser = dbuser, dbpass = dbpass,dbname = dbname , secretname = context['secretName'])
+    appyaml = """nameOverride: "{sitename}"
+fullnameOverride: "{sitename}"
 ingress:
   hosts:
-    - host: admin.%s
+    - host: admin.{domain}
       paths: ["/"]
   tls:
   - hosts:
-    - admin.%s
-    secretName: app-%s
-    """ % (context['app_name'], context['app_name'], context['domain'], context['domain'], context['secretName'])
-    pwayaml = """nameOverride: "%s"
-fullnameOverride: "%s"
+    - admin.{domain}
+    secretName: app-{secretname}
+    """.format(sitename = context['app_name'], domain = context['domain'], dbuser = dbuser, secretname = context['secretName'])
+    pwayaml = """nameOverride: "{sitename}"
+fullnameOverride: "{sitename}"
 ingress:
   hosts:
-    - host: site.%s
+    - host: site.{domain}
       paths: ["/"]
   tls:
   - hosts:
     - site.%s
-    secretName: pwa-%s
-    """ % (context['pwa_name'], context['pwa_name'], context['domain'], context['domain'], context['secretName'])
-    dbdata = """dbname: %s
-dbuser: %s
-dbpassword: %s""" % (dbname, dbuser, dbpass)
+    secretName: pwa-{secretname}
+    """.format(sitename = context['pwa_name'], domain = context['domain'], dbuser = dbuser, secretname = context['secretName'])
+    dbdata = """dbname: {dbname}
+dbuser: {dbuser}
+dbpassword: {dbpass}""".format(dbname = dbname, dbuser = dbuser, dbpass = dbpass)
     with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
         yaml_file.write(siteyaml)
     with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:

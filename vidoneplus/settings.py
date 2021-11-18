@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import client
+import course
 import os
-import client
 import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'client',
+    'course',
     'django_jalali',
+    'tag',
 ]
 AUTH_USER_MODEL = "client.User"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
