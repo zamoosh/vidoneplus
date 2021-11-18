@@ -107,7 +107,7 @@
                                                 اصلی</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
-                                                       style="color:{{ settings.org_colore }}">{{ settings.org_colore }}</label>
+                                                       style="color:{{ settings.org_color }}">{{ settings.org_color }}</label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
@@ -116,7 +116,7 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
                                                        dir="ltr"
-                                                       style="color:{{ settings.sub_colore }}">{{ settings.sub_colore }}</label>
+                                                       style="color:{{ settings.sub_color }}">{{ settings.sub_color }}</label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
@@ -189,7 +189,7 @@
                                                 شما</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
-                                                       dir="ltr">{{ settings.image_tag }}</label>
+                                                       dir="ltr">{% if settings.image_tag %}{{ settings.image_tag.site_version }}{% endif %}</label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
@@ -210,21 +210,21 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">لوگو</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
-                                                       dir="ltr">{{ settings.company_logo }}</label>
+                                                       dir="ltr"><img src="/accounts/setting/{{ settings.domain }}/{{ settings.company_logo }}"/></label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">اسپلش</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
-                                                       dir="ltr">{{ settings.splashscreen }}</label>
+                                                       dir="ltr"><img src="/accounts/setting/{{ settings.domain }}/{{ settings.splashscreen }}"/></label>
                                             </div>
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">فاوآیکن</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <label class="control-label"
-                                                       dir="ltr">{{ settings.favicon }}</label>
+                                                       dir="ltr"><img src="/accounts/setting/{{ settings.domain }}/{{ settings.favicon }}"/></label>
                                             </div>
                                         </div>
                                     </form>

@@ -21,6 +21,21 @@ class User(AbstractUser):
         super(User, self).save()
 
 
+class Imagetag(models.Model):
+    status = models.BooleanField(default=True)
+    forceupdate = models.BooleanField(default=False)
+    pwa_version = models.CharField(max_length=20)
+    pwa_description = models.CharField(max_length=200)
+    admin_version = models.CharField(max_length=20)
+    admin_description = models.CharField(max_length=200)
+    site_version = models.CharField(max_length=20)
+    site_description = models.CharField(max_length=200)
+    android_version = models.CharField(max_length=20)
+    android_description = models.CharField(max_length=200)
+    ios_version = models.CharField(max_length=20)
+    ios_description = models.CharField(max_length=200)
+
+
 class Setting(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     org_color = models.CharField(max_length=50)
@@ -36,7 +51,7 @@ class Setting(models.Model):
     download_link = models.CharField(max_length=500)
     company_logo = models.ImageField(upload_to=user_image)
     splashscreen = models.ImageField(upload_to=user_image)
-    image_tag = models.CharField(max_length=20, null=True, blank=True)
+    image_tag = models.ForeignKey(Imagetag, on_delete=models.CASCADE)
     instagram = models.CharField(max_length=50, null=True, blank=True)
     aparat = models.CharField(max_length=50, null=True, blank=True)
     facebook = models.CharField(max_length=50, null=True, blank=True)
@@ -74,23 +89,7 @@ class Status(models.Model):
     duration = models.IntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-
 # class CourseUser(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 #     status = models.BooleanField(default=False)
-
-
-class Imagetag(models.Model):
-    status = models.BooleanField(default=True)
-    forceupdate = models.BooleanField(default=False)
-    pwa_version = models.CharField(max_length=20)
-    pwa_description = models.CharField(max_length=200)
-    admin_version = models.CharField(max_length=20)
-    admin_description = models.CharField(max_length=200)
-    site_version = models.CharField(max_length=20)
-    site_description = models.CharField(max_length=200)
-    android_version = models.CharField(max_length=20)
-    android_description = models.CharField(max_length=200)
-    ios_version = models.CharField(max_length=20)
-    ios_description = models.CharField(max_length=200)

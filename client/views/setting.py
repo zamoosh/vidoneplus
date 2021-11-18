@@ -23,6 +23,8 @@ def user_settings(request, action=None):
                 context = {}
                 context['user'] = request.user
                 context['app_name'] = request.POST.get('app_name', '').strip()
+                context['org_color'] = request.POST.get('org_colore', '').strip()
+                context['sub_color'] = request.POST.get('sub_colore', '').strip()
                 context['smsir_key'] = request.POST.get('smsir_key', '').strip()
                 context['instagram'] = request.POST.get('instagram', '').strip()
                 context['twitter'] = request.POST.get('twitter', '').strip()
@@ -158,8 +160,8 @@ ingress:
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  "0.0.25")
                     setting = usetting.objects.get(owner=request.user)
-                    setting.org_colore = context['org_colore']
-                    setting.sub_colore = context['sub_colore']
+                    setting.org_color = context['org_color']
+                    setting.sub_color = context['sub_color']
                     setting.instagram = context['instagram']
                     setting.twitter = context['twitter']
                     setting.aparat = context['aparat']
@@ -195,8 +197,8 @@ def configs(request, domain):
     try:
         config = usetting.objects.get(domain=domain)
         context['domain'] = config.domain
-        context['org_colore'] = config.org_colore
-        context['sub_colore'] = config.sub_colore
+        context['org_colore'] = config.org_color
+        context['sub_colore'] = config.sub_color
         context['contact_phone'] = config.contact_phone
         context['instagram'] = config.instagram
         context['twitter'] = config.twitter

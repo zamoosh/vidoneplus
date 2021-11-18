@@ -108,7 +108,7 @@
                                                         <i style="background-color: #0072BC;"></i>
                                                     </span>
                                                     <input type="text" name="org_colore"
-                                                           value="{{ settings.org_colore }}" class="form-control">
+                                                           value="{{ settings.org_color }}" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@
                                                         <span class="input-group-addon"><i
                                                                 style="background-color: #0072BC;"></i></span>
                                                     <input type="text" name="sub_colore"
-                                                           value="{{ settings.sub_colore }}" class="form-control">
+                                                           value="{{ settings.sub_color }}" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +278,7 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text"
                                                        name="zarinpal"
-                                                       value="{{ settings.zarinpal }}"
+                                                       value="{% if settings.zarinpal %}{{ settings.zarinpal }}{% endif %}"
                                                        placeholder="مرچنت کد زرین پال"
                                                        class="form-control col-md-7 col-xs-12">
                                             </div>
@@ -291,7 +291,7 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text"
                                                        name="smsir_key"
-                                                       value="{{ settings.smsir_key }}"
+                                                       value="{% if settings.smsir_key %}{{ settings.smsir_key }}{% endif %}"
                                                        placeholder="sms.ir key"
                                                        class="form-control col-md-7 col-xs-12">
                                             </div>

@@ -23,10 +23,10 @@ def courses(request):
     lessons = Lesson.objects.filter(course__in=courses)
     lesson_files = Lesson_file.objects.filter(lesson__in=lessons)
     # print(courses, lessons, lessons_file)
-    Setting.objects.get(owner=request.user)
+    domain = Setting.objects.get(owner=request.user).domain
     contextupload = {}
     contextupload['courses'] = serializers.serialize("json", courses)
     contextupload['lessons'] = serializers.serialize("json", lessons)
     contextupload['lesson_files'] = serializers.serialize("json", lesson_files)
-    response = requests.post('https://app.vidone.org/api/auth/verify', data=str(contextupload))
+    response = requests.post('https://%s/update_course/'%(domain), data=str(contextupload))
     return render(request, "client/course.html", context)
