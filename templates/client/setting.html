@@ -107,18 +107,19 @@
                                             اصلی</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label"
-                                                   style="color:{{ settings.org_color }}">{{ settings.org_color
-                                                }}</label>
+                                                   style="color:{{ settings.org_color }}">
+                                                {{ settings.org_color }}
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">رنگ
                                             ثانویه</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <label class="control-label"
-                                                   dir="ltr"
-                                                   style="color:{{ settings.sub_color }}">{{ settings.sub_color
-                                                }}</label>
+                                            <label class="control-label" dir="ltr"
+                                                   style="color:{{ settings.sub_color }}">
+                                                {{ settings.sub_color }}
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -193,7 +194,8 @@
                                             شما</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
-                                            {% if settings.image_tag %}{{ settings.image_tag.site_version }}{% endif%}
+                                                {% if settings.image_tag %}{{ settings.image_tag.site_version }}{%
+                                                endif%}
                                             </label>
                                         </div>
                                     </div>
