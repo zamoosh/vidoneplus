@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.filter(name='coursebuyed')
 def coursebuyed(value, value2):
-    return value.status(value2)
+    return value.buyed(value2)
 
 
 def free(value):

@@ -16,5 +16,4 @@ def courses(request):
             cu.user = User.objects.get(id=request.user.id)
             cu.status = True
             cu.save()
-    # context['all_cu'] = CourseUser.objects.filter(user=request.user)
     return render(request, "client/course.html", context)
