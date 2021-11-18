@@ -23,8 +23,8 @@ class User(AbstractUser):
 
 class Setting(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    org_colore = models.CharField(max_length=50)
-    sub_colore = models.CharField(max_length=50)
+    org_color = models.CharField(max_length=50)
+    sub_color = models.CharField(max_length=50)
     app_name = models.CharField(max_length=250)
     domain = models.CharField(max_length=50)
     kuberid = models.CharField(max_length=250, null=True, blank=True)
