@@ -84,7 +84,7 @@
                                                             {% if forloop.counter0 %}و{% endif %}{{ teacher.name }}
                                                             {% endfor %}
                                                         </td>
-                                                        <td class=" ">{{ course.lesson_count }}</td>
+                                                        <td class=" ">{{ course.get_lesson_number }}</td>
                                                         <td class=" last"><a href="https://app.vidone.org/cr/{{ course.id }}/{{course.get_alias}}" target="_blank"> مشاهده دوره </a></td>
                                                     </tr>
                                                 {% endfor %}
