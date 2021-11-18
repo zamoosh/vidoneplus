@@ -22,7 +22,7 @@ class User(AbstractUser):
 
 
 class Setting(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     org_colore = models.CharField(max_length=50)
     sub_colore = models.CharField(max_length=50)
     app_name = models.CharField(max_length=250)

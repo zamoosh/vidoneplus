@@ -25,13 +25,13 @@ def admin(request):
 def admininstall(request, id):
     uid = uuid.uuid4().hex
     context = {}
-    context['domain'] = usetting.objects.get(user__id=id).domain
+    context['domain'] = usetting.objects.get(owner__id=id).domain
     context['status'] = Status.objects.get(user__id=id)
     context['curent_user'] = User.objects.get(id=id)
     context['useremail'] = context['curent_user'].email
     context['username'] = ''.join(context['domain'].split('.')[:-1])[:10] + uid[:4]
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
-    save_setting = usetting.objects.get(user=context['curent_user'])
+    save_setting = usetting.objects.get(owner=context['curent_user'])
     save_setting.site_name = context['site_name']
     save_setting.admin_name = context['app_name']
     save_setting.pwa_name = context['pwa_name']
@@ -197,8 +197,9 @@ def create_verion(request):
 @login_required
 def install_sites(request, id):
     context = {}
-    context['domain'] = usetting.objects.get(user__id=id).domain
-    context['username'] = usetting.objects.get(user__id=id).fullname
+    settingconf = usetting.objects.get(owner__id=id)
+    context['domain'] = settingconf.domain
+    context['username'] = settingconf.fullname
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     print(dirtemp)
@@ -222,8 +223,9 @@ def check_or_createuser(request, id):
     alphabet = string.ascii_letters + string.digits
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
-    context['domain'] = usetting.objects.get(user__id=id).domain
-    context['setting'] = usetting.objects.get(user__id=id)
+    settingconf = usetting.objects.get(owner__id=id)
+    context['domain'] = settingconf.domain
+    context['setting'] = settingconf
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['super_user'] = kubectl.vidone_getsuperuser(context['site_name'])
     print(context['super_user'])
@@ -252,7 +254,7 @@ def resetpassword(request, user):
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
     context['username'] = user
-    context['domain'] = usetting.objects.get(user__cellphone=user).domain
+    context['domain'] = usetting.objects.get(owner__cellphone=user).domain
     print(context['domain'])
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     print(context['site_name'])
@@ -265,7 +267,7 @@ def resetpassword(request, user):
 @login_required
 def adminremove(request, id):
     context = {}
-    context['domain'] = Setting.objects.get(user__id=id)
+    context['domain'] = Setting.objects.get(owner__id=id)
     context['dellApp'] = context['domain'].admin_name
     context['dellSite'] = context['domain'].site_name
     context['dellPwa'] = context['domain'].pwa_name

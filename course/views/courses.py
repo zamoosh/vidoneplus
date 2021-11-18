@@ -1,6 +1,8 @@
 from client.views.imports import *
 from client.models import *
 from course.models import *
+from django.core import serializers
+import requests
 
 
 @login_required
@@ -16,4 +18,15 @@ def courses(request):
             cu.user = User.objects.get(id=request.user.id)
             cu.status = True
             cu.save()
+    courses = CourseUser.objects.values_list('course', flat=True).filter(owner=request.user)
+    courses = Course.objects.filter(id__in=courses)
+    lessons = Lesson.objects.filter(course__in=courses)
+    lesson_files = Lesson_file.objects.filter(lesson__in=lessons)
+    # print(courses, lessons, lessons_file)
+    Setting.objects.get(owner=request.user)
+    contextupload = {}
+    contextupload['courses'] = serializers.serialize("json", courses)
+    contextupload['lessons'] = serializers.serialize("json", lessons)
+    contextupload['lesson_files'] = serializers.serialize("json", lesson_files)
+    response = requests.post('https://app.vidone.org/api/auth/verify', data=str(contextupload))
     return render(request, "client/course.html", context)

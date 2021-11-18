@@ -79,9 +79,13 @@
                                                         </td>
                                                         <td class=" ">{{ course.title }}</td>
                                                         <td class=" ">{{ course.price|free }}</td>
-                                                        <td class=" ">{{ course.teacher }}</td>
+                                                        <td class=" ">
+                                                            {% for teacher in course.teacher.all %}
+                                                            {% if forloop.counter0 %}و{% endif %}{{ teacher.name }}
+                                                            {% endfor %}
+                                                        </td>
                                                         <td class=" ">{{ course.lesson_count }}</td>
-                                                        <td class=" last"><a href="#"> مشاهده دوره </a></td>
+                                                        <td class=" last"><a href="https://app.vidone.org/cr/{{ course.id }}/{{course.get_alias}}" target="_blank"> مشاهده دوره </a></td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>

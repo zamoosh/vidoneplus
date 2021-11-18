@@ -14,7 +14,7 @@ def user_settings(request, action=None):
     context = {}
     if Status.objects.get(user=request.user).active_user:
         try:
-            context['settings'] = usetting.objects.get(user=request.user)
+            context['settings'] = usetting.objects.get(owner=request.user)
             context['site_created'] = Status.objects.get(user=request.user)
         except usetting.DoesNotExist:
             action = "edit"
@@ -48,10 +48,10 @@ def user_settings(request, action=None):
                 if context['domain'][:4] == "www.":
                     context['domain'] = context['domain'][4:]
                 context['kuberid'] = context['domain'].split('.')[0]
-                if not usetting.objects.filter(user=request.user):
+                if not usetting.objects.filter(owner=request.user):
                     context['edit_setting'] = 1
                     seeting = usetting()
-                    seeting.user = context['user']
+                    seeting.owner = context['user']
                     seeting.org_colore = context['org_colore']
                     seeting.sub_colore = context['sub_colore']
                     seeting.app_name = context['app_name']
@@ -78,10 +78,10 @@ def user_settings(request, action=None):
                     appupdate = requests.get("https://app.vidone.org/update/")
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
-                    context['usreq'] = usetting.objects.get(user=request.user)
+                    context['usreq'] = usetting.objects.get(owner=request.user)
                     context['username'] = context['usreq'].fullname
                     if context['domain'] and context['username'] and context['domain'] is not usetting.objects.get(
-                            user=request.user).domain:
+                            owner=request.user).domain:
                         context['app_name'] = context['usreq'].admin_name
                         context['pwa_name'] = context['usreq'].pwa_name
                         context['site_name'] = context['usreq'].site_name
@@ -157,7 +157,7 @@ ingress:
                                                  "0.0.1")
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  "0.0.25")
-                    setting = usetting.objects.get(user=request.user)
+                    setting = usetting.objects.get(owner=request.user)
                     setting.org_colore = context['org_colore']
                     setting.sub_colore = context['sub_colore']
                     setting.instagram = context['instagram']
@@ -183,7 +183,7 @@ ingress:
                     appupdate = requests.get("https://app.vidone.org/update/")
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
-                context['settings'] = usetting.objects.get(user=request.user)
+                context['settings'] = usetting.objects.get(owner=request.user)
             return render(request, "client/edit-setting.html", context)
     else:
         context['msg'] = "حساب کاربری شما تایید نشده است"

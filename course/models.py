@@ -270,6 +270,6 @@ class BookMarkObjacts(models.Model):
 
 
 class CourseUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
