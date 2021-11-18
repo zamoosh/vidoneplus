@@ -63,6 +63,15 @@ class Setting(models.Model):
     zarinpal = models.CharField(max_length=50, null=True, blank=True)
     smsir_key = models.CharField(max_length=50, null=True, blank=True)
 
+    def get_splashscreen(self):
+        return self.splashscreen.path.split('/')[-1]
+
+    def get_company_logo(self):
+        return self.company_logo.path.split('/')[-1]
+
+    def get_favicon(self):
+        return self.favicon.path.split('/')[-1]
+
 
 # class CourseVitrin(models.Model):
 #     title = models.CharField(max_length=200)
