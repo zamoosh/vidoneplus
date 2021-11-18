@@ -1,3 +1,5 @@
+import json
+
 from client.views.imports import *
 from client.models import *
 from course.models import *
@@ -24,9 +26,10 @@ def courses(request):
     lesson_files = Lesson_file.objects.filter(lesson__in=lessons)
     # print(courses, lessons, lessons_file)
     domain = Setting.objects.get(owner=request.user).domain
+    print(domain)
     contextupload = {}
     contextupload['courses'] = serializers.serialize("json", courses)
     contextupload['lessons'] = serializers.serialize("json", lessons)
     contextupload['lesson_files'] = serializers.serialize("json", lesson_files)
-    response = requests.post('https://%s/update_course/'%(domain), data=str(contextupload))
+    response = requests.post('https://%s/update_course/'%(domain), data=json.dumps(contextupload))
     return render(request, "client/course.html", context)
