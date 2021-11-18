@@ -1,7 +1,6 @@
 from .setting import static_files
 from .activeuser import activeuser, users, deactiveuser
 from .status import status
-from .courses import courses
 from .index import index
 from .login import Login
 from .logout import Logout

@@ -54,7 +54,11 @@ database:
   dbname: '%s'
   dbuser: '%s'
   dbpassword: '%s'
-  dbhost: 'cpanel.vidone.org'
+  dbhost: 'cpanel.vidone.org
+storage:
+  media_root: '/storage/%s'
+  buket: '%s'
+domain: '%s'
 ingress:
   hosts:
     - host: %s
@@ -63,7 +67,7 @@ ingress:
   - hosts:
     - %s
     secretName: %s
-    """ % (context['site_name'], context['site_name'], dbname, dbuser, dbpass, context['domain'], context['domain'],
+    """ % (context['site_name'], context['site_name'], dbname, dbuser, dbpass, context['username'], context['username'], context['domain'], context['domain'], context['domain'],
            context['secretName'])
     appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"

@@ -3,10 +3,6 @@ from client.models import Setting as Usetting
 from client.models import Status as Usstatus
 register = template.Library()
 
-@register.filter(name='coursebuyed')
-def coursebuyed(value, value2):
-    return value.buyed(value2)
-
 @register.filter(name='status')
 def status(value):
     try:
@@ -21,11 +17,10 @@ def domain(value):
     except:
         return "بدون دامنه"
 
-def free(value):
-    if value == 0:
-        return 'رایگان'
-    else:
-        value = f"{value:,}"
-        return value + 'تومان '
-register.filter('free', free)
+@register.filter(name='contact_phone')
+def contact_phone(value):
+    try:
+        return Usetting.objects.get(user=value).contact_phone
+    except:
+        return "بدون شماره"
 
