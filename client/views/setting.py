@@ -164,7 +164,7 @@ ingress:
                         helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
                                                  "0.0.7")
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
-                                                 "0.0.27")
+                                                 "0.0.29")
                     setting = usetting.objects.get(owner=request.user)
                     setting.org_color = context['org_color']
                     setting.sub_color = context['sub_color']
