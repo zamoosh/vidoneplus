@@ -235,10 +235,10 @@ def check_or_createuser(request, id):
         # vidone_updateuser(self, appname, username, password)
     if not context['super_user']:
         context['create_user'] = True
-        context['username'] = context['setting'].user.username
+        context['username'] = context['setting'].owner.username
         print(context['username'])
-        email = context['setting'].user.email
-        kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].user.email,
+        email = context['setting'].owner.email
+        kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].owner.email,
                                        context['password'])
         print(context['password'], context['username'], email, context['site_name'])
     return render(request, "client/create_super_user.html", context)
