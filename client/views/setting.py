@@ -235,6 +235,8 @@ def static_files(request, domain, path=''):
             path = config.splashscreen.path
         elif config.company_logo.url.split('/')[-1] == path:
             path = config.company_logo.path
+        elif config.favicon.url.split('/')[-1] == path:
+            path = config.favicon.path
         # config.company_logo
         # config.splashscreen
         if os.path.exists(path):
