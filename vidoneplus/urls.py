@@ -19,6 +19,7 @@ from vidoneplus import views
 
 urlpatterns = [
     path('', views.IndexPage, name="index"),
+    path('validate_course/', views.validate_course),
     path('admin/', admin.site.urls),
     path('accounts/', include('client.urls')),
     path('course/', include('course.urls')),
