@@ -17,7 +17,7 @@ def courses(request):
         for item in countcheck:
             cu = CourseUser()
             cu.course = Course.objects.get(id=item)
-            cu.user = User.objects.get(id=request.user.id)
+            cu.owner = User.objects.get(id=request.user.id)
             cu.status = True
             cu.save()
         # domain = Setting.objects.get(owner=request.user).domain
