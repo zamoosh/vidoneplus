@@ -51,7 +51,7 @@ class Setting(models.Model):
     download_link = models.CharField(max_length=500)
     company_logo = models.ImageField(upload_to=user_image)
     splashscreen = models.ImageField(upload_to=user_image)
-    image_tag = models.ForeignKey(Imagetag, on_delete=models.CASCADE)
+    image_tag = models.ForeignKey(Imagetag, on_delete=models.CASCADE, default=1)
     instagram = models.CharField(max_length=50, null=True, blank=True)
     aparat = models.CharField(max_length=50, null=True, blank=True)
     facebook = models.CharField(max_length=50, null=True, blank=True)
