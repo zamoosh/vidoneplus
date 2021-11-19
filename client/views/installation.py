@@ -87,7 +87,7 @@ ingress:
       paths: ["/"]
   tls:
   - hosts:
-    - site.%s
+    - site.{domain}
     secretName: pwa-{secretname}
     """.format(sitename = context['pwa_name'], domain = context['domain'], dbuser = dbuser, secretname = context['secretName'])
     dbdata = """dbname: {dbname}
