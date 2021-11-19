@@ -231,12 +231,15 @@ def configs(request, domain):
 def static_files(request, domain, path=''):
     try:
         config = usetting.objects.get(domain=domain)
-        if config.splashscreen.url.split('/')[-1] == path:
-            path = config.splashscreen.path
-        elif config.company_logo.url.split('/')[-1] == path:
-            path = config.company_logo.path
-        elif config.favicon.url.split('/')[-1] == path:
-            path = config.favicon.path
+        if config.splashscreen:
+            if config.splashscreen.path.split('/')[-1] == path:
+                path = config.splashscreen.path
+        if config.company_logo:
+            if config.company_logo.path.split('/')[-1] == path:
+                path = config.company_logo.path
+        if config.favicon:
+            if config.favicon.path.split('/')[-1] == path:
+                path = config.favicon.path
         # config.company_logo
         # config.splashscreen
         if os.path.exists(path):
