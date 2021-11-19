@@ -217,7 +217,9 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">لوگو</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
+                                                {% if settings.company_logo %}
                                                 <img src="{% url 'client:static_files' settings.domain settings.get_company_logo %}"/>
+                                                {% endif %}
                                             </label>
                                         </div>
                                     </div>
@@ -225,7 +227,9 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">اسپلش</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
+                                                {% if settings.splashscreen %}
                                                 <img src="{% url 'client:static_files' settings.domain settings.get_splashscreen %}"/>
+                                                {% endif %}
                                             </label>
                                         </div>
                                     </div>
@@ -233,7 +237,9 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">فاوآیکن</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
+                                                {% if settings.favicon %}
                                                 <img src="{% url 'client:static_files' settings.domain settings.get_favicon %}"/>
+                                                {% endif %}
                                             </label>
                                         </div>
                                     </div>
