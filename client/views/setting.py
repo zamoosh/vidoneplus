@@ -103,26 +103,26 @@ def user_settings(request, action=None):
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
                         siteyaml = """nameOverride: "{sitename}"
-                        fullnameOverride: {sitename}
-                        database:
-                          dbengine: 'django.db.backends.mysql'
-                          dbname: '{dbname}'
-                          dbuser: '{dbuser}'
-                          dbpassword: '{dbpass}'
-                          dbhost: 'cpanel.vidone.org'
-                        storage:
-                          media_root: '/storage/{username}'
-                          buket: '{username}'
-                        domain: '{domain}'
-                        ingress:
-                          hosts:
-                            - host: {domain}
-                              paths: ["/"]
-                          tls:
-                          - hosts:
-                            - {domain}
-                            secretName: {secretname}
-                            """.format(sitename=context['site_name'], username=context['username'],
+fullnameOverride: {sitename}
+database:
+  dbengine: 'django.db.backends.mysql'
+  dbname: '{dbname}'
+  dbuser: '{dbuser}'
+  dbpassword: '{dbpass}'
+  dbhost: 'cpanel.vidone.org'
+storage:
+  media_root: '/storage/{username}'
+  buket: '{username}'
+domain: '{domain}'
+ingress:
+  hosts:
+    - host: {domain}
+      paths: ["/"]
+  tls:
+  - hosts:
+    - {domain}
+    secretName: {secretname}
+    """.format(sitename=context['site_name'], username=context['username'],
                                        domain=context['domain'], dbuser=context['dbuser'], dbpass=context['dbpassword'], dbname=context['dbname'],
                                        secretname=context['secretName'])
                         appyaml = """nameOverride: "%s"
@@ -145,7 +145,7 @@ ingress:
       paths: ["/"]
   tls:
   - hosts:
-    - site.%s/home/morteza/venv/vidoneplus/lib/python3.9/site-packages/MySQLdb/cursors.py
+    - site.%s
     secretName: pwa-%s""" % (
                             context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
                             context['secretName'])
