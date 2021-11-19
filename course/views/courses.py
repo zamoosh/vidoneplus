@@ -20,7 +20,7 @@ def courses(request):
             cu.owner = User.objects.get(id=request.user.id)
             cu.status = True
             cu.save()
-        # domain = Setting.objects.get(owner=request.user).domain
+        domain = Setting.objects.get(owner=request.user).domain
         courses = CourseUser.objects.values_list('course', flat=True).filter(owner=request.user)
         courses = Course.objects.filter(id__in=courses)
         teachers = []
@@ -43,5 +43,4 @@ def courses(request):
         contextupload['Type_courses'] = serializers.serialize("json", type_courses)
         contextupload['zone_lists'] = serializers.serialize("json", zone_lists)
         response = requests.post('https://%s/update_course/'%(domain), data=json.dumps(contextupload))
-        # response = requests.post('http://127.0.0.1:8000/update_course/', data=json.dumps(contextupload))
     return render(request, "client/course.html", context)
