@@ -123,7 +123,7 @@ def user_settings(request, action=None):
                             - {domain}
                             secretName: {secretname}
                             """.format(sitename=context['site_name'], username=context['username'],
-                                       domain=context['domain'], dbuser=dbuser, dbpass=dbpass, dbname=dbname,
+                                       domain=context['domain'], dbuser=context['dbuser'], dbpass=context['dbpassword'], dbname=context['dbname'],
                                        secretname=context['secretName'])
                         appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
