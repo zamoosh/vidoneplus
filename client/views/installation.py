@@ -54,7 +54,7 @@ database:
   dbname: '{dbname}'
   dbuser: '{dbuser}'
   dbpassword: '{dbpass}'
-  dbhost: 'cpanel.vidone.org
+  dbhost: 'cpanel.vidone.org'
 storage:
   media_root: '/storage/{username}'
   buket: '{username}'
@@ -204,9 +204,9 @@ def install_sites(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     print(dirtemp)
     helm_install = Helm()
-    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta70")
-    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.1")
-    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.25")
+    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta132")
+    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.7")
+    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.27")
     context['status'] = Status.objects.get(user__id=id)
     userStatus = context['status']
     userStatus.site_created = 1
