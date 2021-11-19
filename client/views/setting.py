@@ -160,9 +160,9 @@ ingress:
                         upcpanel.update_acc_domain(context['domain'])
                         helm_install = Helm()
                         helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
-                                                 "0.0.0-beta133")
+                                                 "0.0.0-beta134")
                         helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
-                                                 "0.0.7")
+                                                 "0.0.8")
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  "0.0.29")
                     setting = usetting.objects.get(owner=request.user)
