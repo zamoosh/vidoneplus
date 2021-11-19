@@ -42,6 +42,6 @@ def courses(request):
         contextupload['teachers'] = serializers.serialize("json", teachers)
         contextupload['Type_courses'] = serializers.serialize("json", type_courses)
         contextupload['zone_lists'] = serializers.serialize("json", zone_lists)
-        # response = requests.post('https://%s/update_course/'%(domain), data=json.dumps(contextupload))
-        response = requests.post('http://127.0.0.1:8000/update_course/', data=json.dumps(contextupload))
+        response = requests.post('https://%s/update_course/'%(domain), data=json.dumps(contextupload))
+        # response = requests.post('http://127.0.0.1:8000/update_course/', data=json.dumps(contextupload))
     return render(request, "client/course.html", context)
