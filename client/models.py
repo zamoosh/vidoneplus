@@ -5,7 +5,7 @@ from PIL import Image
 
 
 def user_image(instance, filename):
-    return "%s/%s/%s" % ('setting', instance.user.id, filename)
+    return "%s/%s/%s" % ('setting', instance.owner.id, filename)
 
 
 class User(AbstractUser):
