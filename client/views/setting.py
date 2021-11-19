@@ -102,23 +102,29 @@ def user_settings(request, action=None):
                         context['dbname'] = newlist[0]
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
-                        siteyaml = """nameOverride: "%s"
-fullnameOverride: "%s"
-database:
-  dbengine: 'django.db.backends.mysql'
-  dbname: '%s'
-  dbuser: '%s'
-  dbpassword: '%s'
-  dbhost: 'cpanel.vidone.org'
-ingress:
-  hosts:
-    - host: %s
-      paths: ["/"]
-  tls:
-  - hosts:
-    - %s
-    secretName: %s""" % (context['site_name'], context['site_name'], context['dbname'], context['dbuser'],
-                         context['dbpassword'], context['domain'], context['domain'], context['secretName'])
+                        siteyaml = """nameOverride: "{sitename}"
+                        fullnameOverride: {sitename}
+                        database:
+                          dbengine: 'django.db.backends.mysql'
+                          dbname: '{dbname}'
+                          dbuser: '{dbuser}'
+                          dbpassword: '{dbpass}'
+                          dbhost: 'cpanel.vidone.org'
+                        storage:
+                          media_root: '/storage/{username}'
+                          buket: '{username}'
+                        domain: '{domain}'
+                        ingress:
+                          hosts:
+                            - host: {domain}
+                              paths: ["/"]
+                          tls:
+                          - hosts:
+                            - {domain}
+                            secretName: {secretname}
+                            """.format(sitename=context['site_name'], username=context['username'],
+                                       domain=context['domain'], dbuser=dbuser, dbpass=dbpass, dbname=dbname,
+                                       secretname=context['secretName'])
                         appyaml = """nameOverride: "%s"
 fullnameOverride: "%s"
 ingress:
@@ -154,11 +160,11 @@ ingress:
                         upcpanel.update_acc_domain(context['domain'])
                         helm_install = Helm()
                         helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
-                                                 "0.0.0-beta70")
+                                                 "0.0.0-beta132")
                         helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
-                                                 "0.0.1")
+                                                 "0.0.7")
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
-                                                 "0.0.25")
+                                                 "0.0.27")
                     setting = usetting.objects.get(owner=request.user)
                     setting.org_color = context['org_color']
                     setting.sub_color = context['sub_color']
