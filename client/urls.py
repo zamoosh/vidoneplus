@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/<int:id>/install-sites/', install_sites, name="install-sites"),
     path('admin/<int:id>/remove/', adminremove, name="adminremove"),
     path('admin/<int:id>/siteuser/', check_or_createuser, name="siteuser"),
-    path('admin/<str:owner_id>/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
+    path('admin/<str:id>/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
 
     path('version/', verion, name="view_verion"),
     path('version/edit/<int:id>/', edit_verion, name="edit_verion"),

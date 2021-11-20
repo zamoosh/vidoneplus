@@ -212,7 +212,7 @@ def check_or_createuser(request, id):
 
 
 @login_required
-def resetpassword(request, owner_id, user):
+def resetpassword(request, id, user):
     context = {}
     import secrets
     import string
@@ -221,7 +221,7 @@ def resetpassword(request, owner_id, user):
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
     context['username'] = user
-    setting = usetting.objects.get(owner_id=owner_id)
+    setting = usetting.objects.get(id=owner_id)
     context['domain'] = setting.domain
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
