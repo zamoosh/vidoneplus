@@ -190,11 +190,10 @@ def check_or_createuser(request, id):
     settingconf = usetting.objects.get(owner__id=id)
     context['domain'] = settingconf.domain
     context['setting'] = settingconf
-    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
+    context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(settingconf.domain.split('.')[0])
     context['super_user'] = kubectl.vidone_getsuperuser(context['site_name'])
     if context['super_user'] is not None:
         context['superusers'] = kubectl.vidone_getsuperuser(context['site_name'])
-        print(context['superusers'])
         # vidone_updateuser(self, appname, username, password)
     if not context['super_user']:
         context['create_user'] = True
