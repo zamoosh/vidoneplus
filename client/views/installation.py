@@ -10,6 +10,7 @@ from library.helm import Helm
 from library.kubectl import Kubectl
 from .imports import *
 import uuid
+from library.helm_yaml import siteyaml, appyaml, pwayaml, dbdata
 
 
 def _configpodname(tld):
@@ -50,61 +51,62 @@ def admininstall(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
-    siteyaml = """nameOverride: "{sitename}"
-fullnameOverride: {sitename}
-database:
-  dbengine: 'django.db.backends.mysql'
-  dbname: '{dbname}'
-  dbuser: '{dbuser}'
-  dbpassword: '{dbpass}'
-  dbhost: 'cpanel.vidone.org'
-storage:
-  media_root: '/storage/{username}'
-  buket: '{username}'
-domain: '{domain}'
-ingress:
-  hosts:
-    - host: {domain}
-      paths: ["/"]
-  tls:
-  - hosts:
-    - {domain}
-    secretName: {secretname}
-    """.format(sitename=context['site_name'], username=context['username'], domain=context['domain'], dbuser=dbuser,
-               dbpass=dbpass, dbname=dbname, secretname=context['secretName'])
-    appyaml = """nameOverride: "{sitename}"
-fullnameOverride: "{sitename}"
-ingress:
-  hosts:
-    - host: admin.{domain}
-      paths: ["/"]
-  tls:
-  - hosts:
-    - admin.{domain}
-    secretName: app-{secretname}
-    """.format(sitename=context['app_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
-    pwayaml = """nameOverride: "{sitename}"
-fullnameOverride: "{sitename}"
-ingress:
-  hosts:
-    - host: site.{domain}
-      paths: ["/"]
-  tls:
-  - hosts:
-    - site.{domain}
-    secretName: pwa-{secretname}
-    """.format(sitename=context['pwa_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
-    dbdata = """dbname: {dbname}
-dbuser: {dbuser}
-dbpassword: {dbpass}""".format(dbname=dbname, dbuser=dbuser, dbpass=dbpass)
+    #     siteyaml = """nameOverride: "{sitename}"
+    # fullnameOverride: {sitename}
+    # database:
+    #   dbengine: 'django.db.backends.mysql'
+    #   dbname: '{dbname}'
+    #   dbuser: '{dbuser}'
+    #   dbpassword: '{dbpass}'
+    #   dbhost: 'cpanel.vidone.org'
+    # storage:
+    #   media_root: '/storage/{username}'
+    #   buket: '{username}'
+    # domain: '{domain}'
+    # ingress:
+    #   hosts:
+    #     - host: {domain}
+    #       paths: ["/"]
+    #   tls:
+    #   - hosts:
+    #     - {domain}
+    #     secretName: {secretname}
+    #     """.format(sitename=context['site_name'], username=context['username'], domain=context['domain'], dbuser=dbuser,
+    #                dbpass=dbpass, dbname=dbname, secretname=context['secretName'])
+    #     appyaml = """nameOverride: "{sitename}"
+    # fullnameOverride: "{sitename}"
+    # ingress:
+    #   hosts:
+    #     - host: admin.{domain}
+    #       paths: ["/"]
+    #   tls:
+    #   - hosts:
+    #     - admin.{domain}
+    #     secretName: app-{secretname}
+    #     """.format(sitename=context['app_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
+    #     pwayaml = """nameOverride: "{sitename}"
+    # fullnameOverride: "{sitename}"
+    # ingress:
+    #   hosts:
+    #     - host: site.{domain}
+    #       paths: ["/"]
+    #   tls:
+    #   - hosts:
+    #     - site.{domain}
+    #     secretName: pwa-{secretname}
+    #     """.format(sitename=context['pwa_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
+    #     dbdata = """dbname: {dbname}
+    # dbuser: {dbuser}
+    # dbpassword: {dbpass}""".format(dbname=dbname, dbuser=dbuser, dbpass=dbpass)
     with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(siteyaml)
+        yaml_file.write(siteyaml(context['site_name'], context['username'], context['domain'], dbuser, dbpass, dbname,
+                                 context['secretName']))
     with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(appyaml)
+        yaml_file.write(appyaml(context['app_name'], context['domain'], context['secretName']))
     with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(pwayaml)
+        yaml_file.write(pwayaml(context['pwa_name'], context['domain'], context['secretName']))
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
-        yaml_file.write(dbdata)
+        yaml_file.write(dbdata(dbname, dbuser, dbpass))
     context['result'] = "هاست با موفقیت ایجاد شد."
     return render(request, "client/create_vidone.html", context)
 
