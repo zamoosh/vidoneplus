@@ -1,11 +1,14 @@
 import os
+
+import requests
 from django.contrib.auth.models import User
+from django.core import serializers
+import json
+
 from library.cpanel import Cpanel
 from library.helm import Helm
 from library.kubectl import Kubectl
 from .imports import *
-from ..models import Setting as usetting
-from ..models import *
 import uuid
 
 
@@ -67,7 +70,8 @@ ingress:
   - hosts:
     - {domain}
     secretName: {secretname}
-    """.format(sitename = context['site_name'],username = context['username'], domain = context['domain'], dbuser = dbuser, dbpass = dbpass,dbname = dbname , secretname = context['secretName'])
+    """.format(sitename=context['site_name'], username=context['username'], domain=context['domain'], dbuser=dbuser,
+               dbpass=dbpass, dbname=dbname, secretname=context['secretName'])
     appyaml = """nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
@@ -78,7 +82,7 @@ ingress:
   - hosts:
     - admin.{domain}
     secretName: app-{secretname}
-    """.format(sitename = context['app_name'], domain = context['domain'], dbuser = dbuser, secretname = context['secretName'])
+    """.format(sitename=context['app_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
     pwayaml = """nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
@@ -89,10 +93,10 @@ ingress:
   - hosts:
     - site.{domain}
     secretName: pwa-{secretname}
-    """.format(sitename = context['pwa_name'], domain = context['domain'], dbuser = dbuser, secretname = context['secretName'])
+    """.format(sitename=context['pwa_name'], domain=context['domain'], dbuser=dbuser, secretname=context['secretName'])
     dbdata = """dbname: {dbname}
 dbuser: {dbuser}
-dbpassword: {dbpass}""".format(dbname = dbname, dbuser = dbuser, dbpass = dbpass)
+dbpassword: {dbpass}""".format(dbname=dbname, dbuser=dbuser, dbpass=dbpass)
     with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
         yaml_file.write(siteyaml)
     with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
@@ -162,6 +166,7 @@ def edit_verion(request, id, action=None):
         imagetag.save()
     return render(request, "client/create_version.html", context)
 
+
 @login_required
 def create_verion(request):
     context = {}
@@ -194,6 +199,7 @@ def create_verion(request):
         imagetag.save()
     return render(request, "client/create_version.html", context)
 
+
 @login_required
 def install_sites(request, id):
     context = {}
@@ -204,9 +210,12 @@ def install_sites(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
     print(dirtemp)
     helm_install = Helm()
-    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml", "0.0.0-beta134")
-    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml", "0.0.9")
-    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml", "0.0.29")
+    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
+                             settingconf.image_tag.site_version)
+    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
+                             settingconf.image_tag.admin_version)
+    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
+                             settingconf.image_tag.pwa_version)
     context['status'] = Status.objects.get(user__id=id)
     userStatus = context['status']
     userStatus.site_created = 1
@@ -228,7 +237,6 @@ def check_or_createuser(request, id):
     context['setting'] = settingconf
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['super_user'] = kubectl.vidone_getsuperuser(context['site_name'])
-    print(context['super_user'])
     if context['super_user'] is not None:
         context['superusers'] = kubectl.vidone_getsuperuser(context['site_name'])
         print(context['superusers'])
@@ -236,11 +244,15 @@ def check_or_createuser(request, id):
     if not context['super_user']:
         context['create_user'] = True
         context['username'] = context['setting'].owner.username
-        print(context['username'])
-        email = context['setting'].owner.email
+        if '+98' in context['username']:
+            context['username'] = context['username'].replace('+98','0')
         kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].owner.email,
                                        context['password'])
-        print(context['password'], context['username'], email, context['site_name'])
+        PasswordGenerator(setting=settingconf, username=context['username'], password=context['password']).save()
+        pgenarator = PasswordGenerator.objects.filter(setting=settingconf, username=context['username'],
+                                                      password=context['password'])
+        pgenarator = serializers.serialize("json", pgenarator)
+        requests.post('https://%s/update_admin_password/' % (settingconf.domain), data=json.dumps(pgenarator))
     return render(request, "client/create_super_user.html", context)
 
 
@@ -254,13 +266,15 @@ def resetpassword(request, user):
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
     context['username'] = user
-    context['domain'] = usetting.objects.get(owner__cellphone=user).domain
-    print(context['domain'])
+    setting = usetting.objects.get(owner__cellphone=user)
+    context['domain'] = setting.domain
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
-    print(context['site_name'])
     context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
-    print(context['updateuser'])
-    print(context['username'])
+    PasswordGenerator(setting=setting, username=context['username'], password=context['password']).save()
+    pgenarator = PasswordGenerator.objects.filter(setting=setting, username=context['username'],
+                                               password=context['password'])
+    pgenarator = serializers.serialize("json", pgenarator)
+    requests.post('https://%s/update_admin_password/' % (setting.domain), data=json.dumps(pgenarator))
     return render(request, "client/create_super_user.html", context)
 
 

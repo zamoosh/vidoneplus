@@ -98,7 +98,13 @@ class Status(models.Model):
     duration = models.IntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+
 # class CourseUser(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 #     status = models.BooleanField(default=False)
+
+class PasswordGenerator(models.Model):
+    setting = models.ForeignKey(Setting, on_delete=models.CASCADE)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)

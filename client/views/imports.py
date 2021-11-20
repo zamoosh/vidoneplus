@@ -8,7 +8,8 @@ from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.http.response import HttpResponseRedirect
 import datetime
-from client.models import Setting as usetting, Status
+from client.models import Setting as usetting
+from client.models import *
 
 from django.contrib.auth import get_user_model
 

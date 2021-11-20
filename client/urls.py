@@ -23,6 +23,7 @@ urlpatterns = [
     path('users/', users, name="users"),
     path('users/<int:id>/active', activeuser, name="activeuser"),
     path('users/<int:id>/deactive', deactiveuser, name="deactiveuser"),
+    path('plus_update_pass/', plus_update_pass, name="plus_update_pass"),
 
     path('admin/', admin, name="admin"),
     path('admin/<int:id>/', admin, name="admin"),
