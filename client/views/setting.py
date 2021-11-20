@@ -7,6 +7,7 @@ from django.contrib import messages
 from library.cpanel import Cpanel
 from library.helm import Helm
 import mimetypes
+from library.helm_yaml import siteyaml, appyaml, pwayaml
 
 
 @login_required
@@ -77,7 +78,7 @@ def user_settings(request, action=None):
                         seeting.favicon = request.FILES['favicon']
                     seeting.kuberid = context['kuberid'] + str(context['user'])[9:]
                     seeting.save()
-                    appupdate = requests.get("https://%s/update/"%(seeting.domain))
+                    # appupdate = requests.get("https://%s/update/"%(seeting.domain))
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
                     context['usreq'] = usetting.objects.get(owner=request.user)
@@ -102,59 +103,14 @@ def user_settings(request, action=None):
                         context['dbname'] = newlist[0]
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
-                        siteyaml = """nameOverride: "{sitename}"
-fullnameOverride: {sitename}
-database:
-  dbengine: 'django.db.backends.mysql'
-  dbname: '{dbname}'
-  dbuser: '{dbuser}'
-  dbpassword: '{dbpass}'
-  dbhost: 'cpanel.vidone.org'
-storage:
-  media_root: '/storage/{username}'
-  buket: '{username}'
-domain: '{domain}'
-ingress:
-  hosts:
-    - host: {domain}
-      paths: ["/"]
-  tls:
-  - hosts:
-    - {domain}
-    secretName: {secretname}
-    """.format(sitename=context['site_name'], username=context['username'],
-                                       domain=context['domain'], dbuser=context['dbuser'], dbpass=context['dbpassword'], dbname=context['dbname'],
-                                       secretname=context['secretName'])
-                        appyaml = """nameOverride: "%s"
-fullnameOverride: "%s"
-ingress:
-  hosts:
-    - host: admin.%s
-      paths: ["/"]
-  tls:
-  - hosts:
-    - admin.%s
-    secretName: app-%s""" % (
-                            context['app_name'], context['app_name'], context['domain'], context['domain'],
-                            context['secretName'])
-                        pwayaml = """nameOverride: "%s"
-fullnameOverride: "%s"
-ingress:
-  hosts:
-    - host: site.%s
-      paths: ["/"]
-  tls:
-  - hosts:
-    - site.%s
-    secretName: pwa-%s""" % (
-                            context['pwa_name'], context['pwa_name'], context['domain'], context['domain'],
-                            context['secretName'])
                         with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(siteyaml)
+                            yaml_file.write(siteyaml(context['site_name'], context['username'], context['domain'],
+                                                     context['dbuser'], context['dbpassword'], context['dbname'],
+                                                     context['secretName']))
                         with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(appyaml)
+                            yaml_file.write(appyaml(context['app_name'], context['domain'], context['secretName']))
                         with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(pwayaml)
+                            yaml_file.write(pwayaml(context['pwa_name'], context['domain'], context['secretName']))
                         upcpanel = Cpanel(context['username'], context['domain'])
                         print(context['username'], context['domain'])
                         upcpanel.update_acc_domain(context['domain'])
@@ -188,7 +144,7 @@ ingress:
                     if 'favicon' in request.FILES:
                         setting.favicon = request.FILES['favicon']
                     setting.save()
-                    appupdate = requests.get("https://%s/update/"%(setting.domain))
+                    appupdate = requests.get("https://%s/update/" % (setting.domain))
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
