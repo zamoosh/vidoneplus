@@ -14,6 +14,7 @@ from .imports import *
 def plus_update_pass(request):
     context = {}
     context['status'] = False
+    print(json.loads(request.body))
     body = json.loads(json.loads(request.body))[0]
     pw = PasswordGenerator.objects.get(id=body['pk'])
     if pw.username == body['fields']['username'] and pw.setting_id == body['fields']['setting'] and pw.password == \

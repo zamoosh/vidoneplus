@@ -267,6 +267,7 @@ def resetpassword(request, owner_id, user):
     kubectl = Kubectl()
     context['username'] = user
     setting = usetting.objects.get(owner_id=owner_id)
+    print(setting)
     context['domain'] = setting.domain
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
@@ -274,7 +275,8 @@ def resetpassword(request, owner_id, user):
     pgenarator = PasswordGenerator.objects.filter(setting=setting, username=context['username'],
                                                   password=context['password'])
     pgenarator = serializers.serialize("json", pgenarator)
-    requests.post('https://%s/update_admin_password/' % (setting.domain), data=json.dumps(pgenarator))
+    # requests.post('https://%s/update_admin_password/' % (setting.domain), data=json.dumps(pgenarator))
+    requests.post('http://127.0.0.1:8000/update_admin_password/', data=json.dumps(pgenarator))
     return render(request, "client/create_super_user.html", context)
 
 
