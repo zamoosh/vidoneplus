@@ -245,7 +245,7 @@ def check_or_createuser(request, id):
         context['create_user'] = True
         context['username'] = context['setting'].owner.username
         if '+98' in context['username']:
-            context['username'] = context['username'].replace('+98','0')
+            context['username'] = context['username'].replace('+98', '0')
         kubectl.vidone_createsuperuser(context['site_name'], context['username'], context['setting'].owner.email,
                                        context['password'])
         PasswordGenerator(setting=settingconf, username=context['username'], password=context['password']).save()
@@ -257,7 +257,7 @@ def check_or_createuser(request, id):
 
 
 @login_required
-def resetpassword(request, user):
+def resetpassword(request, owner_id, user):
     context = {}
     import secrets
     import string
@@ -266,13 +266,13 @@ def resetpassword(request, user):
     context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
     kubectl = Kubectl()
     context['username'] = user
-    setting = usetting.objects.get(owner__cellphone=user)
+    setting = usetting.objects.get(owner_id=owner_id)
     context['domain'] = setting.domain
     context['site_name'], context['app_name'], context['pwa_name'] = _configpodname(context['domain'].split('.')[0])
     context['updateuser'] = kubectl.vidone_updateuser(context['site_name'], context['username'], context['password'])
     PasswordGenerator(setting=setting, username=context['username'], password=context['password']).save()
     pgenarator = PasswordGenerator.objects.filter(setting=setting, username=context['username'],
-                                               password=context['password'])
+                                                  password=context['password'])
     pgenarator = serializers.serialize("json", pgenarator)
     requests.post('https://%s/update_admin_password/' % (setting.domain), data=json.dumps(pgenarator))
     return render(request, "client/create_super_user.html", context)
