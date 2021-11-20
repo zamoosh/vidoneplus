@@ -77,7 +77,7 @@ def user_settings(request, action=None):
                         seeting.favicon = request.FILES['favicon']
                     seeting.kuberid = context['kuberid'] + str(context['user'])[9:]
                     seeting.save()
-                    appupdate = requests.get("https://%s/update/"%s(seeting.domain))
+                    appupdate = requests.get("https://%s/update/"%(seeting.domain))
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
                     context['usreq'] = usetting.objects.get(owner=request.user)
@@ -188,7 +188,7 @@ ingress:
                     if 'favicon' in request.FILES:
                         setting.favicon = request.FILES['favicon']
                     setting.save()
-                    appupdate = requests.get("https://%s/update/"%(seeting.domain))
+                    appupdate = requests.get("https://%s/update/"%(setting.domain))
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
