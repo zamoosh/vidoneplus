@@ -10,7 +10,7 @@ import requests
 @login_required
 def courses(request):
     context = {}
-    context['courses'] = Course.objects.all()
+    context['courses'] = Course.objects.filter(extra__status=True)
     if request.method == 'POST':
         context['user'] = request.user
         countcheck = request.POST.getlist('course_records')
