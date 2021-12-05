@@ -218,7 +218,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
                                                 {% if settings.company_logo %}
-                                                <img src="{% url 'client:static_files' settings.domain settings.get_company_logo %}"/>
+                                                <img src="{% url 'client:static_files' settings.domain settings.get_company_logo %} style="width:100%""/>
                                                 {% endif %}
                                             </label>
                                         </div>
@@ -228,7 +228,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
                                                 {% if settings.splashscreen %}
-                                                <img src="{% url 'client:static_files' settings.domain settings.get_splashscreen %}"/>
+                                                <img src="{% url 'client:static_files' settings.domain settings.get_splashscreen %} style="width:100%""/>
                                                 {% endif %}
                                             </label>
                                         </div>
@@ -238,7 +238,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <label class="control-label" dir="ltr">
                                                 {% if settings.favicon %}
-                                                <img src="{% url 'client:static_files' settings.domain settings.get_favicon %}"/>
+                                                <img src="{% url 'client:static_files' settings.domain settings.get_favicon %}" style="width:100%"/>
                                                 {% endif %}
                                             </label>
                                         </div>
