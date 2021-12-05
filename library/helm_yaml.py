@@ -1,5 +1,5 @@
 def siteyaml(sitename, username, domain, dbuser, dbpass, dbname, secretname):
-    return """nameOverride: "{sitename}"
+    return f"""nameOverride: "{sitename}"
 fullnameOverride: {sitename}
 database:
   dbengine: 'django.db.backends.mysql'
@@ -18,13 +18,11 @@ ingress:
   tls:
   - hosts:
     - {domain}
-    secretName: {secretname}
-""".format(sitename=sitename, username=username, domain=domain, dbuser=dbuser, dbpass=dbpass, dbname=dbname,
-           secretname=secretname)
+    secretName: {secretname}"""
 
 
 def appyaml(sitename, domain, secretname):
-    return """nameOverride: "{sitename}"
+    return f"""nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
   hosts:
@@ -33,12 +31,11 @@ ingress:
   tls:
   - hosts:
     - admin.{domain}
-    secretName: app-{secretname}
-""".format(sitename=sitename, domain=domain, secretname=secretname)
+    secretName: app-{secretname}"""
 
 
 def pwayaml(sitename, domain, secretname):
-    return """nameOverride: "{sitename}"
+    return f"""nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
   hosts:
@@ -47,11 +44,10 @@ ingress:
   tls:
   - hosts:
     - site.{domain}
-    secretName: pwa-{secretname}
-    """.format(sitename=sitename, domain=domain, secretname=secretname)
+    secretName: pwa-{secretname}"""
 
 
 def dbdata(dbname, dbuser, dbpass):
-    return """dbname: {dbname}
+    return f"""dbname: {dbname}
 dbuser: {dbuser}
-dbpassword: {dbpass}""".format(dbname=dbname, dbuser=dbuser, dbpass=dbpass)
+dbpassword: {dbpass}"""
