@@ -12,6 +12,7 @@ class Cpanel:
         self.headers = {'Authorization': 'whm ' + self.USER + ':' + self.TOKEN, }
         self.username = username
         self.domain = domain
+        self.CLUSTER_API = '185.53.143.181'
 
     def get(self):
         params = (
@@ -57,7 +58,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('domain', self.domain),
-            ('address', '185.53.143.185'),
+            ('address', self.CLUSTER_API),
             ('line', line),
             ('ttl', 14400),
         )
@@ -68,7 +69,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('domain', self.domain),
-            # ('ip', '185.53.143.185'),
+            # ('ip', self.CLUSTER_API),
         )
 
         response = requests.get(self.SERVER + 'json-api/dumpzone', headers=self.headers, params=params, verify=False)
@@ -82,7 +83,7 @@ class Cpanel:
         params = (
             ('api.version', '1'),
             ('domain', self.domain),
-            ('address', '185.53.143.185'),
+            ('address', self.CLUSTER_API),
             ('line', line),
             ('ttl', 14400),
         )
@@ -157,7 +158,7 @@ class Cpanel:
             ('cpanel_jsonapi_module', 'Mysql'),
             ('cpanel_jsonapi_func', 'add_host'),
             ('cpanel_jsonapi_apiversion', '3'),
-            ('host', '185.53.143.185'),
+            ('host', self.CLUSTER_API),
             ('note', 'added with VidonePlus'),
         )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
