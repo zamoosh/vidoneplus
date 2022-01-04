@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: docker-repo:31953/vidone/vidoneplus
+  repository: scr.vidone.ir/vidone/vidoneplus
   tag: stable
   pullPolicy: IfNotPresent
 

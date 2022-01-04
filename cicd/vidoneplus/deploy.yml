@@ -2,7 +2,7 @@ deploy_stage:
   stage: deploy
   variables:
     PROJ_DIR: "."
-    IMAGE_ID: "docker-repo:31953/vidone/vidoneplus:"
+    IMAGE_ID: "scr.vidone.ir/vidone/vidoneplus:"
   only:
     refs:
       - master
