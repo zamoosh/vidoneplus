@@ -9,8 +9,6 @@ spec:
   selector:
     matchLabels:
       {{- include "vidoneplus.selectorLabels" . | nindent 6 }}
-  imagePullSecrets:
-  - name: regcred
   template:
     metadata:
       labels:
@@ -27,6 +25,8 @@ spec:
         - name: temp
           persistentVolumeClaim:
             claimName: vidone-pv-storage
+      imagePullSecrets:
+      - name: regcred
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
