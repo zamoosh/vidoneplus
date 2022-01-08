@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       {{- include "vidoneplus.selectorLabels" . | nindent 6 }}
+  imagePullSecrets:
+  - name: regcred
   template:
     metadata:
       labels:
