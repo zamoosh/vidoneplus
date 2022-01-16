@@ -92,28 +92,15 @@ def edit_verion(request, id, action=None):
 
     if request.method == "POST":
         context['req'] = {}
-        context['req']['pwa_version'] = request.POST.get('pwa_version', '').strip()
-        context['req']['pwa_description'] = request.POST.get('pwa_description', '').strip()
-        context['req']['admin_version'] = request.POST.get('admin_version', '').strip()
-        context['req']['admin_description'] = request.POST.get('admin_description', '').strip()
-        context['req']['site_version'] = request.POST.get('site_version', '').strip()
-        context['req']['site_description'] = request.POST.get('site_description', '').strip()
-        context['req']['android_version'] = request.POST.get('android_version', '').strip()
-        context['req']['android_description'] = request.POST.get('android_description', '').strip()
-        context['req']['ios_version'] = request.POST.get('ios_version', '').strip()
-        context['req']['ios_description'] = request.POST.get('ios_description', '').strip()
+        for key, value in request.POST.items():
+            if key == 'force_update' or key == 'csrfmiddlewaretoken':
+                continue
+            context['req'][key] = value
         context['req']['force_update'] = request.POST.get('force_update', '').strip()
         imagetag = Imagetag.objects.get(id=id)
-        imagetag.pwa_version = context['req']['pwa_version']
-        imagetag.pwa_description = context['req']['pwa_description']
-        imagetag.admin_version = context['req']['admin_version']
-        imagetag.admin_description = context['req']['admin_description']
-        imagetag.site_version = context['req']['site_version']
-        imagetag.site_description = context['req']['site_description']
-        imagetag.android_version = context['req']['android_version']
-        imagetag.android_description = context['req']['android_description']
-        imagetag.ios_version = context['req']['ios_version']
-        imagetag.ios_description = context['req']['ios_description']
+        imagetag.pwa_version, imagetag.pwa_description, imagetag.admin_version, imagetag.admin_description,\
+            imagetag.site_version, imagetag.site_description, imagetag.android_version, imagetag.android_description, \
+                imagetag.ios_version, imagetag.ios_description, _ = context['req'].values()
         if 'force' in context['req']['force_update']:
             imagetag.forceupdate = True
         else:
@@ -127,28 +114,15 @@ def create_verion(request):
     context = {}
     if request.method == "POST":
         context['req'] = {}
-        context['req']['pwa_version'] = request.POST.get('pwa_version', '').strip()
-        context['req']['pwa_description'] = request.POST.get('pwa_description', '').strip()
-        context['req']['admin_version'] = request.POST.get('admin_version', '').strip()
-        context['req']['admin_description'] = request.POST.get('admin_description', '').strip()
-        context['req']['site_version'] = request.POST.get('site_version', '').strip()
-        context['req']['site_description'] = request.POST.get('site_description', '').strip()
-        context['req']['android_version'] = request.POST.get('android_version', '').strip()
-        context['req']['android_description'] = request.POST.get('android_description', '').strip()
-        context['req']['ios_version'] = request.POST.get('ios_version', '').strip()
-        context['req']['ios_description'] = request.POST.get('ios_description', '').strip()
+        for key, value in request.POST.items():
+            if key == 'force_update' or key == 'csrfmiddlewaretoken':
+                continue
+            context['req'][key] = value
         context['req']['force_update'] = request.POST.get('force_update', '').strip()
         imagetag = Imagetag()
-        imagetag.pwa_version = context['req']['pwa_version']
-        imagetag.pwa_description = context['req']['pwa_description']
-        imagetag.admin_version = context['req']['admin_version']
-        imagetag.admin_description = context['req']['admin_description']
-        imagetag.site_version = context['req']['site_version']
-        imagetag.site_description = context['req']['site_description']
-        imagetag.android_version = context['req']['android_version']
-        imagetag.android_description = context['req']['android_description']
-        imagetag.ios_version = context['req']['ios_version']
-        imagetag.ios_description = context['req']['ios_description']
+        imagetag.pwa_version, imagetag.pwa_description, imagetag.admin_version, imagetag.admin_description,\
+            imagetag.site_version, imagetag.site_description, imagetag.android_version, imagetag.android_description, \
+                imagetag.ios_version, imagetag.ios_description, _ = context['req'].values()
         if 'force' in context['req']['force_update']:
             imagetag.forceupdate = True
         imagetag.save()
