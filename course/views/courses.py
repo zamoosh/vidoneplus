@@ -4,13 +4,24 @@ from client.views.imports import *
 from client.models import *
 from course.models import *
 from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
 
+NUM_OF_COURSES_PER_PAGE = 15
 
 @login_required
 def courses(request):
     context = {}
-    context['courses'] = Course.objects.filter(extra__status=True)
+    page_courses = Course.objects.filter(extra__status=True)
+    p = Paginator(page_courses, NUM_OF_COURSES_PER_PAGE)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = p.page(1)
+    except EmptyPage:
+        page_obj = p.page(p.num_pages)
+    context['courses'] = {'page_obj': page_obj}
     if request.method == 'POST':
         context['user'] = request.user
         countcheck = request.POST.getlist('course_records')
