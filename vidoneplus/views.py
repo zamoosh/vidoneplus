@@ -11,12 +11,16 @@ def IndexPage(request):
 
 @csrf_exempt
 def validate_course(request):
+    data = {}
     context = {}
     from client.models import Setting as usetting
     from course.models import CourseUser, Course, Lesson, Lesson_file, Teacher, Type_course, Type
-    data = json.loads(request.body)
+    body_unicode = request.body.decode('utf-8')
+    if len(body_unicode) != 0:
+        body = json.loads(body_unicode)
+        data = body['content']
     context['status'] = True
-    if usetting.objects.filter(domain=data['domain']).exists():
+    if len(data) != 0 and usetting.objects.filter(domain=data['domain']).exists():
         user = usetting.objects.get(domain=data['domain']).owner
         list_course = CourseUser.objects.filter(owner=user)
         full_teachers = []
