@@ -69,20 +69,24 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for user in users %}
+                                                {% for setting in settings %}
                                                     <tr class="even pointer">
                                                         <td class=" "></td>{% load client %}
-                                                        <td class=" ">{{ user.first_name }} {{ user.last_name }}</td>
-                                                        <td class=" ">{{ user.cellphone }}</td>
-                                                        <td class=" ">{{ user|domain }}</td>
-                                                        <td class=" ">{{ user.educational_interface_name }}</td>
-                                                        <td class=" ">{% if user|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
+                                                        <td class=" ">{{ setting.owner.get_full_name }}</td>
+                                                        <td class=" ">{{ setting.owner.cellphone }}</td>
+                                                        <td class=" ">{{ setting.domain }}</td>
+                                                        <td class=" ">{{ setting.owner.educational_interface_name }}</td>
+                                                        <td class=" ">{% if setting.owner|status %}کاربر تایید شده{% else %}کاربر تایید نشده{% endif %}</td>
                                                         <td class="last">
-                                                        {% if user|domain %}
-                                                            <a href="{% if user|domain %}{%  url 'client:admininstall' user.id %}{% endif %}" class="btn btn-success">ساخت هاست</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:install-sites' user.id %}{% endif %}" class="btn btn-success">ایجاد وبسایت ها</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:adminremove' user.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
-                                                            <a href="{% if user|domain %}{%  url 'client:siteuser' user.id %}{% endif %}" class="btn btn-info">یوزر</a>
+                                                        {% if setting.domain %}
+                                                            <a href="{% if setting.domain %}{%  url 'client:admininstall' setting.owner.id %}{% endif %}" class="btn btn-success">ساخت هاست</a>
+                                                            <a href="{% if setting.domain %}{%  url 'client:install-sites' setting.owner.id %}{% endif %}" class="btn btn-success">ایجاد وبسایت ها</a>
+                                                            <a href="{% if setting.domain %}{%  url 'client:siteuser' setting.owner.id %}{% endif %}" class="btn btn-info">یوزر</a>
+                                                        {% endif %}
+                                                        {% if setting.owner|status %}
+                                                            <a href="{% if setting.domain %}{%  url 'client:adminremove' setting.owner.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
+                                                        {% else %}
+                                                            <a href="{% url 'client:activeuser' setting.owner.id %}" class="btn btn-success">فعال</a>
                                                         {% endif %}
                                                         </td>
                                                     </tr>

@@ -23,5 +23,5 @@ def profile(request, action=None):
             user.save()
             messages.success(request, "Profile is Change!")
             return HttpResponseRedirect(reverse('client:profile'))
-        return render(request, 'client/profile-edit.html', context)
-    return render(request, 'client/profile.html', context)
+        return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)

@@ -14,5 +14,5 @@ def index(request):
             context['site'] = False
     except:
         pass
-    return render(request, 'client/index.html', context)
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 

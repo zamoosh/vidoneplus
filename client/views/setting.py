@@ -112,10 +112,10 @@ def user_settings(request, action=None):
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
-            return render(request, "client/edit-setting.html", context)
+            return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
     else:
         context['msg'] = "حساب کاربری شما تایید نشده است"
-    return render(request, "client/setting.html", context)
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
 def configs(request, domain):

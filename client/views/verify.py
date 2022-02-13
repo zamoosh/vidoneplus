@@ -70,11 +70,11 @@ def verify(request):
                 key = str(random.randrange(10000, 99999))
                 request.session['key'] = key
                 sms.sendwithtemplate({'verificationCode': key}, context['cellphone'], 55907)
-                return render(request, "client/verify.html", context)
+                return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
             except:
                 context['sms'] = False
                 time.sleep(5)
                 return HttpResponseRedirect("/accounts/login")
-        return render(request, "client/verify.html", context)
+        return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
     else:
         return HttpResponseRedirect("/accounts")

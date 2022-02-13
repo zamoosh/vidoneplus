@@ -1,5 +1,6 @@
 from .imports import *
 
+
 @login_required
 def changepassword(request):
     context = {}
@@ -15,5 +16,5 @@ def changepassword(request):
             user.set_password(request.POST["newpassword"])
             user.save()
             context['result'] = "گذر واژه با موفقیت تغییر کرد."
-            
-    return render(request, "client/profile_change_password.html", context)
+
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
