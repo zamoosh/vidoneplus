@@ -1,4 +1,5 @@
 import requests
+from django.shortcuts import get_object_or_404
 
 from .imports import *
 import os
@@ -13,7 +14,13 @@ from library.helm_yaml import siteyaml, appyaml, pwayaml
 @login_required
 def user_settings(request, action=None):
     context = {}
-    if Status.objects.get(user=request.user).active_user:
+    is_user_active = False
+    try:
+        if Status.objects.get(user=request.user).active_user:
+            is_user_active = True
+    except:
+        context['msg'] = "حساب کاربری شما تایید نشده است"
+    if is_user_active:
         try:
             context['settings'] = usetting.objects.get(owner=request.user)
             context['site_created'] = Status.objects.get(user=request.user)
@@ -40,10 +47,10 @@ def user_settings(request, action=None):
                 if not usetting.objects.filter(owner=request.user):
                     context['edit_setting'] = 1
                     seeting = usetting()
-                    seeting.owner, seeting.org_color, seeting.sub_color, seeting.app_name, _, seeting.domain, _\
-                        , seeting.contact_phone, seeting.instagram, seeting.twitter, seeting.aparat, seeting.facebook\
-                            , seeting.youtube, seeting.slogan, seeting.short_title, seeting.zarinpal, seeting.smsir_key\
-                                , seeting.download_link, _ = context.values()
+                    seeting.owner, seeting.org_color, seeting.sub_color, seeting.app_name, _, seeting.domain, _ \
+                        , seeting.contact_phone, seeting.instagram, seeting.twitter, seeting.aparat, seeting.facebook \
+                        , seeting.youtube, seeting.slogan, seeting.short_title, seeting.zarinpal, seeting.smsir_key \
+                        , seeting.download_link, _ = context.values()
                     if 'company_logo' in request.FILES:
                         seeting.company_logo = request.FILES['company_logo']
                     if 'splashscreen' in request.FILES:
@@ -56,10 +63,10 @@ def user_settings(request, action=None):
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
                     setting = usetting.objects.get(owner=request.user)
-                    setting.owner, setting.org_color, setting.sub_color, setting.app_name, _, setting.domain, _\
-                        , setting.contact_phone, setting.instagram, setting.twitter, setting.aparat, setting.facebook\
-                            , setting.youtube, setting.slogan, setting.short_title, setting.zarinpal, setting.smsir_key\
-                                , setting.download_link, _, _, _ = context.values()
+                    setting.owner, setting.org_color, setting.sub_color, setting.app_name, _, setting.domain, _ \
+                        , setting.contact_phone, setting.instagram, setting.twitter, setting.aparat, setting.facebook \
+                        , setting.youtube, setting.slogan, setting.short_title, setting.zarinpal, setting.smsir_key \
+                        , setting.download_link, _, _, _ = context.values()
                     context['usreq'] = usetting.objects.get(owner=request.user)
                     context['username'] = context['usreq'].fullname
                     if context['domain'] and context['username'] and context['domain'] is not usetting.objects.get(
