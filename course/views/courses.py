@@ -4,13 +4,24 @@ from client.views.imports import *
 from client.models import *
 from course.models import *
 from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
 
+NUM_OF_COURSES_PER_PAGE = 15
 
 @login_required
 def courses(request):
     context = {}
-    context['courses'] = Course.objects.filter(extra__status=True)
+    page_courses = Course.objects.filter(extra__status=True)
+    p = Paginator(page_courses, NUM_OF_COURSES_PER_PAGE)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = p.page(1)
+    except EmptyPage:
+        page_obj = p.page(p.num_pages)
+    context['courses'] = {'page_obj': page_obj}
     if request.method == 'POST':
         context['user'] = request.user
         countcheck = request.POST.getlist('course_records')
@@ -28,19 +39,14 @@ def courses(request):
             for tchr in course.teacher.all():
                 teachers.append(tchr.id)
         teachers = Teacher.objects.filter(id__in=teachers)
-        lessons = Lesson.objects.filter(course__in=courses)
-        lesson_files = Lesson_file.objects.filter(lesson__in=lessons)
         type_courses = Type_course.objects.filter(course__in=courses)
         zone_lists = []
         for i in type_courses:
             zone_lists.append(i.type.id)
         zone_lists = Type.objects.filter(id__in=zone_lists)
         contextupload = {}
-        contextupload['courses'] = serializers.serialize("json", courses)
-        contextupload['lessons'] = serializers.serialize("json", lessons)
-        contextupload['lesson_files'] = serializers.serialize("json", lesson_files)
-        contextupload['teachers'] = serializers.serialize("json", teachers)
-        contextupload['Type_courses'] = serializers.serialize("json", type_courses)
-        contextupload['zone_lists'] = serializers.serialize("json", zone_lists)
+        fields = {'courses', 'lessons', 'lesson_files', 'teachers', 'Type_courses', 'zone_lists'}
+        for value in fields:
+            contextupload[value] = serializers.serialize("json", value)
         response = requests.post('https://%s/update_course/'%(domain), data=json.dumps(contextupload))
     return render(request, "client/course.html", context)

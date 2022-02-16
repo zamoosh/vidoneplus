@@ -72,7 +72,7 @@
                                                 </thead>
 
                                                 <tbody>
-                                                {% for course in courses %}
+                                                {% for course in courses.page_obj.object_list %}
                                                     <tr class="even pointer">
                                                         <td class="a-center ">{% load course %}
                                                             <input type="checkbox" name="course_records" value="{{ course.id }}"{% if course|coursebuyed:request.user %} checked disabled{% endif %}>
@@ -95,6 +95,16 @@
                                             <div class="col-md-6 col-md-offset-3">
                                                 <button type="submit" class="btn btn-success">ثبت</button>
                                             </div>
+                                            <center>
+                                                {%if courses.page_obj.has_previous %} {# whether the previous page exists #}
+                                                    <a href="?page={{courses.page_obj.previous_page_number}}"><</a> {# link to the prev page #}
+                                                {% endif %}
+                                                <span>{{courses.page_obj.number}}</span> {# the current page number #}
+
+                                                {%if courses.page_obj.has_next %} {# whether the next page exists #}
+                                                    <a href="?page={{courses.page_obj.next_page_number}}">></a> {# link to the next page #}
+                                                {% endif %}
+                                            </center>
                                         </div>
                                     </form>
                                 </div>

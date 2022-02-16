@@ -63,22 +63,10 @@ class Course(models.Model):
     def save(self, *args, **kwargs):
         if self.price == 0:
             self.free_course = True
-        if 'appstatus' not in self.extra:
-            self.extra['appstatus'] = False
-        if 'sitestatus' not in self.extra:
-            self.extra['sitestatus'] = False
-        if 'status' not in self.extra:
-            self.extra['status'] = False
-        if 'hastest' not in self.extra:
-            self.extra['hastest'] = False
-        if 'powerd' not in self.extra:
-            self.extra['powerd'] = ''
-        if 'is_intruduction' not in self.extra:
-            self.extra['is_intruduction'] = False
-        if 'stream' not in self.extra:
-            self.extra['stream'] = False
-        if 'private' not in self.extra:
-            self.extra['private'] = False
+        fields = {'appstatus', 'sitestatus', 'status', 'hastest', 'powerd', 'is_intruduction', 'stream', 'private'}
+        for value in fields:
+            if value not in self.extra:
+                self.extra[value] = False
         if 'duration' not in self.extra:
             self.extra['duration'] = 0
         if self.price <= self.price_with_discount:
