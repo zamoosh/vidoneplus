@@ -83,7 +83,7 @@
                                                             <a href="{% if setting.domain %}{%  url 'client:install-sites' setting.owner.id %}{% endif %}" class="btn btn-success">ایجاد وبسایت ها</a>
                                                             <a href="{% if setting.domain %}{%  url 'client:siteuser' setting.owner.id %}{% endif %}" class="btn btn-info">یوزر</a>
                                                         {% endif %}
-                                                        {% if setting.owner|status %}
+                                                        {% if setting.owner.status.active_user %}
                                                             <a href="{% if setting.domain %}{%  url 'client:adminremove' setting.owner.id %}{% endif %}" class="btn btn-danger">غیرفعال</a>
                                                         {% else %}
                                                             <a href="{% url 'client:activeuser' setting.owner.id %}" class="btn btn-success">فعال</a>

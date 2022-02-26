@@ -9,6 +9,7 @@ from library.cpanel import Cpanel
 from library.helm import Helm
 import mimetypes
 from library.helm_yaml import siteyaml, appyaml, pwayaml
+from ..models import Status
 
 
 @login_required
@@ -16,7 +17,9 @@ def user_settings(request, action=None):
     context = {}
     is_user_active = False
     try:
-        if Status.objects.get(user=request.user).active_user:
+        userstatus = Status.objects.get(id=request.user.id)
+        # print('d')
+        if userstatus.active_user:
             is_user_active = True
     except:
         context['msg'] = "حساب کاربری شما تایید نشده است"
@@ -121,7 +124,7 @@ def user_settings(request, action=None):
                 context['settings'] = usetting.objects.get(owner=request.user)
             return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
     else:
-        context['msg'] = "حساب کاربری شما تایید نشده است"
+        context['msg'] = "حساب کاربری شما فعال نشده است"
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
@@ -129,17 +132,17 @@ def configs(request, domain):
     context = {}
     try:
         config = usetting.objects.get(domain=domain)
-        context['domain'] = config.domain
-        context['org_colore'] = config.org_color
-        context['sub_colore'] = config.sub_color
-        context['contact_phone'] = config.contact_phone
-        context['instagram'] = config.instagram
-        context['twitter'] = config.twitter
-        context['aparat'] = config.aparat
-        context['facebook'] = config.facebook
-        context['youtube'] = config.youtube
-        context['slogan'] = config.slogan
-        context['short_title'] = config.short_title
+        context = {'domain': config.domain,
+                   'org_colore': config.org_color,
+                   'sub_colore': config.sub_color,
+                   'contact_phone': config.contact_phone,
+                   'instagram': config.instagram,
+                   'twitter': config.twitter,
+                   'aparat': config.aparat,
+                   'facebook': config.facebook,
+                   'youtube': config.youtube,
+                   'slogan': config.slogan,
+                   'short_title': config.short_title}
         if config.splashscreen:
             context['splashscreen'] = request.build_absolute_uri() + config.splashscreen.url.split('/')[-1]
         else:

@@ -5,8 +5,8 @@ from ..models import Status
 def status(request):
     context = {}
     try:
-        userstatus = Status.objects.get(user=request.user)
-        if userstatus.status:
+        userstatus = Status.objects.get(id=request.user.id)
+        if userstatus.active_user:
             context['msg'] = 'اکانت شما فعال است '
         else:
             context['msg'] = 'اکانت شما غیر فعال است '

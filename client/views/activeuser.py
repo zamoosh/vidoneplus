@@ -21,9 +21,9 @@ def activeuser(request, id):
     context = {'users': non_staff_users,
                'status': Status.objects.filter(user__in=non_staff_users),
                'user': User.objects.get(id=id),
-               'cellphone': User.objects.get(id=id).cellphone}
-    status = Status.objects.get(user=non_staff_users)
-    status.active_user = 1
+               'cellphone': User.objects.get(id=10).cellphone}
+    status = Status.objects.get(user=context['user'])
+    status.active_user = True
     status.save()
     sms = Smsir()
     sms.sendsms('اکانت شما در ویدان فعال شد.', context['cellphone'])
