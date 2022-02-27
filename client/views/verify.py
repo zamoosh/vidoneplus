@@ -19,6 +19,16 @@ def verify(request):
                     user = User.objects.get(cellphone=context['cellphone'])
                     if user is not None:
                         # the password verified for the user
+                        print('here')
+                        try:
+                            userstatus = Status.objects.get(id=user.id)
+                        except:
+                            status = Status()
+                            status.active_user = False
+                            status.user = user
+                            status.duration = 0
+                            status.save()
+
                         if user.is_active:
                             login(request, user)
                             if len(request.GET.get("next", "/")) == 0:

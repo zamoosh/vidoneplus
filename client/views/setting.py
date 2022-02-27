@@ -18,7 +18,6 @@ def user_settings(request, action=None):
     is_user_active = False
     try:
         userstatus = Status.objects.get(id=request.user.id)
-        # print('d')
         if userstatus.active_user:
             is_user_active = True
     except:
@@ -50,10 +49,20 @@ def user_settings(request, action=None):
                 if not usetting.objects.filter(owner=request.user):
                     context['edit_setting'] = 1
                     seeting = usetting()
-                    seeting.owner, seeting.org_color, seeting.sub_color, seeting.app_name, _, seeting.domain, _ \
-                        , seeting.contact_phone, seeting.instagram, seeting.twitter, seeting.aparat, seeting.facebook \
-                        , seeting.youtube, seeting.slogan, seeting.short_title, seeting.zarinpal, seeting.smsir_key \
-                        , seeting.download_link, _ = context.values()
+                    seeting.owner = context['user']
+                    seeting.org_color = request.POST.get('org_colore', '').strip()
+                    seeting.sub_color = request.POST.get('sub_colore', '').strip()
+                    seeting.app_name = context['app_name']
+                    seeting.instagram = context['instagram']
+                    seeting.twitter = context['twitter']
+                    seeting.aparat = context['aparat']
+                    seeting.facebook = context['facebook']
+                    seeting.youtube = context['youtube']
+                    seeting.short_title = context['short_title']
+                    seeting.slogan = context['slogan']
+                    seeting.zarinpal = context['zarinpal']
+                    seeting.smsir_key = context['smsir_key']
+                    seeting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         seeting.company_logo = request.FILES['company_logo']
                     if 'splashscreen' in request.FILES:
@@ -122,7 +131,7 @@ def user_settings(request, action=None):
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
-            return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+            return render(request, "client/edit-setting.html", context)
     else:
         context['msg'] = "حساب کاربری شما فعال نشده است"
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
