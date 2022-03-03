@@ -1,4 +1,5 @@
 import requests
+from django.shortcuts import get_object_or_404
 
 from .imports import *
 import os
@@ -8,12 +9,20 @@ from library.cpanel import Cpanel
 from library.helm import Helm
 import mimetypes
 from library.helm_yaml import siteyaml, appyaml, pwayaml
+from ..models import Status
 
 
 @login_required
 def user_settings(request, action=None):
     context = {}
-    if Status.objects.get(user=request.user).active_user:
+    is_user_active = False
+    try:
+        userstatus = Status.objects.get(id=request.user.id)
+        if userstatus.active_user:
+            is_user_active = True
+    except:
+        context['msg'] = "حساب کاربری شما تایید نشده است"
+    if is_user_active:
         try:
             context['settings'] = usetting.objects.get(owner=request.user)
             context['site_created'] = Status.objects.get(user=request.user)
@@ -23,27 +32,13 @@ def user_settings(request, action=None):
             if request.method == "POST":
                 context = {}
                 context['user'] = request.user
-                context['app_name'] = request.POST.get('app_name', '').strip()
-                context['org_color'] = request.POST.get('org_colore', '').strip()
-                context['sub_color'] = request.POST.get('sub_colore', '').strip()
-                context['smsir_key'] = request.POST.get('smsir_key', '').strip()
-                context['instagram'] = request.POST.get('instagram', '').strip()
-                context['twitter'] = request.POST.get('twitter', '').strip()
-                context['facebook'] = request.POST.get('facebook', '').strip()
-                context['aparat'] = request.POST.get('aparat', '').strip()
-                context['youtube'] = request.POST.get('youtube', '').strip()
-                context['short_title'] = request.POST.get('short_title', '').strip()
-                context['slogan'] = request.POST.get('slogan', '').strip()
-                context['domain_type'] = request.POST.get('domain_type', '').strip()
-                context['zarinpal'] = request.POST.get('zarinpal', '').strip()
+                for key, value in request.POST.items():
+                    if key == 'csrfmiddlewaretoken' or key == 'splashscreen' or key == 'favicon':
+                        continue
+                    context[key] = value
                 context['domain_fix'] = "vidoneplus.ir"
-                if 'mydomain' in context['domain_type']:
-                    context['domain'] = request.POST.get('domain', '').strip()
                 if 'vidondomain' in context['domain_type']:
-                    context['sub_domain'] = request.POST.get('sub_domain', '').strip()
                     context['domain'] = context['sub_domain'] + '.' + context['domain_fix']
-                context['contact_phone'] = request.POST.get('contact_phone', '').strip()
-                context['download_link'] = request.POST.get('download_link', '').strip()
                 if '.' in context['domain'] and 'vidoneplus.ir' in context['domain']:
                     context['domain'] = context['domain'].split('.')[0] + '.' + context['domain_fix']
                 if len(context['domain'].split("/")) > 1:
@@ -70,8 +65,6 @@ def user_settings(request, action=None):
                     seeting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         seeting.company_logo = request.FILES['company_logo']
-                    seeting.contact_phone = context['contact_phone']
-                    seeting.download_link = context['download_link']
                     if 'splashscreen' in request.FILES:
                         seeting.splashscreen = request.FILES['splashscreen']
                     if 'favicon' in request.FILES:
@@ -81,11 +74,17 @@ def user_settings(request, action=None):
                     # appupdate = requests.get("https://%s/update/"%(seeting.domain))
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
+                    setting = usetting.objects.get(owner=request.user)
+                    setting.owner, setting.org_color, setting.sub_color, setting.app_name, _, setting.domain, _ \
+                        , setting.contact_phone, setting.instagram, setting.twitter, setting.aparat, setting.facebook \
+                        , setting.youtube, setting.slogan, setting.short_title, setting.zarinpal, setting.smsir_key \
+                        , setting.download_link, _, _, _ = context.values()
                     context['usreq'] = usetting.objects.get(owner=request.user)
                     context['username'] = context['usreq'].fullname
                     if context['domain'] and context['username'] and context['domain'] is not usetting.objects.get(
                             owner=request.user).domain:
                         context['app_name'] = context['usreq'].admin_name
+                        setting.app_name = context['app_name']
                         context['pwa_name'] = context['usreq'].pwa_name
                         context['site_name'] = context['usreq'].site_name
                         context['secretName'] = context['domain'].replace('.', '-')
@@ -121,24 +120,8 @@ def user_settings(request, action=None):
                                                  context['usreq'].image_tag.admin_version)
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  context['usreq'].image_tag.pwa_version)
-                    setting = usetting.objects.get(owner=request.user)
-                    setting.org_color = context['org_color']
-                    setting.sub_color = context['sub_color']
-                    setting.instagram = context['instagram']
-                    setting.twitter = context['twitter']
-                    setting.aparat = context['aparat']
-                    setting.facebook = context['facebook']
-                    setting.youtube = context['youtube']
-                    setting.short_title = context['short_title']
-                    setting.slogan = context['slogan']
-                    setting.app_name = context['app_name']
-                    setting.zarinpal = context['zarinpal']
-                    setting.smsir_key = context['smsir_key']
-                    setting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         setting.company_logo = request.FILES['company_logo']
-                    setting.contact_phone = context['contact_phone']
-                    setting.download_link = context['download_link']
                     if 'splashscreen' in request.FILES:
                         setting.splashscreen = request.FILES['splashscreen']
                     if 'favicon' in request.FILES:
@@ -150,25 +133,25 @@ def user_settings(request, action=None):
                 context['settings'] = usetting.objects.get(owner=request.user)
             return render(request, "client/edit-setting.html", context)
     else:
-        context['msg'] = "حساب کاربری شما تایید نشده است"
-    return render(request, "client/setting.html", context)
+        context['msg'] = "حساب کاربری شما فعال نشده است"
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
 def configs(request, domain):
     context = {}
     try:
         config = usetting.objects.get(domain=domain)
-        context['domain'] = config.domain
-        context['org_colore'] = config.org_color
-        context['sub_colore'] = config.sub_color
-        context['contact_phone'] = config.contact_phone
-        context['instagram'] = config.instagram
-        context['twitter'] = config.twitter
-        context['aparat'] = config.aparat
-        context['facebook'] = config.facebook
-        context['youtube'] = config.youtube
-        context['slogan'] = config.slogan
-        context['short_title'] = config.short_title
+        context = {'domain': config.domain,
+                   'org_colore': config.org_color,
+                   'sub_colore': config.sub_color,
+                   'contact_phone': config.contact_phone,
+                   'instagram': config.instagram,
+                   'twitter': config.twitter,
+                   'aparat': config.aparat,
+                   'facebook': config.facebook,
+                   'youtube': config.youtube,
+                   'slogan': config.slogan,
+                   'short_title': config.short_title}
         if config.splashscreen:
             context['splashscreen'] = request.build_absolute_uri() + config.splashscreen.url.split('/')[-1]
         else:

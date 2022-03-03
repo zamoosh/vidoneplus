@@ -7,7 +7,9 @@ from .logout import Logout
 from .profile import profile
 from .setting import user_settings, configs
 from .verify import verify
-from .changepassword import changepassword
-from .installation import admin, admininstall, adminremove, check_or_createuser, resetpassword, install_sites, verion, \
-    edit_verion, create_verion
+from .profile_change_password import changepassword
+from .installation import edit_verion, create_verion, verion
 from .plus_update_pass import plus_update_pass
+from .admin import admin
+from .create_super_user import resetpassword, check_or_createuser
+from .create_vidone import admininstall, adminremove, install_sites

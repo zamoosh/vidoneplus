@@ -1,5 +1,5 @@
 from .imports import *
-import jdatetime
+
 
 def Login(request):
     if request.user.is_authenticated:
@@ -14,4 +14,4 @@ def Login(request):
             context['request']['cellphone'] = "+989" + context['request']['cellphone'][2:]
             request.session['user'] = context['request']
             return HttpResponseRedirect("/accounts/verify")
-    return render(request, "client/login.html", context)
+    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)

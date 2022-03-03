@@ -41,7 +41,9 @@ class Kubectl:
                                  'DJANGO_SUPERUSER_PASSWORD='], stdout=subprocess.PIPE)
 
     def vidone_getsuperuser(self, appname):
+        print(appname)
         pod_name = self.get_podname(appname)
+        print(pod_name)
         result = subprocess.run(
             [self.KUBE, self.KUBE_CONFIG, 'exec', pod_name, '--', 'python', 'manage.py', 'getsuperuser'],
             stdout=subprocess.PIPE)

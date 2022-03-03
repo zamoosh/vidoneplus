@@ -89,7 +89,7 @@ class Cpanel:
         )
         response = requests.post(self.SERVER + 'json-api/editzonerecord', headers=self.headers, params=params,
                                  verify=False)
-        add_zone = {"dname": "site", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
+        add_zone = {"dname": "site", "ttl": 14400, "record_type": "A", "data": [self.CLUSTER_API]}
         params = (
             ('api.version', '1'),
             ('serial', str(int(serial) + 1)),
@@ -98,7 +98,7 @@ class Cpanel:
         )
         response = requests.post(self.SERVER + 'json-api/mass_edit_dns_zone', headers=self.headers, params=params,
                                  verify=False)
-        add_zone = {"dname": "admin", "ttl": 14400, "record_type": "A", "data": ["185.53.143.185"]}
+        add_zone = {"dname": "admin", "ttl": 14400, "record_type": "A", "data": [self.CLUSTER_API]}
         params = (
             ('api.version', '1'),
             ('serial', str(int(serial) + 2)),

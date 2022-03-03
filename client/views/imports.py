@@ -10,6 +10,8 @@ from django.http.response import HttpResponseRedirect
 import datetime
 from client.models import Setting as usetting
 from client.models import *
+from client.decorators import allowed_users
+from client.apps import ClientConfig as app_name
 
 from django.contrib.auth import get_user_model
 
@@ -17,30 +19,27 @@ User = get_user_model()
 
 
 def error_handler(lang, status, exist):
+    ret_msg = ""
     if lang and lang == 'en':
-        if status == 200:
-            return {'msg': 'Operation successfully done.'}
-        elif status == 429:
-            return {'msg': 'Operation successfully done with some limits because of your package type.'}
-        elif status == 400:
-            return {'msg': 'Operation failed because of your package type.'}
-        elif exist and exist is True:
-            return {'msg': 'This item exist'}
-        else:
-            return {'msg': 'Operation failed.'}
-
+        codes = {
+            200: 'Operation successfully done.',
+            429: 'Operation successfully done with some limits because of your package type.',
+            400: 'Operation failed because of your package type.',
+        }
+        ret_msg = codes.get(status, 'Operation failed.')
+        if ret_msg == 'Operation failed.' and exist and exist is True:
+            ret_msg = 'This item exist'
     else:
-        if status == 200:
-            return {'msg': 'عملیات با موفقیت انجام شد'}
-        elif status == 429:
-            return {'msg': 'عملیات به علت محدودیت بسته خریداری شده شما با محدودیت انجام شد'}
-        elif status == 400:
-            return {'msg': 'پکیج خریداری شده توسط شما امکان انجام این فعالیت را ندارد'}
-        elif exist and exist is True:
-            return {'msg': 'این آیتم از قبل ذخیره گردیده است'}
-        else:
-            return {'msg': 'در انجام عملیات خطایی رخ داده است'}
+        codes = {
+            200: 'عملیات با موفقیت انجام شد',
+            429: 'عملیات به علت محدودیت بسته خریداری شده شما با محدودیت انجام شد',
+            400: 'پکیج خریداری شده توسط شما امکان انجام این فعالیت را ندارد',
+        }
+        ret_msg = codes.get(status, 'در انجام عملیات خطایی رخ داده است')
+        if ret_msg == 'در انجام عملیات خطایی رخ داده است' and exist and exist is True:
+            ret_msg = 'این آیتم از قبل ذخیره گردیده است'
 
+    return {'msg' : ret_msg}
 
 def findSeqChar(CharLocs, src):
     AllSeqChars = []

@@ -10,7 +10,6 @@ def verify(request):
     context = {}
     if 'user' in request.session:
         context = request.session['user']
-        print(context)
         if request.method == 'POST':
             if request.POST.get("code", "") == str(request.session['key']):
                 pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
@@ -18,9 +17,18 @@ def verify(request):
                     context['cellphone'] = "+989" + context['cellphone'][2:]
                 if User.objects.filter(cellphone=context['cellphone']).exists():
                     user = User.objects.get(cellphone=context['cellphone'])
-                    print(user)
                     if user is not None:
                         # the password verified for the user
+                        print('here')
+                        try:
+                            userstatus = Status.objects.get(id=user.id)
+                        except:
+                            status = Status()
+                            status.active_user = False
+                            status.user = user
+                            status.duration = 0
+                            status.save()
+
                         if user.is_active:
                             login(request, user)
                             if len(request.GET.get("next", "/")) == 0:
@@ -40,7 +48,7 @@ def verify(request):
                             user.extra['referall'] = request.session['referall']
                     user.save()
                     status = Status()
-                    status.status = False
+                    status.active_user = False
                     status.user = user
                     status.duration = 0
                     status.save()
@@ -53,7 +61,6 @@ def verify(request):
                     #     pass
                     context['register'] = 1
                     user = User.objects.get(cellphone=context['cellphone'])
-                    print(user)
                     if user is not None:
                         # the password verified for the user
                         if user.is_active:
@@ -70,11 +77,11 @@ def verify(request):
                 key = str(random.randrange(10000, 99999))
                 request.session['key'] = key
                 sms.sendwithtemplate({'verificationCode': key}, context['cellphone'], 55907)
-                return render(request, "client/verify.html", context)
+                return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
             except:
                 context['sms'] = False
                 time.sleep(5)
                 return HttpResponseRedirect("/accounts/login")
-        return render(request, "client/verify.html", context)
+        return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
     else:
         return HttpResponseRedirect("/accounts")
