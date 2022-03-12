@@ -74,22 +74,16 @@ def user_settings(request, action=None):
                     # appupdate = requests.get("https://%s/update/"%(seeting.domain))
                     context['result'] = "تنظیمات با موفقیت ثبت شد."
                 else:
-                    setting = usetting.objects.get(owner=request.user)
-                    setting.owner, setting.org_color, setting.sub_color, setting.app_name, _, setting.domain, _ \
-                        , setting.contact_phone, setting.instagram, setting.twitter, setting.aparat, setting.facebook \
-                        , setting.youtube, setting.slogan, setting.short_title, setting.zarinpal, setting.smsir_key \
-                        , setting.download_link, _, _, _ = context.values()
                     context['usreq'] = usetting.objects.get(owner=request.user)
                     context['username'] = context['usreq'].fullname
                     if context['domain'] and context['username'] and context['domain'] is not usetting.objects.get(
                             owner=request.user).domain:
                         context['app_name'] = context['usreq'].admin_name
-                        setting.app_name = context['app_name']
                         context['pwa_name'] = context['usreq'].pwa_name
                         context['site_name'] = context['usreq'].site_name
                         context['secretName'] = context['domain'].replace('.', '-')
                         mylist = []
-                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
+                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', str(request.user.id))
                         with open(os.path.join(dirtemp, 'dbdata.txt')) as f:
                             lines = f.readlines()
                             for line in lines:
@@ -120,8 +114,24 @@ def user_settings(request, action=None):
                                                  context['usreq'].image_tag.admin_version)
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  context['usreq'].image_tag.pwa_version)
+                    setting = usetting.objects.get(owner=request.user)
+                    setting.org_color = context['org_colore']
+                    setting.sub_color = context['sub_colore']
+                    setting.instagram = context['instagram']
+                    setting.twitter = context['twitter']
+                    setting.aparat = context['aparat']
+                    setting.facebook = context['facebook']
+                    setting.youtube = context['youtube']
+                    setting.short_title = context['short_title']
+                    setting.slogan = context['slogan']
+                    setting.app_name = context['app_name']
+                    setting.zarinpal = context['zarinpal']
+                    setting.smsir_key = context['smsir_key']
+                    setting.domain = context['domain']
                     if 'company_logo' in request.FILES:
                         setting.company_logo = request.FILES['company_logo']
+                    setting.contact_phone = context['contact_phone']
+                    setting.download_link = context['download_link']
                     if 'splashscreen' in request.FILES:
                         setting.splashscreen = request.FILES['splashscreen']
                     if 'favicon' in request.FILES:
