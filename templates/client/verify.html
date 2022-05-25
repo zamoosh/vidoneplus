@@ -38,7 +38,7 @@
 
                         <input name="code" type="text" class="form-control mb-3"
                                placeholder="کد اس ام اس شده را وارد کنید"
-                               required="" minlength="5" maxlength="5"/>
+                               required="" minlength="4" maxlength="4"/>
 
                         <div class="row ">
 
@@ -48,7 +48,7 @@
 
                         <div class="col-6">
                             <a class="reset_pass mt-2 scolor-light float-end text-decoration-none pcolorh"
-                               href="{% url 'client:verify' %}">
+                               href="{% url 'client:verify_get' user_cellphone %}?recode=True">
                                 ارسال مجدد کد
                             </a>
                         </div>

@@ -1,87 +1,34 @@
-import time
 from .imports import *
-from library.smsir import Smsir
-from random import randrange
-from ..models import Status
-import jdatetime
 
 
-def verify(request):
+def verify(request, user_cellphone):
     context = {}
-    if 'user' in request.session:
-        context = request.session['user']
+    if request.GET.get('recode'):
+        context['user_cellphone'] = user_cellphone
+        if request.session.get('sent_sms'):
+            del request.session['sent_sms']
+        return redirect(reverse('client:verify_get', kwargs={'user_cellphone': user_cellphone}))
+    if user_cellphone:
+        """check if request.user is exists in database or not"""
+        u = User.get_user(user_cellphone)
+        if not u.id:
+            """creating new user"""
+            u.cellphone = user_cellphone
+            u.username = user_cellphone
+            u.save()
+            Status.objects.create(user=u, duration=0).save()
+        if not request.session.get('sent_sms'):
+            u.sendsms()
+            request.session['sent_sms'] = True
         if request.method == 'POST':
+            u.get_verificationcode()
             if request.POST.get("code", "") == str(request.session['key']):
-                pattern = re.compile("^\+989?\d{9}$", re.IGNORECASE)
-                if pattern.match(context['cellphone']) is None:
-                    context['cellphone'] = "+989" + context['cellphone'][2:]
-                if User.objects.filter(cellphone=context['cellphone']).exists():
-                    user = User.objects.get(cellphone=context['cellphone'])
-                    if user is not None:
-                        # the password verified for the user
-                        print('here')
-                        try:
-                            userstatus = Status.objects.get(id=user.id)
-                        except:
-                            status = Status()
-                            status.active_user = False
-                            status.user = user
-                            status.duration = 0
-                            status.save()
-
-                        if user.is_active:
-                            login(request, user)
-                            if len(request.GET.get("next", "/")) == 0:
-                                return HttpResponseRedirect("/")
-                            return HttpResponseRedirect(request.GET.get("next", "/"))
-                    else:
-                        # the authentication system was unable to verify the username and password
-                        print("The username and password were incorrect.")
-                else:
-                    user = User.objects.create_user(
-                        # context['email'],
-                        cellphone=context['cellphone'],
-                        username=context['cellphone']
-                    )
-                    if 'referall' in request.session:
-                        if User.objects.filter(username_clear=request.session['referall']).exists():
-                            user.extra['referall'] = request.session['referall']
-                    user.save()
-                    status = Status()
-                    status.active_user = False
-                    status.user = user
-                    status.duration = 0
-                    status.save()
-                    del request.session['user']
-                    # try:
-                    #     sms = Smsir()
-                    #     code = randrange(1000, 9999, 1)
-                    #     sms.sendwithtemplate({'verificationCode': code}, context['cellphone'], 55907)
-                    # except:
-                    #     pass
-                    context['register'] = 1
-                    user = User.objects.get(cellphone=context['cellphone'])
-                    if user is not None:
-                        # the password verified for the user
-                        if user.is_active:
-                            login(request, user)
-                            if len(request.GET.get("next", "/")) == 0:
-                                return HttpResponseRedirect("/")
-                            return HttpResponseRedirect("/accounts/profile/edit")
-            else:
-                context['error'] = 1
-        else:
-            import random
-            try:
-                sms = Smsir()
-                key = str(random.randrange(10000, 99999))
-                request.session['key'] = key
-                sms.sendwithtemplate({'verificationCode': key}, context['cellphone'], 55907)
-                return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
-            except:
-                context['sms'] = False
-                time.sleep(5)
-                return HttpResponseRedirect("/accounts/login")
+                u = User.get_user(user_cellphone)
+                if not u.id:
+                    return redirect(reverse('client:login'))
+                if u.is_active:
+                    login(request, u)
+                    return redirect(reverse('index'))
+        context['user_cellphone'] = user_cellphone
         return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
-    else:
-        return HttpResponseRedirect("/accounts")
+    return redirect(reverse('index'))
