@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 import re
 from django.core.validators import validate_email

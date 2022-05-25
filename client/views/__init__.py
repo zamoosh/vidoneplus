@@ -2,7 +2,7 @@ from .setting import static_files
 from .activeuser import activeuser, users, deactiveuser
 from .status import status
 from .index import index
-from .login import Login
+from .login import login
 from .logout import Logout
 from .profile import profile
 from .setting import user_settings, configs

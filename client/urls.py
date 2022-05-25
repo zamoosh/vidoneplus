@@ -14,8 +14,8 @@ urlpatterns = [
     path('setting/<str:domain>/', configs, name="configs"),
     path('setting/<str:domain>/<path:path>', static_files, name="static_files"),
 
-    path('login/', Login, name="login"),
-    path('verify/', verify, name="verify"),
+    path('login/', login, name="login"),
+    path('verify/<str:user_cellphone>/', verify, name="verify_get"),
     path('logout/', Logout, name="logout"),
 
     path('status/', status, name="status"),
