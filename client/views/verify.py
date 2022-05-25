@@ -21,11 +21,8 @@ def verify(request, user_cellphone):
             u.sendsms()
             request.session['sent_sms'] = True
         if request.method == 'POST':
-            u.get_verificationcode()
-            if request.POST.get("code", "") == str(request.session['key']):
+            if request.POST.get("code", "") == u.get_verificationcode():
                 u = User.get_user(user_cellphone)
-                if not u.id:
-                    return redirect(reverse('client:login'))
                 if u.is_active:
                     login(request, u)
                     return redirect(reverse('index'))

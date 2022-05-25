@@ -15,6 +15,7 @@ class User(AbstractUser):
     educational_interface_name = models.CharField(max_length=200)
     description = models.TextField()
     dateofestablishment = models.DateField(null=True)
+    extra = models.JSONField(default=dict)
 
     @staticmethod
     def get_user(username):
