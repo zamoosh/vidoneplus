@@ -1,14 +1,6 @@
 helm-chart
 .idea
 db.sqlite3
-*__pycache__*
-*/__pycache__/*
+media
 *.pyc
 venv
-client/__pycache__/
-client/migrations/__pycache__/
-course/__pycache__/
-course/migrations/__pycache__/
-tag/__pycache__/
-tag/migrations/__pycache__/
-vidoneplus/__pycache__/
