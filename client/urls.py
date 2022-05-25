@@ -6,7 +6,9 @@ urlpatterns = [
     path('', index, name="index"),
 
     path('profile/', profile, name="profile"),
-    path('profile/edit/', profile, {'action': 'edit'}, name="profile-edit"),
+    # path('profile/edit/', profile, {'action': 'edit'}, name="profile-edit"),
+    path('profile/edit/<int:user_id>/', profile_edit, name="profile_edit"),
+    path('profile/edit/<int:user_id>/', profile_edit, name="profile_update"),
     path('profile/password/', changepassword, name="password"),
 
     path('setting/', user_settings, name="setting"),
@@ -21,8 +23,8 @@ urlpatterns = [
     path('status/', status, name="status"),
 
     path('users/', users, name="users"),
-    path('users/<int:id>/active', activeuser, name="activeuser"),
-    path('users/<int:id>/deactive', deactiveuser, name="deactiveuser"),
+    path('users/<int:user_id>/active', activate_user, name="activeuser"),
+    path('users/<int:user_id>/deactive', deactivate_user, name="deactiveuser"),
     path('plus_update_pass/', plus_update_pass, name="plus_update_pass"),
 
     path('admin/', admin, name="admin"),

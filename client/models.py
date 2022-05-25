@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import login
+from jdatetime import date
 
 
 def user_image(instance, filename):
@@ -105,6 +106,26 @@ class User(AbstractUser):
 
     def get_status(self):
         return self.status
+
+    @staticmethod
+    def not_empty(request, request_method, *args):
+        if request_method == 'POST':
+            for input_name in args:
+                if not request.POST.get(input_name):
+                    return False
+        else:
+            for input_name in args:
+                if not request.GET.get(input_name):
+                    return False
+        return True
+
+    def jalali_date_to_georgian(self, jalali_date):
+        d = date(
+            int(jalali_date.split('/')[0]),
+            int(jalali_date.split('/')[1]),
+            int(jalali_date.split('/')[2])
+        ).togregorian()
+        self.dateofestablishment = d
 
 
 class VerificationCode(models.Model):
