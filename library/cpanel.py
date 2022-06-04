@@ -2,17 +2,16 @@ import requests
 import json
 from uuid import uuid4
 import random
+from django.conf import settings
 
 
 class Cpanel:
     def __init__(self, username, domain):
-        self.TOKEN = 'Q5FZT321YQAB5OP5BUKLQSNOA9HGRVOX'
-        self.USER = 'resellervidone'
-        self.SERVER = 'https://whm.vidone.org/'
-        self.headers = {'Authorization': 'whm ' + self.USER + ':' + self.TOKEN, }
+        self.SERVER = settings.CPANEL_SERVER
+        self.headers = {'Authorization': 'whm ' + settings.CPANEL_USER + ':' + settings.CPANEL_TOKEN, }
         self.username = username
         self.domain = domain
-        self.CLUSTER_API = '185.53.143.181'
+        self.CLUSTER_API = settings.KUBER_CLUSTER_ADDRESS
 
     def get(self):
         params = (
@@ -33,7 +32,7 @@ class Cpanel:
         response = requests.get(self.SERVER + 'json-api/createacct', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
-    def update_acc_domain(self,domain):
+    def update_acc_domain(self, domain):
         params = (
             ('api.version', '1'),
             ('user', self.username),
@@ -135,8 +134,17 @@ class Cpanel:
         self.create_db_user(dbuser, password)
         self.create_remote_allow()
         self.privileges_on_database(dbname, dbuser)
+        self.change_collation_encoding_db(dbname, dbuser, password, self.SERVER)
 
         return dbname, dbuser, password
+
+    def change_collation_encoding_db(self, dbname, dbuser, password, host):
+        import MySQLdb
+        db = MySQLdb.connect(self, dbname, dbuser, password, host, use_unicode=True)
+        cursor = db.cursor()
+        cursor.execute(f'ALTER DATABASE {dbname} DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci')
+
+
 
     def create_db_user(self, dbuser, password):
         params = (
