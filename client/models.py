@@ -1,9 +1,10 @@
+import datetime
+import jdatetime
 from unidecode import unidecode
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import login
-from jdatetime import date
 
 
 def user_image(instance, filename):
@@ -119,13 +120,10 @@ class User(AbstractUser):
                     return False
         return True
 
-    def jalali_date_to_georgian(self, jalali_date):
-        d = date(
-            int(jalali_date.split('/')[0]),
-            int(jalali_date.split('/')[1]),
-            int(jalali_date.split('/')[2])
-        ).togregorian()
-        self.dateofestablishment = d
+    @staticmethod
+    def str_to_date(string_date):
+        d = datetime.datetime.strptime(string_date, '%Y/%m/%d').date()
+        return jdatetime.date(d.year, d.month, d.day).togregorian()
 
 
 class VerificationCode(models.Model):

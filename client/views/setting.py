@@ -8,7 +8,7 @@ from django.contrib import messages
 from library.cpanel import Cpanel
 from library.helm import Helm
 import mimetypes
-from library.helm_yaml import siteyaml, appyaml, pwayaml
+from library.helm_yaml import core_yaml, admin_yaml, site_yaml
 from ..models import Status
 
 
@@ -97,13 +97,13 @@ def user_settings(request, action=None):
                         context['dbuser'] = newlist[1]
                         context['dbpassword'] = newlist[2]
                         with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(siteyaml(context['site_name'], context['username'], context['domain'],
-                                                     context['dbuser'], context['dbpassword'], context['dbname'],
-                                                     context['secretName']))
+                            yaml_file.write(core_yaml(context['site_name'], context['username'], context['domain'],
+                                                      context['dbuser'], context['dbpassword'], context['dbname'],
+                                                      context['secretName']))
                         with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(appyaml(context['app_name'], context['domain'], context['secretName']))
+                            yaml_file.write(admin_yaml(context['app_name'], context['domain'], context['secretName']))
                         with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
-                            yaml_file.write(pwayaml(context['pwa_name'], context['domain'], context['secretName']))
+                            yaml_file.write(site_yaml(context['pwa_name'], context['domain'], context['secretName']))
                         upcpanel = Cpanel(context['username'], context['domain'])
                         print(context['username'], context['domain'])
                         upcpanel.update_acc_domain(context['domain'])

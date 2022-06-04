@@ -1,4 +1,7 @@
-def siteyaml(sitename, username, domain, dbuser, dbpass, dbname, secretname):
+import json
+
+
+def core_yaml(sitename, username, domain, dbuser, dbpass, dbname, secretname):
     return f"""nameOverride: "{sitename}"
 fullnameOverride: {sitename}
 database:
@@ -18,10 +21,10 @@ ingress:
   tls:
   - hosts:
     - {domain}
-    secretName: {secretname}"""
+    secretName: {domain}"""
 
 
-def appyaml(sitename, domain, secretname):
+def admin_yaml(sitename, domain, secretname):
     return f"""nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
@@ -31,10 +34,10 @@ ingress:
   tls:
   - hosts:
     - admin.{domain}
-    secretName: app-{secretname}"""
+    secretName: admin.{domain}"""
 
 
-def pwayaml(sitename, domain, secretname):
+def site_yaml(sitename, domain, secretname):
     return f"""nameOverride: "{sitename}"
 fullnameOverride: "{sitename}"
 ingress:
@@ -44,10 +47,12 @@ ingress:
   tls:
   - hosts:
     - site.{domain}
-    secretName: pwa-{secretname}"""
+    secretName: site.{domain}"""
 
 
 def dbdata(dbname, dbuser, dbpass):
-    return f"""dbname: {dbname}
-dbuser: {dbuser}
-dbpassword: {dbpass}"""
+    result = {}
+    result['dbname'] = dbname
+    result['dbuser'] = dbuser
+    result['dbpass'] = dbpass
+    return json.dumps(result)
