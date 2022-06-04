@@ -94,6 +94,7 @@ DATABASES = {
         'PASSWORD': 'W@=Fl!&L0$.,',
         'HOST': 'cpanel.vidone.org',
         'PORT': '',
+
     }
 }
 
@@ -152,3 +153,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SMSIR_APIKEY = '278a88dfede55fc1d8488df'
 SMSIR_SECRETKEY = '@qwer3!!234TebyA'
 SMSIR_NUMBER = '30004554552802'
+
+CPANEL_TOKEN = 'Q5FZT321YQAB5OP5BUKLQSNOA9HGRVOX'
+CPANEL_USER = 'resellervidone'
+CPANEL_SERVER = 'https://whm.vidone.org/'
+
+KUBER_CLUSTER_ADDRESS = '185.53.143.181'
