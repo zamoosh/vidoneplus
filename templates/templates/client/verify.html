@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+{% endblock %}
+{% block page_title %}ویدان - حساب کاربری{% endblock %}
+{% block bodyclass %} class="login"{% endblock %}
+{% block body %}
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="reset"></a>
+
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if error %}
+                        <div class="alert alert-warning alert-dismissible show" role="alert">
+                            کد وارد شده صحیح نمی باشد.<br/>
+                        </div>
+                    {% endif %}
+                    {% if sms %}
+                        <div class="alert alert-success alert-dismissible show" role="alert">
+                            <strong>خطا!</strong> در حال حاضر سرور ارسال اس ام اس با خطا مواجه شده است لطفا
+                            مجددا تلاش کنید.
+                        </div>
+                    {% endif %}
+                    {% if register %}
+                        <div class="alert alert-success alert-dismissible show" role="alert">
+                            <strong>تبریک!</strong> ثبت نام شما با موفقیت انجام شد.
+                        </div>
+                        <p class="change_link">
+                            <a href="{% url 'client:login' %}" class="to_register"> ورود به حساب کاربری </a>
+                        </p>
+                    {% else %}
+
+                        <input name="code" type="text" class="form-control mb-3"
+                               placeholder="کد اس ام اس شده را وارد کنید"
+                               required="" minlength="4" maxlength="4"/>
+
+                        <div class="row ">
+
+                        <div class="col-6">
+                            <button class="btn btn-default submit">ورود</button>
+                        </div>
+
+                        <div class="col-6">
+                            <a class="reset_pass mt-2 scolor-light float-end text-decoration-none pcolorh"
+                               href="{% url 'client:verify_get' user_cellphone %}?recode=True">
+                                ارسال مجدد کد
+                            </a>
+                        </div>
+                    {% endif %}
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

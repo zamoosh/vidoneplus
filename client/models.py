@@ -1,3 +1,5 @@
+import datetime
+import jdatetime
 from unidecode import unidecode
 from django.db import models
 from django.db.models import Q
@@ -105,6 +107,23 @@ class User(AbstractUser):
 
     def get_status(self):
         return self.status
+
+    @staticmethod
+    def not_empty(request, request_method, *args):
+        if request_method == 'POST':
+            for input_name in args:
+                if not request.POST.get(input_name):
+                    return False
+        else:
+            for input_name in args:
+                if not request.GET.get(input_name):
+                    return False
+        return True
+
+    @staticmethod
+    def str_to_date(string_date):
+        d = datetime.datetime.strptime(string_date, '%Y/%m/%d').date()
+        return jdatetime.date(d.year, d.month, d.day).togregorian()
 
 
 class VerificationCode(models.Model):

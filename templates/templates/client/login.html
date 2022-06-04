@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+{% endblock %}
+{% block page_title %}ویدان - حساب کاربری{% endblock %}
+{% block bodyclass %} class="login"{% endblock %}
+{% block body %}
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="reset"></a>
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <img src="{% static 'images/mainlogo.png' %}">
+                <form method="post" action="{% url 'client:login' %}"> {% csrf_token %}
+                    <h1>ورود / ایجاد حساب کاربری</h1>
+                    {% if error %}
+                        <div class="alert alert-warning alert-dismissible show" role="alert">
+                            {% if Firstname %}
+                                طول نام باید بیشتر از سه کاراکتر باشد<br/>
+                            {% endif %}
+                            {% if Lastname %}
+                                طول نام باید بیشتر از سه کاراکتر باشد<br/>
+                            {% endif %}
+                            {% if username_length %}
+                                نام کاربری شما صحیح نیست شما در نام کاربری میتوانید از حروف انگلیسی اعداد و
+                                نقطه
+                                استفاده نمایید.<br/>
+                            {% endif %}
+                            {% if username_confilict %}
+                                نام کاربری شما قبلا ثبت شده است<br/>
+                            {% endif %}
+                            {% if email_confilict %}
+                                ایمیل شما تکراری است<br/>
+                            {% endif %}
+                            {% if email %}
+                                ایمیل وارد شده صحیح نمی باشد<br/>
+                            {% endif %}
+                            {% if passconfilict %}
+                                گذرواژه و تکرار آن باید یکسان باشند.<br/>
+                            {% endif %}
+                            {% if password %}
+                                گذرواژه را وارد نکرده اید.<br/>
+                            {% endif %}
+                            {% if Strength < 60 %}
+                                گذرواژه شما امن نیست گذرواژه امن انتخاب کنید.<br/>
+                            {% endif %}
+                            {% if cellphone %}
+                                شماره تماس وارد شده معتبر نیست.<br/>
+                            {% endif %}
+                            {% if cellphone_confilict %}
+                                شماره تماس وارد شده تکراری است.<br/>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if register %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>تبریک!</strong> ثبت نام شما با موفقیت انجام شد.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <input name="cellphone" type="text" class="form-control mb-2" placeholder="شماره موبایل"
+                               minlength="9"{% if request.cellphone %}
+                               value="{{ request.cellphone }}"{% endif %}
+                               required=""/>
+                    </div>
+                    <div>
+                        <button class="btn btn-default submit">دریافت کد تایید</button>
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                    <div class="clearfix"></div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

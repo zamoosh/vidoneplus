@@ -2,14 +2,14 @@ from library.cpanel import Cpanel
 from .imports import *
 from ..models import *
 import uuid
-from library.helm_yaml import siteyaml, appyaml, pwayaml, dbdata
+from library.helm_yaml import core_yaml, admin_yaml, site_yaml, dbdata
 from client.decorators import allowed_users
 from library.helm import Helm
 import os
 
 
 def _configpodname(tld):
-    return tld + "-site", tld + "-app", tld + "-pwa"
+    return tld + "-core", tld + "-admin", tld + "-site"
 
 
 @login_required
@@ -47,13 +47,13 @@ def admininstall(request, id):
     dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', str(id))
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
-    with open(os.path.join(dirtemp, 'site-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(siteyaml(context['site_name'], context['username'], context['domain'], dbuser, dbpass, dbname,
-                                 context['secretName']))
+    with open(os.path.join(dirtemp, 'core-Chart.yaml'), 'w') as yaml_file:
+        yaml_file.write(core_yaml(context['site_name'], context['username'], context['domain'], dbuser, dbpass, dbname,
+                                  context['secretName']))
     with open(os.path.join(dirtemp, 'app-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(appyaml(context['app_name'], context['domain'], context['secretName']))
+        yaml_file.write(admin_yaml(context['app_name'], context['domain'], context['secretName']))
     with open(os.path.join(dirtemp, 'pwa-Chart.yaml'), 'w') as yaml_file:
-        yaml_file.write(pwayaml(context['pwa_name'], context['domain'], context['secretName']))
+        yaml_file.write(site_yaml(context['pwa_name'], context['domain'], context['secretName']))
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata(dbname, dbuser, dbpass))
     context['result'] = "هاست با موفقیت ایجاد شد."
