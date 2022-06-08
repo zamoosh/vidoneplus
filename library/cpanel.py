@@ -139,12 +139,16 @@ class Cpanel:
         return dbname, dbuser, password
 
     def change_collation_encoding_db(self, dbname, dbuser, password, host):
+        if host.startswith("https://"):
+            host = host.replace('https://', '')
+        if len(host.split('/')) > 1:
+            host = host.split("/")[0]
         import MySQLdb
-        db = MySQLdb.connect(self, dbname, dbuser, password, host, use_unicode=True)
+
+        self.create_remote_allow(ip='185.53.141.122')
+        db = MySQLdb.connect(host, dbuser, password, dbname, use_unicode=True)
         cursor = db.cursor()
         cursor.execute(f'ALTER DATABASE {dbname} DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci')
-
-
 
     def create_db_user(self, dbuser, password):
         params = (
@@ -159,16 +163,27 @@ class Cpanel:
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
 
-    def create_remote_allow(self):
-        params = (
-            ('api.version', '1'),
-            ('cpanel_jsonapi_user', self.username),
-            ('cpanel_jsonapi_module', 'Mysql'),
-            ('cpanel_jsonapi_func', 'add_host'),
-            ('cpanel_jsonapi_apiversion', '3'),
-            ('host', self.CLUSTER_API),
-            ('note', 'added with VidonePlus'),
-        )
+    def create_remote_allow(self, ip=None):
+        if ip:
+            params = (
+                ('api.version', '1'),
+                ('cpanel_jsonapi_user', self.username),
+                ('cpanel_jsonapi_module', 'Mysql'),
+                ('cpanel_jsonapi_func', 'add_host'),
+                ('cpanel_jsonapi_apiversion', '3'),
+                ('host', ip),
+                ('note', 'added with VidonePlus'),
+            )
+        else:
+            params = (
+                ('api.version', '1'),
+                ('cpanel_jsonapi_user', self.username),
+                ('cpanel_jsonapi_module', 'Mysql'),
+                ('cpanel_jsonapi_func', 'add_host'),
+                ('cpanel_jsonapi_apiversion', '3'),
+                ('host', self.CLUSTER_API),
+                ('note', 'added with VidonePlus'),
+            )
         response = requests.get(self.SERVER + 'json-api/cpanel', headers=self.headers, params=params, verify=False)
         self.response = response.text
 

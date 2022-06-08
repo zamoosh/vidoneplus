@@ -57,6 +57,7 @@
                                                     <th class="column-title">نام شرکت</th>
                                                     <th class="column-title">رابط آموزش</th>
                                                     <th class="column-title">تاریخ ثبت شرکت</th>
+                                                    <th class="column-title">وضعیت</th>
                                                     <th class="column-title no-link last"><span class="nobr">عمل</span>
                                                     </th>
                                                     <th class="bulk-actions" colspan="7">
@@ -77,9 +78,13 @@
                                                         <td class=" ">{{ user.organization_name }}</td>
                                                         <td class=" ">{{ user.educational_interface_name }}</td>
                                                         <td class=" ">{{ user.dateofestablishment|jformat:"%Y/%m/%d" }}</td>
+                                                        <td class=" ">{% if  user.status.active_user %}فعال{% else %}غیرفعال{% endif %}</td>
                                                         <td class="last">
-                                                            <a href="{% url 'client:activeuser' user.id %}" class="btn btn-success">فعال</a>
-                                                            <a href="{% url 'client:deactiveuser' user.id %}" class="btn btn-danger">غیرفعال</a>
+                                                            {% if user.status.active_user %}
+                                                                <a href="{% url 'client:deactiveuser' user.id %}" class="btn btn-danger">غیرفعال</a>
+                                                            {% else %}
+                                                                <a href="{% url 'client:activeuser' user.id %}" class="btn btn-success">فعال</a>
+                                                            {% endif %}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
