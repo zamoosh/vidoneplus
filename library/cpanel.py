@@ -146,6 +146,7 @@ class Cpanel:
         import MySQLdb
 
         self.create_remote_allow(ip='185.53.141.122')
+        # self.create_remote_allow(ip='185.53.143.181')
         db = MySQLdb.connect(host, dbuser, password, dbname, use_unicode=True)
         cursor = db.cursor()
         cursor.execute(f'ALTER DATABASE {dbname} DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci')
