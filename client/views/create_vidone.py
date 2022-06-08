@@ -44,7 +44,7 @@ def admininstall(request, id):
     createVidone.create_acc()
     createVidone.add_or_edit_zone()
     dbname, dbuser, dbpass = createVidone.create_db()
-    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', str(id))
+    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'])
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
     with open(os.path.join(dirtemp, 'core-Chart.yaml'), 'w') as yaml_file:
