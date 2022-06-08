@@ -17,7 +17,7 @@ def user_settings(request, action=None):
     context = {}
     is_user_active = False
     try:
-        userstatus = Status.objects.get(id=request.user.id)
+        userstatus = Status.objects.get(user=request.user)
         if userstatus.active_user:
             is_user_active = True
     except:
