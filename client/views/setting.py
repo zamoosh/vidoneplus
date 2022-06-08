@@ -49,7 +49,7 @@ def user_settings(request, action=None):
                 if not usetting.objects.filter(owner=request.user):
                     context['edit_setting'] = 1
                     seeting = usetting()
-                    seeting.owner = context['user']
+                    seeting.owner = request.user
                     seeting.org_color = request.POST.get('org_colore', '').strip()
                     seeting.sub_color = request.POST.get('sub_colore', '').strip()
                     seeting.app_name = context['app_name']
@@ -137,13 +137,20 @@ def user_settings(request, action=None):
                     if 'favicon' in request.FILES:
                         setting.favicon = request.FILES['favicon']
                     setting.save()
-                    appupdate = requests.get("https://%s/update/" % (setting.domain))
+                    try:
+                        appupdate = requests.get("https://%s/update/" % (setting.domain))
+                    except (Exception, Exception):
+                        request.session['domain_error'] = True
+                        return redirect(reverse('client:setting'))
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
             return render(request, "client/edit-setting.html", context)
     else:
         context['msg'] = "حساب کاربری شما فعال نشده است"
+    if request.session.get('domain_error'):
+        context['domain_error'] = True
+        del request.session['domain_error']
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 

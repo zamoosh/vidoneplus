@@ -11,6 +11,19 @@
 <link href="{% static 'vendors/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet">
 {% endblock %}
 {% block js %}
+    {% if domain_error %}
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                width: '40%',
+                padding: '3em',
+                timer: 4000,
+                timerProgressBar: true,
+                title: 'به خاطر اینکه دامنه‌ی شما نامعتبر است،‌ تنظیمات به درستی ذخیره نشدند. لطفا آنرا درست کنید'
+            })
+        </script>
+    {% endif %}
 
 <!-- jQuery -->
 <script src=".{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
