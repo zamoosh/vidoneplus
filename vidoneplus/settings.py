@@ -79,24 +79,24 @@ WSGI_APPLICATION = 'vidoneplus.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'vidone_vidoneplus',
-#         'USER': 'vidone_vidoneplus',
-#         'PASSWORD': 'W@=Fl!&L0$.,',
-#         'HOST': 'cpanel.vidone.org',
-#         'PORT': '',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vidone_vidoneplus',
+        'USER': 'vidone_vidoneplus',
+        'PASSWORD': 'W@=Fl!&L0$.,',
+        'HOST': 'cpanel.vidone.org',
+        'PORT': '',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
