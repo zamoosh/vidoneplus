@@ -35,12 +35,12 @@ class User(AbstractUser):
         if not self.cellphone:
             return False
         code = self.create_verificationcode()
-        # try:
-        #     from library.smsir import Smsir
-        #     sms = Smsir()
-        #     sms.sendwithtemplate({'verificationCode': code}, self.cellphone, 55907)
-        # except (Exception, Exception):
-        #     print('احتمالا اعتبار سامانه‌ی پیامکی تمام شده است!')
+        try:
+            from library.smsir import Smsir
+            sms = Smsir()
+            sms.sendwithtemplate({'verificationCode': code}, self.cellphone, 55907)
+        except (Exception, Exception):
+            print('احتمالا اعتبار سامانه‌ی پیامکی تمام شده است!')
         print(code)
 
     def login(self, request):
