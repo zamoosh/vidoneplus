@@ -80,10 +80,10 @@ def install_sites(request, id):
     helm_install.install_app("website", context['site_name'], os.path.join(dirtemp, "core-Chart.yaml"),
                              settingconf.image_tag.site_version)
     print('app')
-    helm_install.install_app("admindashvidone", context['app_name'], os.path.join(dirtemp + "admin-Chart.yaml"),
+    helm_install.install_app("admindashvidone", context['app_name'], os.path.join(dirtemp, "app-Chart.yaml"),
                              settingconf.image_tag.admin_version)
     print('pwa')
-    helm_install.install_app("frontvidone", context['pwa_name'], os.path.join(dirtemp + "site-Chart.yaml"),
+    helm_install.install_app("frontvidone", context['pwa_name'], os.path.join(dirtemp, "pwa-Chart.yaml"),
                              settingconf.image_tag.pwa_version)
     userStatus = context['status']
     userStatus.site_created = 1
