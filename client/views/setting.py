@@ -83,7 +83,7 @@ def user_settings(request, action=None):
                         context['site_name'] = context['usreq'].site_name
                         context['secretName'] = context['domain'].replace('.', '-')
                         mylist = []
-                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', str(request.user.id))
+                        dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'])
                         with open(os.path.join(dirtemp, 'dbdata.txt')) as f:
                             lines = f.readlines()
                             for line in lines:
