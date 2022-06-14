@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 from vidoneplus import views
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('client.urls')),
     path('course/', include('course.urls')),
+
+    path('page_not_found/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found')
 ]

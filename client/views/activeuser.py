@@ -11,7 +11,8 @@ def users(request):
     non_staff_users = User.objects.filter(is_staff=False)
     context = {'users': non_staff_users,
                'status': Status.objects.filter(user__in=non_staff_users)}
-    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+    # return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
+    return render(request, 'client/users.html', context)
 
 
 @login_required

@@ -1,61 +1,108 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block css %}
-    <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
-{% endblock %}
-{% block page_title %}ویدان - حساب کاربری{% endblock %}
-{% block bodyclass %} class="login"{% endblock %}
+{% block title %}{% endblock %}
 {% block body %}
-    <a class="hiddenanchor" id="signup"></a>
-    <a class="hiddenanchor" id="signin"></a>
-    <a class="hiddenanchor" id="reset"></a>
-
-    <div class="login_wrapper">
-        <div class="animate form login_form">
-            <section class="login_content">
-                <form method="post">
-                    {% csrf_token %}
-                    {% if error %}
-                        <div class="alert alert-warning alert-dismissible show" role="alert">
-                            کد وارد شده صحیح نمی باشد.<br/>
-                        </div>
-                    {% endif %}
-                    {% if sms %}
-                        <div class="alert alert-success alert-dismissible show" role="alert">
-                            <strong>خطا!</strong> در حال حاضر سرور ارسال اس ام اس با خطا مواجه شده است لطفا
-                            مجددا تلاش کنید.
-                        </div>
-                    {% endif %}
-                    {% if register %}
-                        <div class="alert alert-success alert-dismissible show" role="alert">
-                            <strong>تبریک!</strong> ثبت نام شما با موفقیت انجام شد.
-                        </div>
-                        <p class="change_link">
-                            <a href="{% url 'client:login' %}" class="to_register"> ورود به حساب کاربری </a>
-                        </p>
-                    {% else %}
-
-                        <input name="code" type="text" class="form-control mb-3"
-                               placeholder="کد اس ام اس شده را وارد کنید"
-                               required="" minlength="4" maxlength="4"/>
-
-                        <div class="row ">
-
-                        <div class="col-6">
-                            <button class="btn btn-default submit">ورود</button>
-                        </div>
-
-                        <div class="col-6">
-                            <a class="reset_pass mt-2 scolor-light float-end text-decoration-none pcolorh"
-                               href="{% url 'client:verify_get' user_cellphone %}?recode=True">
-                                ارسال مجدد کد
-                            </a>
-                        </div>
-                    {% endif %}
-                    </div>
-                </form>
-            </section>
+    <!-- CONTAINER OPEN -->
+    <div class="col col-login mx-auto mt-7">
+        <div class="text-center">
+            <img src="{% static 'assets/images/brand/vidoneplus_mainlogo.png' %}" class="header-brand-img" alt="">
         </div>
     </div>
+
+    <div class="container-login100">
+        <div class="wrap-login100 p-6 w-50">
+            <form class="login100-form validate-form"
+                  autocomplete="on" method="post" action="{% url 'client:verify' user_cellphone %}">
+                {% csrf_token %}
+                <span class="login100-form-title pb-5">
+                    کد ارسال شده را اینجا وارد کنید
+                </span>
+                <div class="panel panel-primary">
+                    <div class="tab-menu-heading">
+                        <div class="tabs-menu1">
+                            <!-- Tabs -->
+                            {#                                        <ul class="nav panel-tabs">#}
+                            {#                                            <li class="mx-0"><a href="#tab5" class="active" data-bs-toggle="tab">Email</a></li>#}
+                            {#                                            <li class="mx-0"><a href="#tab6" data-bs-toggle="tab">Mobile</a></li>#}
+                            {#                                        </ul>#}
+                        </div>
+                    </div>
+                    <div class="panel-body tabs-menu-body p-0 pt-5">
+                        <div class="tab-content">
+                            {#                                        <div class="tab-pane active" id="tab5">#}
+                            {#                                            <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">#}
+                            {#                                                <a href="javascript:void(0)" class="input-group-text bg-white text-muted">#}
+                            {#                                                    <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>#}
+                            {#                                                </a>#}
+                            {#                                                <input class="input100 border-start-0 form-control ms-0" type="email" placeholder="Email">#}
+                            {#                                            </div>#}
+                            {#                                            <div class="wrap-input100 validate-input input-group" id="Password-toggle">#}
+                            {#                                                <a href="javascript:void(0)" class="input-group-text bg-white text-muted">#}
+                            {#                                                    <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>#}
+                            {#                                                </a>#}
+                            {#                                                <input class="input100 border-start-0 form-control ms-0" type="password" placeholder="Password">#}
+                            {#                                            </div>#}
+                            {#                                            <div class="text-end pt-4">#}
+                            {#                                                <p class="mb-0"><a href="forgot-password.html" class="text-primary ms-1">Forgot Password?</a></p>#}
+                            {#                                            </div>#}
+                            {#                                            <div class="container-login100-form-btn">#}
+                            {#                                                <a href="index.html" class="login100-form-btn btn-primary">#}
+                            {#                                                        Login#}
+                            {#                                                </a>#}
+                            {#                                            </div>#}
+                            {#                                            <div class="text-center pt-3">#}
+                            {#                                                <p class="text-dark mb-0">Not a member?<a href="register.html" class="text-primary ms-1">Sign UP</a></p>#}
+                            {#                                            </div>#}
+                            {#                                            <label class="login-social-icon"><span>Login with Social</span></label>#}
+                            {#                                            <div class="d-flex justify-content-center">#}
+                            {#                                                <a href="javascript:void(0)">#}
+                            {#                                                    <div class="social-login me-4 text-center">#}
+                            {#                                                        <i class="fa fa-google"></i>#}
+                            {#                                                    </div>#}
+                            {#                                                </a>#}
+                            {#                                                <a href="javascript:void(0)">#}
+                            {#                                                    <div class="social-login me-4 text-center">#}
+                            {#                                                        <i class="fa fa-facebook"></i>#}
+                            {#                                                    </div>#}
+                            {#                                                </a>#}
+                            {#                                                <a href="javascript:void(0)">#}
+                            {#                                                    <div class="social-login text-center">#}
+                            {#                                                        <i class="fa fa-twitter"></i>#}
+                            {#                                                    </div>#}
+                            {#                                                </a>#}
+                            {#                                            </div>#}
+                            {#                                        </div>#}
+                            <div class="tab-pane active" id="tab6">
+                                <div id="mobile-num"
+                                     class="wrap-input100 validate-input input-group mb-4">
+                                    {#                                                <a href="javascript:void(0)" class="input-group-text bg-white text-muted">#}
+                                    {#                                                    <span>+91</span>#}
+                                    {#                                                </a>#}
+                                    <input required class="input100 form-control ms-0" name="code"
+                                           placeholder="کد ارسال شده">
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <a href="{% url 'client:verify' user_cellphone %}?recode=True" class="fa-lg">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                            ارسال مجدد کد
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="container-login100-form-btn ">
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn btn-primary">
+                                            ورود
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- CONTAINER CLOSED -->
 {% endblock %}
+{% block js %}{% endblock %}

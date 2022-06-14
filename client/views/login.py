@@ -13,5 +13,5 @@ def login(request):
         if pattern.match(context['request']['cellphone']):
             context['request']['cellphone'] = "+989" + context['request']['cellphone'][2:]
             cellphone = context['request']['cellphone']
-            return redirect(reverse('client:verify_get', kwargs={'user_cellphone': cellphone}))
-    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+            return redirect(reverse('client:verify', kwargs={'user_cellphone': cellphone}))
+    return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)

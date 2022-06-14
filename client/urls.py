@@ -3,13 +3,12 @@ from .views import *
 
 app_name = 'client'
 urlpatterns = [
-    path('', index, name="index"),
+    path('', dashboard, name="dashboard"),
 
+    # path('profile/', profile, name="profile"),
     path('profile/', profile, name="profile"),
-    # path('profile/edit/', profile, {'action': 'edit'}, name="profile-edit"),
-    path('profile/edit/<int:user_id>/', profile_edit, name="profile_edit"),
-    path('profile/edit/<int:user_id>/', profile_edit, name="profile_update"),
     path('profile/password/', changepassword, name="password"),
+    path('user/edit/<int:user_id>/', user_edit, name='user_edit'),
 
     path('setting/', user_settings, name="setting"),
     path('setting/edit/', user_settings, {'action': 'edit'}, name="setting_edit"),
@@ -17,7 +16,7 @@ urlpatterns = [
     path('setting/<str:domain>/<path:path>', static_files, name="static_files"),
 
     path('login/', login, name="login"),
-    path('verify/<str:user_cellphone>/', verify, name="verify_get"),
+    path('verify/<str:user_cellphone>/', verify, name="verify"),
     path('logout/', Logout, name="logout"),
 
     path('status/', status, name="status"),
