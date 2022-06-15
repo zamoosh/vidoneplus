@@ -23,11 +23,11 @@
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
     <link href="{% static 'assets/css/dark-style.css' %}" rel="stylesheet" />
 
-    <!-- COLOR SKIN CSS -->
-    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
-
     <!--- FONT-ICONS CSS -->
     <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet"/>
+
+    <!-- COLOR SKIN CSS -->
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
 
 </head>
 
@@ -65,6 +65,10 @@
 
     <!-- CUSTOM JS -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <!-- Sticky js -->
+    <script src="{% static 'assets/js/sticky.js' %}"></script>
+    <script src="{% static 'assets/js/select2.js' %}"></script>
 
     {% block js %}{% endblock %}
 

@@ -31,4 +31,4 @@ def user_edit(request, user_id):
     if request.session.get('save'):
         context['save'] = True
         del request.session['save']
-    return render(request, f'admin/{__name__.replace("views.", "").replace(".", "/")}.html', context)
+    return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
