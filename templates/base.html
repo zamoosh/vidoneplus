@@ -29,6 +29,8 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
 
+    {% block css %}{% endblock %}
+
 </head>
 
 <body class="app sidebar-mini rtl dark-mode">
@@ -50,7 +52,7 @@
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
     <!-- SIDEBAR JS -->
-    <!--script src="{% static 'assets/plugins/sidebar/sidebar.js' %}"></script-->
+{#    <script src="{% static 'assets/plugins/sidebar/sidebar.js' %}"></script>#}
 
     <!-- Perfect SCROLLBAR JS-->
     <script src="{% static 'assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>

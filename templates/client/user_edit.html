@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static %}{% load jformat %}
 {% block title %}ویرایش کاربر{% endblock %}
-{% block css %}{% endblock %}
-{% block js %}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/plugins/jquery_persian_datepicker/kamadatepicker.min.css' %}">
+{% endblock %}
+{% block js %}
+    <script src="{% static 'assets/plugins/jquery_persian_datepicker/kamadatepicker.js' %}"></script>
+
+    <!-- SWEET-ALERT JS -->
+    <script src="{% static 'assets/plugins/sweet-alert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'assets/js/sweet-alert.js' %}"></script>
+    <script>
+        {% if save %}
+            swal({
+            type: "success",
+            title: "تغییرات با موفقیت ذخیره شدند!",
+            confirmButtonText: 'باشه',
+        });
+        {% endif %} 
+        kamaDatepicker('date', {
+            markHolidays: true,
+            markToday: true,
+            gotoToday: true,
+            twodigit: true,
+            highlightSelectedDay: 'true',
+            sync: true,
+        });
+    </script>
+{% endblock %}
 
 {% block body %}
 
@@ -42,7 +67,9 @@
                 <!-- PAGE-HEADER END -->
 
                 <!-- write your code here -->
-                <div class="row">
+                <form action="{% url 'client:user_edit' user.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
                     <div class="col-md-12 col-xl-12">
                         <div class="card">
                             <div class="card-header">
@@ -55,55 +82,66 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6 mb-0">
                                         <div class="form-group">
-                                            <input type="text" value="{{ user.first_name }}" class="form-control" id="name1" placeholder="نام">
+                                            <input type="text" value="{{ user.first_name }}" class="form-control form-control-lg" placeholder="نام" name="first_name">
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="form-group col-md-6 mb-0">
+                                        <div class="form-group">
+                                            <input type="text" id="last_name" value="{{ user.last_name }}" class="form-control form-control-lg" placeholder="نام خانوادگی" name="last_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
+                                        <div class="form-group">
+                                            <input class="form-control form-control-lg number-font" value="{{ user.dateofestablishment|jformat:'%Y/%m/%d' }}" autocomplete="off" placeholder="تاریخ ثبت شرکت" id="date" name="dateofestablishment" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-0">
+                                        <div class="form-group ">
+                                            <input type="email" value="{{ user.email }}" class="form-control form-control-lg" id="inputEmail5" placeholder="ایمیل" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
+                                        <div class="form-group ">
+                                            <input type="text" value="{{ user.organization_name }}" class="form-control form-control-lg" placeholder="نام شرکت" name="organization_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 mb-0">
+                                        <div class="form-group">
+                                            <input type="text" value="{{ user.educational_interface_name }}" class="form-control form-control-lg" placeholder="روابط آموزشی" name="educational_interface_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12 mb-0">
+                                        <div class="form-group">
+                                            <textarea class="form-control mb-4" rows="4" name="description" placeholder="توضیحات">{{ user.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
                                         <div class="row row-cols-2">
                                             <div class="col-10">
-                                                <select class="form-select leading-tight" id="status">
+                                                <select class="form-select leading-tight form-control-lg" id="status" name="status">
                                                     <option {% if user.status.active_user %}selected{% endif %}  value="True">فعال</option>
                                                     <option {% if not user.status.active_user %}selected{% endif %}  value="False">غیرفعال</option>
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <lable for="status" class="form-label">وضعیت</lable>
+                                                <lable for="status" class="form-label text-muted">وضعیت</lable>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6 mb-0">
-                                        <div class="form-group">
-                                            <input type="text" value="{{ user.first_name }}" class="form-control" id="name2" placeholder="نام خانوادگی">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <input type="email" value="{{ user.email }}" class="form-control" id="inputEmail5"
-                                           placeholder="ایمیل">
-                                </div>
-                                <div class="form-group ">
-                                    <input type="text" value="{{ organization_name }}" class="form-control" id="address" placeholder="نام شرکت">
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6 mb-0">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="country" placeholder="روابط آموزشی">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6 mb-0">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="region"
-                                                   placeholder="تاریخ ثبت شرکت">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-footer mt-2">
-                                    <a href="javascript:void(0)" class="btn btn-primary">ثبت</a>
+                                    <button type="submit" class="btn btn-primary">ثبت</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
+
                 <!-- /write your code here -->
             </div>
             <!-- CONTAINER END -->
