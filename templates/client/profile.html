@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}پروفایل{% endblock %}
+{% load jformat %}
+{% block css %}
+    <!-- jquery date picker css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/jquery_persian_datepicker/kamadatepicker.min.css' %}">
+{% endblock %}
+{% block js %}
+    <!-- jquery date picker js -->
+    <script src="{% static 'assets/plugins/jquery_persian_datepicker/kamadatepicker.js' %}"></script>
+
+    <!-- SWEET-ALERT JS -->
+    <script src="{% static 'assets/plugins/sweet-alert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'assets/js/sweet-alert.js' %}"></script>
+    <script>
+        {% if save %}
+            swal({
+                type: "success",
+                title: "تغییرات با موفقیت ذخیره شدند!",
+                confirmButtonText: 'باشه',
+                timer: 600
+            });
+        {% endif %}
+        {% if not_null %}
+            swal({
+                type: "error",
+                title: "لطفا نام، نام خانوادگی و ایمیل را حتما پر کنید",
+                confirmButtonText: 'باشه',
+                timer: 2000
+            });
+        {% endif %}
+        kamaDatepicker('dateofestablishment', {
+            markHolidays: true,
+            markToday: true,
+            gotoToday: true,
+            twodigit: true,
+            highlightSelectedDay: 'true',
+            sync: true,
+        });
+    </script>
+{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+{#    {% include 'loader.html' %}#}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'client:dashboard' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                داشبرد
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">پروفایل کاربری</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">خانه</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">پروفایل</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">ویرایش پسورد</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center chat-image mb-5">
+                                    <div class="avatar avatar-xxl chat-profile mb-3 brround">
+                                        <a class="" href="{% url 'client:profile' %}">
+{#                                            <img alt="avatar" src="{% static 'assets/images/users/7.jpg' %}" class="brround">#}
+                                            <span class="avatar avatar-xxl brround bg-primary">
+                                                <span style="font-size: 1.5rem">
+                                                    {{ request.user.first_name.0 }}
+                                                    {{ request.user.last_name.0 }}
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </div>
+
+                                    <div class="main-chat-msg-name mx-0">
+                                        <a href="{% url 'client:profile' %}">
+                                            <h5 class="mb-1 text-dark fw-semibold">{{ request.user.get_full_name }}</h5>
+                                        </a>
+                                        <p class="text-muted mt-0 mb-0 pt-0 fs-13">Web Designer</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">پسورد کنونی</label>
+                                    <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                            <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                        </a>
+                                        <input class="input100 form-control" type="password"
+                                               placeholder="پسورد کنونی">
+                                    </div>
+                                    <!-- <input type="password" class="form-control" value="password"> -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">پسورد جدید</label>
+                                    <div class="wrap-input100 validate-input input-group" id="Password-toggle1">
+                                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                            <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                        </a>
+                                        <input class="input100 form-control" type="password" placeholder="پسورد جدید">
+                                    </div>
+                                    <!-- <input type="password" class="form-control" value="password"> -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">تائید پسورد</label>
+                                    <div class="wrap-input100 validate-input input-group" id="Password-toggle2">
+                                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                            <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                        </a>
+                                        <input class="input100 form-control" type="password"
+                                               placeholder="تائید پسورد">
+                                    </div>
+                                    <!-- <input type="password" class="form-control" value="password"> -->
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <a href="javascript:void(0)" class="btn btn-primary disabled">بروزرسانی</a>
+                                <a href="javascript:void(0)" class="btn btn-danger disabled">لغو</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8">
+                        <div class="card">
+                            <form action="{% url 'client:profile' %}" method="post">
+                                {% csrf_token %}
+                                <div class="card-header">
+                                <h3 class="card-title">ویرایش پروفایل</h3>
+                            </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="first_name">نام</label>
+                                                <input type="text" class="form-control" id="first_name"
+                                                       placeholder="نام" name="first_name" value="{{ request.user.first_name }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="last_name">نام خانوادگی</label>
+                                                <input type="text" class="form-control" id="last_name"
+                                                       placeholder="نام خانوادگی" name="last_name" value="{{ request.user.last_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label for="email">آدرس ایمیل</label>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="آدرس ایمیل" value="{{ request.user.email }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label for="cellphone">شماره تلفن</label>
+                                                <input type="text" disabled class="form-control" id="cellphone" placeholder="{{ request.user.cellphone }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="organization_name">نام شرکت</label>
+                                                <input type="text" class="form-control" name="organization_name" id="organization_name" placeholder="روابط آموزشی" value="{{ request.user.organization_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="dateofestablishment">تاریخ ثبت شرکت</label>
+                                                <input type="text" class="form-control number-font" id="dateofestablishment" placeholder="تاریخ ثبت شرکت" name="dateofestablishment" value="{{ request.user.dateofestablishment|jformat:'%Y/%m/%d' }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="form-group">
+                                                <label for="educational_interface_name">روابط آموزشی</label>
+                                                <input type="text" class="form-control" name="educational_interface_name" id="educational_interface_name" placeholder="روابط آموزشی" value="{{ request.user.educational_interface_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="form-label">توضیحات</label>
+                                        <textarea name="description" id="description" class="form-control" rows="6">{{ request.user.description }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">
+                                <button type="submit" href="{% url 'client:profile' %}" class="btn btn-primary my-1">ذخیره</button>
+                                <a href="javascript:void(0)" class="btn btn-danger my-1 disabled">لغو</a>
+                            </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+{#    {% include 'side_bar.html' %}#}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+{#    {% include 'country_selector.html' %}#}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

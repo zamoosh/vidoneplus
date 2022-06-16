@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{% endblock %}
+{% block title %}داشبرد{% endblock %}
 {% block body %}
 
     <!-- GLOBAL-LOADER -->
@@ -26,13 +26,15 @@
 
                         <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
                         <div class="page-header">
-                            <h1 class="page-title">{{ requeset.user.first_name }} {{ requeset.user.last_name }}</h1>
-                            <div>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard 01</li>
-                                </ol>
-                            </div>
+                            <h1 class="page-title">
+                                <span class="text-muted">خوش آمدید</span>
+                                <span class="">{{ request.user.first_name }} {{ request.user.last_name }}</span></h1>
+{#                            <div>#}
+{#                                <ol class="breadcrumb">#}
+{#                                    <li class="breadcrumb-item"><a href="{% url 'index' %}">داشبرد</a></li>#}
+{#                                    <li class="breadcrumb-item active" aria-current="page">خانه</li>#}
+{#                                </ol>#}
+{#                            </div>#}
                         </div>
                         <!-- PAGE-HEADER END -->
 

@@ -22,11 +22,21 @@
             <div class="main-container container-fluid">
                 <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
                 <div class="page-header">
-                    <h1 class="page-title">Page Title</h1>
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'client:users' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                کاربران
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                    </div>
                     <div>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Page Name</li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:users' %}">کاربران</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
                         </ol>
                     </div>
                 </div>

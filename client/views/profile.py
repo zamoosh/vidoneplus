@@ -22,7 +22,12 @@ def profile(request):
             u.save()
             request.session['save'] = True
             return redirect(reverse('client:profile'))
+        request.session['not_null'] = True
+        return redirect(reverse('client:profile'))
     if request.session.get('save'):
         context['save'] = True
         del request.session['save']
-    return render(request, f"admin/{app_name.name}/{__name__.split('.')[-1]}.html", context)
+    if request.session.get('not_null'):
+        context['not_null'] = True
+        del request.session['not_null']
+    return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)

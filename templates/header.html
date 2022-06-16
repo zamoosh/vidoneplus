@@ -226,7 +226,7 @@
                                 <a href="javascript:void(0)" data-bs-toggle="dropdown"
                                    class="nav-link leading-none d-flex">
                                     <img src="{% static 'assets/images/users/21.jpg' %}" alt="profile-user"
-                                         class="avatar  profile-user brround cover-image">
+                                         class="avatar profile-user brround cover-image">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <div class="drop-heading">
@@ -236,8 +236,8 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item" href="profile.html">
-                                        <i class="dropdown-icon fe fe-user"></i> Profile
+                                    <a class="dropdown-item" href="{% url 'client:profile' %}">
+                                        <i class="dropdown-icon fe fe-user"></i>پروفایل
                                     </a>
                                     <a class="dropdown-item" href="email-inbox.html">
                                         <i class="dropdown-icon fe fe-mail"></i> Inbox

@@ -19,9 +19,9 @@ def user_edit(request, user_id):
             u.dateofestablishment = User.str_to_date(request.POST.get('dateofestablishment'))
             u.email = request.POST.get('email')
             status = Status.objects.get(user=u)
-            if request.POST.get('status') == 'true':
+            if request.POST.get('status') == 'True':
                 status.active_user = True
-            elif request.POST.get('status') == 'false':
+            elif request.POST.get('status') == 'False':
                 status.active_user = False
             status.save()
             u.save()
