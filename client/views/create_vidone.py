@@ -44,7 +44,7 @@ def admininstall(request, id):
     createVidone.create_acc()
     createVidone.add_or_edit_zone()
     dbname, dbuser, dbpass = createVidone.create_db()
-    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', str(id))
+    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'])
     if not os.path.exists(dirtemp):
         direct = os.makedirs(dirtemp)
     with open(os.path.join(dirtemp, 'core-Chart.yaml'), 'w') as yaml_file:
@@ -73,17 +73,17 @@ def install_sites(request, id):
     print(context['site_name'])
     print(context['app_name'])
 
-    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'], 'config', '1')
+    dirtemp = os.path.join(settings.MEDIA_ROOT, context['username'])
     print(dirtemp)
     helm_install = Helm()
     print('site')
-    helm_install.install_app("website", context['site_name'], dirtemp + "/site-Chart.yaml",
+    helm_install.install_app("website", context['site_name'], os.path.join(dirtemp, "core-Chart.yaml"),
                              settingconf.image_tag.site_version)
     print('app')
-    helm_install.install_app("admindashvidone", context['app_name'], dirtemp + "/app-Chart.yaml",
+    helm_install.install_app("admindashvidone", context['app_name'], os.path.join(dirtemp, "app-Chart.yaml"),
                              settingconf.image_tag.admin_version)
     print('pwa')
-    helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
+    helm_install.install_app("frontvidone", context['pwa_name'], os.path.join(dirtemp, "pwa-Chart.yaml"),
                              settingconf.image_tag.pwa_version)
     userStatus = context['status']
     userStatus.site_created = 1

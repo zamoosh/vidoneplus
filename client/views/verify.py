@@ -7,7 +7,7 @@ def verify(request, user_cellphone):
         context['user_cellphone'] = user_cellphone
         if request.session.get('sent_sms'):
             del request.session['sent_sms']
-        return redirect(reverse('client:verify_get', kwargs={'user_cellphone': user_cellphone}))
+        return redirect(reverse('client:verify', kwargs={'user_cellphone': user_cellphone}))
     if user_cellphone:
         """check if request.user is exists in database or not"""
         u = User.get_user(user_cellphone)
@@ -27,5 +27,5 @@ def verify(request, user_cellphone):
                     login(request, u)
                     return redirect(reverse('index'))
         context['user_cellphone'] = user_cellphone
-        return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+        return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
     return redirect(reverse('index'))
