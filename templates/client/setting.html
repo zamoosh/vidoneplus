@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}تنظیمات سایت{% endblock %}
+{% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}
+    <!-- COLOR PICKER JS -->
+    <script src="{% static "assets/plugins/pickr-master/pickr.es5.min.js" %}"></script>
+    <script src="{% static "assets/js/picker.js" %}"></script>
+
+    <!-- FILE UPLOADES JS -->
+    <script src="{% static 'assets/plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fileuploads/js/file-upload.js' %}"></script>
+
+    <!-- INTERNAL File-Uploads Js-->
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+    <!-- SWEET-ALERT JS -->
+    <script src="{% static 'assets/plugins/sweet-alert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'assets/js/sweet-alert.js' %}"></script>
+
+    <script>
+        let radioInp = $('input[name="domain_type"]');
+
+        radioInp.on('click', function() {
+            let inp = $(`input[name="${$(this).attr('id')}"]`);
+            inp.show();
+            inp.parent().show();
+            if ($(this).attr('id') === 'mydomain'){
+                let hiddenInp = $('input[name="fix_domain"]');
+                hiddenInp.parent().removeClass('d-flex');
+                hiddenInp.parent().hide();
+            }
+            else {
+                let hiddenInp = $('input[name="mydomain"]');
+                hiddenInp.parent().hide();
+                let fix_domain = $('input[name="fix_domain"]');
+                fix_domain.parent().addClass('d-flex');
+                fix_domain.show();
+            }
+        });
+
+        for (let i = 0; i < radioInp.length; i++) {
+            if ($(radioInp[i]).is(':checked')) {
+                console.log(radioInp[i], $(radioInp[i]).is(':checked'));
+                $(radioInp[i]).click();
+                break;
+            }
+        }
+    </script>
+    <script>
+    $(window).on('load', function() {
+        {% if save %}
+            swal({
+                type: 'success',
+                title: 'تغییرات با موفقیت ثبت شدند.',
+                confirmButtonText: 'باشه',
+                timer: 600
+            });
+        {% endif %}
+        let org_color = '{{ request.user.setting_set.first.org_color }}';
+        $('div#org_color').children().children().css('cssText', `--pcr-color: ${org_color}`);
+        let inpOrg = $('input[name="org_color"]');
+        inpOrg.val(org_color);
+        inpOrg.css('color', org_color);
+
+        let sub_color = '{{ request.user.setting_set.first.sub_color }}';
+        $('div#sub_color').children().children().css('cssText', `--pcr-color: ${sub_color}`);
+        let inpSub = $('input[name="sub_color"]');
+        inpSub.val(sub_color);
+        inpSub.css('color', sub_color);
+    });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'index' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                داشبرد
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">ویرایش سایت بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">داشبرد</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش سایت</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">تنظیمات سایت</h3>
+                            </div>
+                            <div class="container">
+                                <form
+                                    action="{% if request.user.setting_set.first %}{% url 'client:setting_edit' %}{% else %}{% url 'client:setting' %}{% endif %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    <small class="text-muted">لطفا برای انتخاب رنگ حتما روی save کلیک کنید!</small>
+                                    <div class="card-body">
+                                    <div class="row justify-content-around">
+                                        <div class="col-lg-3 col-sm-10">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <label class="form-label text-center" for="org_color">رنگ اصلی سازمان</label>
+                                                <input dir="auto" id="org_color" name="org_color" readonly class="form-control form-control-lg readonly" type="text">
+                                            </div>
+                                            <div class="theme-optioned"></div>
+                                            <div class="picker-optioned" id="org_color"></div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-10">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <label class="form-label text-center" for="sub_color">رنگ ثانویه‌ی سازمان</label>
+                                                <input dir="auto" id="sub_color" name="sub_color" readonly class="form-control form-control-lg readonly" type="text">
+                                            </div>
+                                            <div class="theme-optioned"></div>
+                                            <div class="picker-optioned" id="sub_color"></div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-label">
+                                            <label for="domain" class="form-label">
+                                                دامنه
+                                            </label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control custom-radio-lg">
+                                                            <input {% if 'vidoneplus.ir' in request.user.setting_set.first.domain %}checked{% endif %} value="vidondomain" type="radio" class="custom-control-input" id="sub_domain" name="domain_type">
+                                                            <span class="custom-control-label">از دامنه‌ی ویدان استفاده میکنم</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control custom-radio-lg">
+                                                            <input {% if 'vidoneplus.ir' not in request.user.setting_set.first.domain %}checked{% endif %} value="mydomain" type="radio" class="custom-control-input" id="mydomain" name="domain_type">
+                                                            <span class="custom-control-label">از دامنه‌ی خودم استفاده میکنم</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 row">
+                                                <div class="col-lg-12 col-sm-12 d-flex">
+                                                    <input name="sub_domain" class="form-control form-control-lg col-10" placeholder="sub domain" style="display: none" type="text" value="{{ request.user.setting_set.first.domain }}">
+                                                    <input name="fix_domain" class="form-control form-control-lg col-2 readonly" disabled style="display: none" type="text" value="vidoneplus.ir">
+                                                </div>
+                                                <div class="col-lg-12 col-sm-12">
+                                                    <input name="mydomain" class="form-control form-control-lg" placeholder="fix domain" style="display: none" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="app_name">
+                                                    نام اپلیکیشن
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="bi bi-app"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="app_name" placeholder="نام اپلیکیشن" name="app_name" value="{{ settings.app_name }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="contact_phone">
+                                                    شماره تماس پشتیبانی
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bg-green">
+                                                            <i class="bi bi-telephone-inbound"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="contact_phone" placeholder="شماره تماس پشتیبانی" name="contact_phone" value="{{ settings.contact_phone }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="instagram">
+                                                    اینستاگرام
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bg-purple">
+                                                            <i class="bi bi-instagram fa-lg"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="instagram" placeholder="اینستاگرام" name="instagram" value="{{ settings.youtube }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="twitter">
+                                                    توئیتر
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bg-secondary">
+                                                            <i class="bi bi-twitter fa-lg"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="twitter" placeholder="توئیتر" name="twitter" value="{{ settings.youtube }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="facebook">
+                                                    فیسبوک
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bg-info">
+                                                            <i class="bi bi-facebook fa-lg"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="facebook" placeholder="فیسبوک" name="facebook" value="{{ settings.youtube }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="youtube">
+                                                    یوتیوب
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text bg-danger">
+                                                            <i class="bi bi-youtube fa-lg"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="youtube" placeholder="یوتیوب" name="youtube" value="{{ settings.youtube }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="aparat">آپارات</label>
+                                                    <input type="text" class="form-control" id="aparat" placeholder="آپارات" name="aparat" value="{{ settings.aparat }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="slogan">شعار</label>
+                                                    <input type="text" class="form-control" id="slogan" placeholder="شعار" name="slogan" value="{{ settings.slogan }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="short_title">
+                                                    عنوان کوتاه
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="bi bi-bookmarks fa-lg"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="short_title" placeholder="عنوان کوتاه" name="short_title" value="{{ settings.short_title }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="smsir_key">
+                                                    کی کد SMS.IR
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">
+                                                            <i class="bi bi-chat-dots"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="smsir_key" placeholder="کی کد SMS.IR" name="smsir_key" value="{{ settings.smsir_key }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="zarinpal">مرچنت کد زرین پال</label>
+                                                    <input type="text" class="form-control" id="zarinpal" placeholder="مرچنت کد زرین پال" name="zarinpal" value="{{ settings.zarinpal }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="download_link">لینک دانلود اپلیکیشن</label>
+                                                    <input type="text" class="form-control" id="download_link" placeholder="لینک دانلود اپلیکیشن" name="download_link" value="{{ settings.download_link }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 mb-5">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="company_logo">تصویر لوگو</label>
+                                                            <input name="company_logo" id="company_logo" type="file" class="dropify" data-bs-height="180" />
+                                                        </div>
+                                                    </div>
+                                                    {% if settings.company_logo %}
+                                                        <div class="col-6">
+                                                            <img class="thumbimg" src="{{ settings.company_logo.url }}">
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 mb-5">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="splashscreen">اسپلش اسکرین</label>
+                                                            <input name="splashscreen" id="splashscreen" type="file" class="dropify" data-bs-height="180" />
+                                                        </div>
+                                                    </div>
+                                                    {% if settings.splashscreen %}
+                                                        <div class="col-6">
+                                                            <img class="thumbimg" src="{{ settings.splashscreen.url }}">
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 mb-5">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <label for="favicon">فاوآیکن</label>
+                                                            <input name="favicon" id="favicon" type="file" class="dropify" data-bs-height="180" />
+                                                        </div>
+                                                    </div>
+                                                    {% if settings.favicon %}
+                                                        <div class="col-6">
+                                                            <img class="thumbimg" src="{{ settings.favicon.url }}">
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <button type="submit" class="btn btn-success">
+                                            ثبت
+                                        </button>
+                                        <a href="{% url 'index' %}" class="btn btn-danger">
+                                            بازگشت
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

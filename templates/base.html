@@ -11,23 +11,26 @@
     <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
 
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/brand/favicon.ico' %}"/>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/brand/favicon.ico' %}" />
 
     <!-- TITLE -->
     <title>ویدان‌پلاس - {% block title %}{% endblock %}</title>
 
     <!-- BOOTSTRAP CSS -->
-    <link id="style" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link id="style" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}"  rel="stylesheet" />
 
     <!-- STYLE CSS -->
-    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" />
-    <link href="{% static 'assets/css/dark-style.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/style.css' %}"  rel="stylesheet" />
+    <link href="{% static 'assets/css/dark-style.css' %}"  rel="stylesheet" />
+    <link href="{% static 'assets/css/transparent-style.css' %}"  rel="stylesheet">
+    <link href="{% static 'assets/css/skin-modes.css' %}"  rel="stylesheet" />
 
     <!--- FONT-ICONS CSS -->
-    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/icons.css' %}"  rel="stylesheet" />
 
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
+
 
     {% block css %}{% endblock %}
 
@@ -52,7 +55,10 @@
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
     <!-- SIDEBAR JS -->
-{#    <script src="{% static 'assets/plugins/sidebar/sidebar.js' %}"></script>#}
+    {% comment %}
+    <script src="{% static 'assets/plugins/sidebar/sidebar.js' %}"></script>
+    {% endcomment %}
+
 
     <!-- Perfect SCROLLBAR JS-->
     <script src="{% static 'assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>
@@ -70,10 +76,8 @@
 
     <!-- Sticky js -->
     <script src="{% static 'assets/js/sticky.js' %}"></script>
-    <script src="{% static 'assets/js/select2.js' %}"></script>
 
     {% block js %}{% endblock %}
-
 </body>
 
 </html>
