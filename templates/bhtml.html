@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}{% endblock %}
 {% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
 {% block body %}
 
     <!-- GLOBAL-LOADER -->
@@ -54,11 +56,15 @@
 
 
     <!-- Sidebar-right -->
-{#    {% include 'side_bar.html' %}#}
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
     <!--/Sidebar-right-->
 
     <!-- Country-selector modal-->
-{#    {% include 'country_selector.html' %}#}
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
     <!-- Country-selector modal-->
 
     <!-- FOOTER -->
@@ -68,4 +74,3 @@
     <!-- BACK-TO-TOP -->
     <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 {% endblock %}
-{% block js %}{% endblock %}

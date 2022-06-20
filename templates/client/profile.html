@@ -85,7 +85,9 @@
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">ویرایش پسورد</div>
+                                <div class="card-title">
+                                    <span class="text-muted h4">ویرایش پسورد</span>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="text-center chat-image mb-5">
@@ -148,12 +150,14 @@
                         </div>
                     </div>
                     <div class="col-xl-8">
-                        <div class="card">
-                            <form action="{% url 'client:profile' %}" method="post">
+                        <form action="{% url 'client:profile' %}" method="post">
                                 {% csrf_token %}
+                            <div class="card">
                                 <div class="card-header">
-                                <h3 class="card-title">ویرایش پروفایل</h3>
-                            </div>
+                                    <div class="card-title">
+                                        <span class="text-muted h4">ویرایش پروفایل</span>
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-12">
@@ -211,12 +215,11 @@
                                     </div>
                                 </div>
                                 <div class="card-footer text-end">
-                                <button type="submit" href="{% url 'client:profile' %}" class="btn btn-primary my-1">ذخیره</button>
-                                <a href="javascript:void(0)" class="btn btn-danger my-1 disabled">لغو</a>
+                                    <button type="submit" href="{% url 'client:profile' %}" class="btn btn-primary my-1">ذخیره</button>
+                                    <a href="javascript:void(0)" class="btn btn-danger my-1 disabled">لغو</a>
+                                </div>
                             </div>
-                            </form>
-
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!-- /write your code here -->

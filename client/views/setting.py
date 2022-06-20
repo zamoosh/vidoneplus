@@ -25,6 +25,7 @@ def user_settings(request, action=None):
     if is_user_active:
         try:
             context['settings'] = usetting.objects.get(owner=request.user)
+            request.user.setting_set.first()
             context['site_created'] = Status.objects.get(user=request.user)
         except usetting.DoesNotExist:
             action = "edit"
@@ -115,8 +116,8 @@ def user_settings(request, action=None):
                         helm_install.install_app("frontvidone", context['pwa_name'], dirtemp + "/pwa-Chart.yaml",
                                                  context['usreq'].image_tag.pwa_version)
                     setting = usetting.objects.get(owner=request.user)
-                    setting.org_color = context['org_colore']
-                    setting.sub_color = context['sub_colore']
+                    setting.org_color = context['org_color']
+                    setting.sub_color = context['sub_color']
                     setting.instagram = context['instagram']
                     setting.twitter = context['twitter']
                     setting.aparat = context['aparat']
@@ -137,6 +138,7 @@ def user_settings(request, action=None):
                     if 'favicon' in request.FILES:
                         setting.favicon = request.FILES['favicon']
                     setting.save()
+                    request.session['save'] = True
                     try:
                         appupdate = requests.get("https://%s/update/" % (setting.domain))
                     except (Exception, Exception):
@@ -145,13 +147,16 @@ def user_settings(request, action=None):
                     messages.success(request, "Setting is Change!")
                     return HttpResponseRedirect(reverse('client:setting'))
                 context['settings'] = usetting.objects.get(owner=request.user)
-            return render(request, "client/edit-setting.html", context)
+            return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
     else:
         context['msg'] = "حساب کاربری شما فعال نشده است"
     if request.session.get('domain_error'):
         context['domain_error'] = True
         del request.session['domain_error']
-    return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
+    if request.session.get('save'):
+        context['save'] = True
+        del request.session['save']
+    return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
 
 
 def configs(request, domain):
