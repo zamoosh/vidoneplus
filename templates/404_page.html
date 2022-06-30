@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% comment %}{% include 'header.html' %}{% endcomment %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% comment %}{% include 'menu.html' %}{% endcomment %}
+
+    <!--app-content open-->
+
+
+    <body class="app sidebar-mini rtl dark-mode" style="overflow: hidden;">
+
+        <!-- PAGE -->
+        <div class="page">
+            <div class="page-main" style="
+                  background-image: url('{% static 'assets/images/svgs/error_pages/404 error with person looking for-amico.svg' %}');
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  ">
+                <div class="container">
+                    <div class="row justify-content-center align-items-end" style="height: 80vh">
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <h4>ما خیلی متاسفیم که این اتفاق افتاد!</h4>
+                            </div>
+                            <div class="row justify-content-center">
+                                <h4>لطفا به صفحه‌ی اصلی برگردین</h4>
+                            </div>
+                            <div class="row justify-content-center">
+                                <a class="btn btn-outline-light" href="{% url 'index' %}">HOME</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% comment %}{% include 'footer.html' %}{% endcomment %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

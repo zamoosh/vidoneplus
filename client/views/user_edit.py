@@ -7,7 +7,7 @@ def user_edit(request, user_id):
     if not request.user.is_superuser:
         return redirect(reverse('page_not_found'))
     if not User.objects.filter(id=user_id).exists():
-        return HttpResponse('کاربر وجود ندارد')
+        return redirect(reverse('page_not_found'))
     if request.method == 'POST':
         if User.not_empty(request, request.method, 'first_name', 'last_name', 'email'):
             u: User = User.objects.get(id=user_id)

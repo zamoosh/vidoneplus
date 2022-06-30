@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}کاربران{% endblock %}
+{% block title %}منوی ادمین{% endblock %}
 {% load jformat %}
 {% block css %}{% endblock %}
 {% block js %}
@@ -12,6 +12,11 @@
     <script src="{% static 'assets/js/table-data.js' %}"></script>
 {% endblock %}
 {% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% include 'loader.html' %}
+    <!-- /GLOBAL-LOADER -->
+
     <!-- app-Header -->
     {% include 'header.html' %}
     <!-- /app-Header -->
@@ -28,12 +33,20 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'index' %}">
+                            <a href="{% url 'client:users' %}">
                                 <i class="fa fa-arrow-right"></i>
-                                داشبرد
+                                کاربران
                             </a>
                         </h1>
-                        <h1 class="page-title px-2">کاربران بخش ادمین</h1>
+                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:users' %}">کاربران</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+                        </ol>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
@@ -49,8 +62,8 @@
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">کاربر</th>
                                                 <th class="wd-10p border-bottom-0">نام شرکت</th>
-                                                <th class="wd-25p border-bottom-0">رابط آموزشی</th>
-                                                <th class="wd-25p border-bottom-0">تاریخ ثبت شرکت</th>
+                                                <th class="wd-25p border-bottom-0">فعال‌سازی</th>
+                                                <th class="wd-25p border-bottom-0">غیرفعال کردن</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -83,7 +96,11 @@
                                                         </div>
                                                     </td>
                                                     <td><div class="mt-5">{{ u.organization_name }}</div></td>
-                                                    <td><div class="mt-5">{{ u.educational_interface_name }}</div></td>
+                                                    <td>
+                                                        <div class="mt-5">
+                                                            <a href="#" class="btn btn-outline-success btn-sm">فعال کردن</a>
+                                                        </div>
+                                                    </td>
                                                     <td><div class="mt-5">{{ u.dateofestablishment|jformat:"%Y/%m/%d" }}</div></td>
                                                 </tr>
                                             {% endfor %}
@@ -95,18 +112,24 @@
                     </div>
                 </div>
                 <!-- /write your code here -->
+
             </div>
             <!-- CONTAINER END -->
         </div>
     </div>
     <!--app-content close-->
 
+
     <!-- Sidebar-right -->
-{#    {% include 'side_bar.html' %}#}
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
     <!--/Sidebar-right-->
 
     <!-- Country-selector modal-->
-{#    {% include 'country_selector.html' %}#}
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
     <!-- Country-selector modal-->
 
     <!-- FOOTER -->
