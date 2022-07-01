@@ -13,18 +13,27 @@ def _configpodname(tld):
 @login_required
 @allowed_users(allowed_roles=['admin'])
 def check_or_createuser(request, id):
+    context = {}
+    u = User.objects.get(id=id)
+    u.extra['user'] = True
+    u.save()
     import secrets
     import string
     alphabet = string.ascii_letters + string.digits
     kubectl = Kubectl()
     settingconf = usetting.objects.get(owner__id=id)
-    context = {'domain': settingconf.domain,
-               'username': settingconf.fullname,
-               'site_name': _configpodname(settingconf.domain.split('.')[0])[0],
-               'app_name': _configpodname(settingconf.domain.split('.')[0])[1],
-               'pwa_name': _configpodname(settingconf.domain.split('.')[0])[2],
-               'password': ''.join(secrets.choice(alphabet) for i in range(8))}
-
+    context['domain'] = settingconf.domain
+    context['username'] = settingconf.fullname
+    context['site_name'] = _configpodname(settingconf.domain.split('.')[0])[0]
+    context['app_name'] = _configpodname(settingconf.domain.split('.')[0])[1]
+    context['pwa_name'] = _configpodname(settingconf.domain.split('.')[0])[2]
+    context['password'] = ''.join(secrets.choice(alphabet) for i in range(8))
+    # context = {'domain': settingconf.domain,
+    #            'username': settingconf.fullname,
+    #            'site_name': _configpodname(settingconf.domain.split('.')[0])[0],
+    #            'app_name': _configpodname(settingconf.domain.split('.')[0])[1],
+    #            'pwa_name': _configpodname(settingconf.domain.split('.')[0])[2],
+    #            'password': ''.join(secrets.choice(alphabet) for i in range(8))}
     if kubectl.vidone_getsuperuser(context['site_name']) is not None:
         context['superusers'] = kubectl.vidone_getsuperuser(context['site_name'])
         # vidone_updateuser(self, appname, username, password)

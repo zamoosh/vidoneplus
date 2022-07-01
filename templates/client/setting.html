@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %}تنظیمات سایت{% endblock %}
 {% load jformat %}
-{% block css %}{% endblock %}
+{% block css %}
+
+{% endblock %}
 {% block js %}
     <!-- COLOR PICKER JS -->
     <script src="{% static "assets/plugins/pickr-master/pickr.es5.min.js" %}"></script>
@@ -93,7 +95,8 @@
     {% include 'menu.html' %}
 
     <!--app-content open-->
-    <div class="main-content app-content mt-0">
+    {% if request.user.status.active_user %}
+        <div class="main-content app-content mt-0">
         <div class="side-app">
             <!-- CONTAINER -->
             <div class="main-container container-fluid">
@@ -391,25 +394,39 @@
             <!-- CONTAINER END -->
         </div>
     </div>
-    <!--app-content close-->
+
+        <!--app-content close-->
 
 
-    <!-- Sidebar-right -->
-    {% comment %}
-    {% include 'side_bar.html' %}
-    {% endcomment %}
-    <!--/Sidebar-right-->
+        <!-- Sidebar-right -->
+        {% comment %}
+        {% include 'side_bar.html' %}
+        {% endcomment %}
+        <!--/Sidebar-right-->
 
-    <!-- Country-selector modal-->
-    {% comment %}
-    {% include 'country_selector.html' %}
-    {% endcomment %}
-    <!-- Country-selector modal-->
+        <!-- Country-selector modal-->
+        {% comment %}
+        {% include 'country_selector.html' %}
+        {% endcomment %}
+        <!-- Country-selector modal-->
 
-    <!-- FOOTER -->
-    {% include 'footer.html' %}
-    <!-- FOOTER END -->
+        <!-- FOOTER -->
+        {% include 'footer.html' %}
+        <!-- FOOTER END -->
 
-    <!-- BACK-TO-TOP -->
-    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+        <!-- BACK-TO-TOP -->
+        <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+    {% else %}
+        <div class="main-content app-content mt-0">
+            <div class="side-app">
+                <div class="main-container container-fluid">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100vh">
+                        <h2 class="text-muted">
+                            حساب کاربری شما فعال نیست!
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

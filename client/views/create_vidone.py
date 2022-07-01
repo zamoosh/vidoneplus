@@ -22,17 +22,29 @@ def createvidone(request):
 @login_required
 @allowed_users(allowed_roles=['admin'])
 def admininstall(request, id):
+    u = User.objects.get(id=id)
+    u.extra['host'] = True
+    context = {}
     uid = uuid.uuid4().hex
     domain = usetting.objects.get(owner__id=id).domain
-    context = {'domain': domain,
-               'status': Status.objects.get(user__id=id),
-               'curent_user': User.objects.get(id=id),
-               'useremail': User.objects.get(id=id).email,
-               'username': ''.join(domain.split('.')[:-1])[:10] + uid[:4],
-               'site_name': _configpodname(domain.split('.')[0])[0],
-               'app_name': _configpodname(domain.split('.')[0])[1],
-               'pwa_name': _configpodname(domain.split('.')[0])[2],
-               'secretName': domain.replace('.', '-')}
+    context['domain'] = domain
+    context['status'] = Status.objects.get(user__id=id)
+    context['curent_user'] = u
+    context['useremail'] = u.email
+    context['username'] = ''.join(domain.split('.')[:-1])[:10] + uid[:4]
+    context['site_name'] = _configpodname(domain.split('.')[0])[0]
+    context['app_name'] = _configpodname(domain.split('.')[0])[1]
+    context['pwa_name'] = _configpodname(domain.split('.')[0])[2]
+    context['secretName'] = domain.replace('.', '-')
+    # context = {'domain': domain,
+    #            'status': Status.objects.get(user__id=id),
+    #            'curent_user': User.objects.get(id=id),
+    #            'useremail': User.objects.get(id=id).email,
+    #            'username': ''.join(domain.split('.')[:-1])[:10] + uid[:4],
+    #            'site_name': _configpodname(domain.split('.')[0])[0],
+    #            'app_name': _configpodname(domain.split('.')[0])[1],
+    #            'pwa_name': _configpodname(domain.split('.')[0])[2],
+    #            'secretName': domain.replace('.', '-')}
 
     save_setting = usetting.objects.get(owner=context['curent_user'])
     save_setting.site_name = context['site_name']
@@ -63,13 +75,23 @@ def admininstall(request, id):
 @login_required
 @allowed_users(allowed_roles=['admin'])
 def install_sites(request, id):
+    context = {}
+    u = User.objects.get(id=id)
+    u.extra['site'] = True
+    u.save()
     settingconf = usetting.objects.get(owner__id=id)
-    context = {'domain': settingconf.domain,
-               'username': settingconf.fullname,
-               'site_name': _configpodname(settingconf.domain.split('.')[0])[0],
-               'app_name': _configpodname(settingconf.domain.split('.')[0])[1],
-               'pwa_name': _configpodname(settingconf.domain.split('.')[0])[2],
-               'status': Status.objects.get(user__id=id)}
+    context['domain'] = settingconf.domain
+    context['username'] = settingconf.fullname
+    context['site_name'] = _configpodname(settingconf.domain.split('.')[0])[0]
+    context['app_name'] = _configpodname(settingconf.domain.split('.')[0])[1]
+    context['pwa_name'] = _configpodname(settingconf.domain.split('.')[0])[2]
+    context['status'] = Status.objects.get(user__id=id)
+    # context = {'domain': settingconf.domain,
+    #            'username': settingconf.fullname,
+    #            'site_name': _configpodname(settingconf.domain.split('.')[0])[0],
+    #            'app_name': _configpodname(settingconf.domain.split('.')[0])[1],
+    #            'pwa_name': _configpodname(settingconf.domain.split('.')[0])[2],
+    #            'status': Status.objects.get(user__id=id)}
     print(context['site_name'])
     print(context['app_name'])
 
