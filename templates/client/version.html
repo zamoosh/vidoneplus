@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}ورژن‌ها{% endblock %}
+{% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% include 'loader.html' %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'client:users' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                کاربران
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:users' %}">کاربران</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row row-sm">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p border-bottom-0">ورژن</th>
+                                                <th class="wd-10p border-bottom-0">موبایل</th>
+                                                <th class="wd-25p border-bottom-0">توضیحات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in images %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex flex-row">
+                                                            <div class="d-flex flex-column justify-content-center me-3">
+                                                                <a class="user" href="{% url 'client:user_edit' i.id %}">
+                                                                    <span class="avatar avatar-lg brround bg-info">
+                                                                        {{ i.site_version }} {{ i.admin_version }}
+                                                                        {% if i.status.active_user %}
+                                                                            <span class="avatar-status bg-green"></span>
+                                                                        {% else %}
+                                                                            <span class="avatar-status bg-red"></span>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <h5>{{ i.first_name }} {{ i.last_name }}</h5>
+                                                                <div class="text-muted">
+                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.email }}</a>
+                                                                </div>
+                                                                <div class="text-muted">
+                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.cellphone }}</a>
+                                                                </div>
+                                                                <small class="text-muted">وضعیت: {% if i.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="d-flex flex-column justify-content-center me-3">
+                                                                <h5 class=text-muted">
+                                                                    {{ i.organization_name }}
+                                                                </h5>
+                                                                <small class="mt-1 text-muted">
+                                                                    تاریخ تأسیس: {{ i.dateofestablishment|jformat:"%Y/%m/%d" }}
+                                                                </small>
+                                                                <small class="mt-1 text-muted">
+                                                                    روابط آموزشی: {{ i.educational_interface_name }}
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="d-flex flex-column justify-content-around">
+                                                                <h5>سایت</h5>
+                                                                {% if i.extra.host %}
+                                                                    <small class="text-success">هاست ساخته شده</small>
+                                                                {% else %}
+                                                                    <small class="text-danger">هاست ساخته نشده</small>
+                                                                {% endif %}
+                                                                {% if i.extra.site %}
+                                                                    <small class="text-success">سایت ساخته شده</small>
+                                                                {% else %}
+                                                                    <small class="text-danger">سایت ساخته نشده</small>
+                                                                {% endif %}
+                                                                {% if i.extra.user %}
+                                                                    <small class="text-success">یوزر ساخته شده</small>
+                                                                {% else %}
+                                                                    <small class="text-danger">یوزر ساخته نشده</small>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}
