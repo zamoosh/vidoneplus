@@ -5,16 +5,16 @@ def _configpodname(tld):
     return tld + "-site", tld + "-app", tld + "-pwa"
 
 
-@login_required
-def verion(request):
-    context = {}
-    try:
-        context['show_versions'] = Imagetag.objects.all()
-        print(context['versions'])
-    except:
-        pass
-
-    return render(request, "client/view_version.html", context)
+# @login_required
+# def verion(request):
+#     context = {}
+#     try:
+#         context['show_versions'] = Imagetag.objects.all()
+#         print(context['versions'])
+#     except:
+#         pass
+#
+#     return render(request, "client/view_version.html", context)
 
 
 @login_required

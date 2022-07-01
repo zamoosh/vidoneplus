@@ -23,7 +23,6 @@ def createvidone(request):
 @allowed_users(allowed_roles=['admin'])
 def admininstall(request, id):
     u = User.objects.get(id=id)
-    u.extra['host'] = True
     context = {}
     uid = uuid.uuid4().hex
     domain = usetting.objects.get(owner__id=id).domain
@@ -69,6 +68,8 @@ def admininstall(request, id):
     with open(os.path.join(dirtemp, 'dbdata.txt'), 'w') as yaml_file:
         yaml_file.write(dbdata(dbname, dbuser, dbpass))
     context['result'] = "هاست با موفقیت ایجاد شد."
+    u.extra['host'] = True
+    u.save()
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
@@ -77,8 +78,6 @@ def admininstall(request, id):
 def install_sites(request, id):
     context = {}
     u = User.objects.get(id=id)
-    u.extra['site'] = True
-    u.save()
     settingconf = usetting.objects.get(owner__id=id)
     context['domain'] = settingconf.domain
     context['username'] = settingconf.fullname
@@ -111,6 +110,8 @@ def install_sites(request, id):
     userStatus.site_created = 1
     userStatus.save()
     context['result'] = "سایت ها با موفقیت نصب شدند."
+    u.extra['site'] = True
+    u.save()
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
