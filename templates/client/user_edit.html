@@ -146,6 +146,35 @@
                                             </label>
                                         </div>
                                     </div>
+                                    {% if request.user.is_superuser %}
+                                        <div class="form-group col-md-6 mb-0">
+                                            <div class="form-group h-100">
+                                                <div class="d-flex justify-content-around align-items-center h-100">
+                                                    {% if user.setting_set.first.domain %}
+                                                        <a href="{% url 'client:admininstall' user.setting_set.first.owner.id %}"
+                                                           class="btn {% if user.extra.host %}btn-success disabled{% else %}btn-outline-primary{% endif %}"
+                                                           {% if user.extra.host %}disabled="" {% endif %}>
+                                                            ساخت هاست
+                                                        </a>
+                                                        {% if user.extra.host %}
+                                                            <a href="{% url 'client:install-sites' user.setting_set.first.owner.id %}"
+                                                               class="btn {% if user.extra.site %}btn-success disabled{% else %}btn-outline-primary{% endif %}"
+                                                               {% if user.extra.host %}disabled="" {% endif %}>
+                                                                ساخت سایت
+                                                            </a>
+                                                            {% if user.extra.site %}
+                                                                <a href="{% url 'client:siteuser' user.setting_set.first.owner.id %}"
+                                                                   class="btn {% if user.extra.user %}btn-success disabled{% else %}btn-outline-primary{% endif %}"
+                                                                   {% if user.extra.user %}disabled="" {% endif %}>
+                                                                    یوزر
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-footer mt-2">
                                     <button type="submit" class="btn btn-primary">ثبت</button>
