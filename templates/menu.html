@@ -38,73 +38,61 @@
                 <li class="sub-category">
                     <h3>سایت</h3>
                 </li>
-                <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'client:setting' %}">
-                        <i class="side-menu__icon fa fa-area-chart"></i>
-                        <span class="side-menu__label">تنظیمات</span>
-                    </a>
-                </li>
-                <li class="sub-category">
-                    <h3>مدیریت</h3>
-                </li>
-                <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                        <i class="side-menu__icon fe fe-users"></i>
-                        <span class="side-menu__label">کاربران</span>
-                        <i class="angle fe fe-chevron-right"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li><a href="{% url 'client:users' %}" class="slide-item">مدیریت کاربران</a></li>
-                    </ul>
-                </li>
-                <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                        <i class="side-menu__icon fe fe-cpu"></i>
-                        <span class="side-menu__label">منوی ادمین</span>
-                        <i class="angle fe fe-chevron-right"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li><a href="alerts.html" class="slide-item"> Alerts</a></li>
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                <span class="sub-side-menu__label">Avatars</span>
-                                <i class="sub-angle fe fe-chevron-right"></i>
-                            </a>
-                            <ul class="sub-slide-menu">
-                                <li><a href="avatarsquare.html" class="sub-slide-item"> Avatar-Square</a></li>
-                                <li><a href="avatar-round.html" class="sub-slide-item"> Avatar-Rounded</a></li>
-                                <li><a href="avatar-radius.html" class="sub-slide-item"> Avatar-Radius</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-category">
-                    <h3>تنظیمات سایت</h3>
-                </li>
-                <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                        <i class="side-menu__icon fe fe-settings"></i>
-                        <span class="side-menu__label">تنظیمات</span>
-                        <i class="angle fe fe-chevron-right"></i>
-                    </a>
-                    <ul class="slide-menu">
-                        <li><a href="profile.html" class="slide-item">Profile</a></li>
-                        <li class="sub-slide">
-                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                <span class="sub-side-menu__label">Forms</span>
-                                <i class="sub-angle fe fe-chevron-right"></i>
-                            </a>
-                            <ul class="sub-slide-menu">
-                                <li><a href="form-elements.html" class="sub-slide-item"> Form Elements</a></li>
-                                <li><a href="form-layouts.html" class="sub-slide-item"> Form Layouts</a></li>
-                                <li><a href="form-advanced.html" class="sub-slide-item"> Form Advanced</a></li>
-                                <li><a href="form-editor.html" class="sub-slide-item"> Form Editor</a></li>
-                                <li><a href="form-wizard.html" class="sub-slide-item"> Form Wizard</a></li>
-                                <li><a href="form-validation.html" class="sub-slide-item"> Form Validation</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                {% if request.user.status.active_user %}
+                    <li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'client:setting' %}">
+                            <i class="side-menu__icon fe fe-settings"></i>
+                            <span class="side-menu__label">تنظیمات</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                    <li class="sub-category">
+                        <h3>بخش ادمین</h3>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                            <i class="side-menu__icon fe fe-cpu"></i>
+                            <span class="side-menu__label">منوی ادمین</span>
+                            <i class="angle fe fe-chevron-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{% url 'client:users' %}" class="slide-item">
+                                    <i class="side-menu__icon fe fe-users"></i>
+                                    مدیریت کاربران
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'client:view_verion' %}" class="slide-item">
+                                    <i class="side-menu__icon bi bi-clipboard-data"></i>
+                                    ورژن‌ها
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                            <i class="side-menu__icon bi bi-clipboard-data"></i>
+                            <span class="side-menu__label">ورژن‌ها</span>
+                            <i class="angle fe fe-chevron-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li><a href="alerts.html" class="slide-item"> Alerts</a></li>
+                            <li class="sub-slide">
+                                <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
+                                    <span class="sub-side-menu__label">Avatars</span>
+                                    <i class="sub-angle fe fe-chevron-right"></i>
+                                </a>
+                                <ul class="sub-slide-menu">
+                                    <li><a href="avatarsquare.html" class="sub-slide-item"> Avatar-Square</a></li>
+                                    <li><a href="avatar-round.html" class="sub-slide-item"> Avatar-Rounded</a></li>
+                                    <li><a href="avatar-radius.html" class="sub-slide-item"> Avatar-Radius</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li-->
+                {% endif %}
             </ul>
             <div class="slide-right" id="slide-right">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"

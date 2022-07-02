@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %}تنظیمات سایت{% endblock %}
 {% load jformat %}
-{% block css %}{% endblock %}
+{% block css %}
+
+{% endblock %}
 {% block js %}
     <!-- COLOR PICKER JS -->
     <script src="{% static "assets/plugins/pickr-master/pickr.es5.min.js" %}"></script>
@@ -28,16 +30,22 @@
 
         radioInp.on('click', function() {
             let inp = $(`input[name="${$(this).attr('id')}"]`);
+            if (inp.val().includes('vidoneplus.ir')) {
+                inp.val(inp.val().replace('.vidoneplus.ir', ''));
+            }
             inp.show();
             inp.parent().show();
-            if ($(this).attr('id') === 'mydomain'){
+            inp.prop('required', true);
+            if ($(this).attr('id') === 'domain'){
                 let hiddenInp = $('input[name="fix_domain"]');
                 hiddenInp.parent().removeClass('d-flex');
                 hiddenInp.parent().hide();
+                hiddenInp.prop('required', false);
             }
             else {
-                let hiddenInp = $('input[name="mydomain"]');
+                let hiddenInp = $('input[name="domain"]');
                 hiddenInp.parent().hide();
+                hiddenInp.prop('required', false);
                 let fix_domain = $('input[name="fix_domain"]');
                 fix_domain.parent().addClass('d-flex');
                 fix_domain.show();
@@ -86,7 +94,8 @@
     {% include 'menu.html' %}
 
     <!--app-content open-->
-    <div class="main-content app-content mt-0">
+    {% if request.user.status.active_user %}
+        <div class="main-content app-content mt-0">
         <div class="side-app">
             <!-- CONTAINER -->
             <div class="main-container container-fluid">
@@ -122,7 +131,7 @@
                             <div class="container">
                                 <form
                                     action="{% if request.user.setting_set.first %}{% url 'client:setting_edit' %}{% else %}{% url 'client:setting' %}{% endif %}"
-                                    method="post">
+                                    method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <small class="text-muted">لطفا برای انتخاب رنگ حتما روی save کلیک کنید!</small>
                                     <div class="card-body">
@@ -166,19 +175,19 @@
                                                 <div class="form-group">
                                                     <div class="custom-controls-stacked">
                                                         <label class="custom-control custom-radio-lg">
-                                                            <input {% if 'vidoneplus.ir' not in request.user.setting_set.first.domain %}checked{% endif %} value="mydomain" type="radio" class="custom-control-input" id="mydomain" name="domain_type">
+                                                            <input {% if 'vidoneplus.ir' not in request.user.setting_set.first.domain %}checked{% endif %} value="domain" type="radio" class="custom-control-input" id="domain" name="domain_type">
                                                             <span class="custom-control-label">از دامنه‌ی خودم استفاده میکنم</span>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 col-sm-12 row">
+                                            <div class="col-lg-12 col-sm-12 row domain_inputs">
                                                 <div class="col-lg-12 col-sm-12 d-flex">
                                                     <input name="sub_domain" class="form-control form-control-lg col-10" placeholder="sub domain" style="display: none" type="text" value="{{ request.user.setting_set.first.domain }}">
                                                     <input name="fix_domain" class="form-control form-control-lg col-2 readonly" disabled style="display: none" type="text" value="vidoneplus.ir">
                                                 </div>
                                                 <div class="col-lg-12 col-sm-12">
-                                                    <input name="mydomain" class="form-control form-control-lg" placeholder="fix domain" style="display: none" type="text">
+                                                    <input name="domain" class="form-control form-control-lg" placeholder="fix domain" style="display: none" type="text" value="{{ request.user.setting_set.first.domain }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -322,8 +331,10 @@
                                                         </div>
                                                     </div>
                                                     {% if settings.company_logo %}
-                                                        <div class="col-6">
-                                                            <img class="thumbimg" src="{{ settings.company_logo.url }}">
+                                                        <div class="col-6 pt-5">
+                                                            <div class="d-flex justify-content-center align-self-center">
+                                                                <img style="max-width: 80%" class="thumbimg" src="{% url 'client:static_files' settings.domain settings.get_company_logo %}">
+                                                            </div>
                                                         </div>
                                                     {% endif %}
                                                 </div>
@@ -337,8 +348,10 @@
                                                         </div>
                                                     </div>
                                                     {% if settings.splashscreen %}
-                                                        <div class="col-6">
-                                                            <img class="thumbimg" src="{{ settings.splashscreen.url }}">
+                                                        <div class="col-6 pt-5">
+                                                            <div class="d-flex justify-content-center align-self-center">
+                                                                <img style="max-width: 80%" class="thumbimg" src="{% url 'client:static_files' settings.domain settings.get_splashscreen %}">
+                                                            </div>
                                                         </div>
                                                     {% endif %}
                                                 </div>
@@ -352,8 +365,10 @@
                                                         </div>
                                                     </div>
                                                     {% if settings.favicon %}
-                                                        <div class="col-6">
-                                                            <img class="thumbimg" src="{{ settings.favicon.url }}">
+                                                        <div class="col-6 pt-5">
+                                                            <div class="d-flex justify-content-center align-self-center">
+                                                                <img style="max-width: 80%" class="thumbimg" src="{% url 'client:static_files' settings.domain settings.get_favicon %}">
+                                                            </div>
                                                         </div>
                                                     {% endif %}
                                                 </div>
@@ -378,25 +393,39 @@
             <!-- CONTAINER END -->
         </div>
     </div>
-    <!--app-content close-->
+
+        <!--app-content close-->
 
 
-    <!-- Sidebar-right -->
-    {% comment %}
-    {% include 'side_bar.html' %}
-    {% endcomment %}
-    <!--/Sidebar-right-->
+        <!-- Sidebar-right -->
+        {% comment %}
+        {% include 'side_bar.html' %}
+        {% endcomment %}
+        <!--/Sidebar-right-->
 
-    <!-- Country-selector modal-->
-    {% comment %}
-    {% include 'country_selector.html' %}
-    {% endcomment %}
-    <!-- Country-selector modal-->
+        <!-- Country-selector modal-->
+        {% comment %}
+        {% include 'country_selector.html' %}
+        {% endcomment %}
+        <!-- Country-selector modal-->
 
-    <!-- FOOTER -->
-    {% include 'footer.html' %}
-    <!-- FOOTER END -->
+        <!-- FOOTER -->
+        {% include 'footer.html' %}
+        <!-- FOOTER END -->
 
-    <!-- BACK-TO-TOP -->
-    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+        <!-- BACK-TO-TOP -->
+        <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+    {% else %}
+        <div class="main-content app-content mt-0">
+            <div class="side-app">
+                <div class="main-container container-fluid">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100vh">
+                        <h2 class="text-muted">
+                            حساب کاربری شما فعال نیست!
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

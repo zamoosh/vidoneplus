@@ -7,16 +7,6 @@ from client.decorators import allowed_users
 
 @login_required
 @allowed_users(allowed_roles=['admin'])
-def users(request):
-    non_staff_users = User.objects.filter(is_staff=False)
-    context = {'users': non_staff_users,
-               'status': Status.objects.filter(user__in=non_staff_users)}
-    # return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
-    return render(request, 'client/users.html', context)
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
 def activate_user(request, user_id):
     context = {}
     non_staff_users = User.objects.filter(is_staff=False)

@@ -1,34 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}کاربران{% endblock %}
+{% block title %}ورژن‌ها{% endblock %}
 {% load jformat %}
-{% block css %}
-    <style>
-        a, h5, tr {
-            transition: all 0.3s;
-        }
-
-        tr:hover a.user {
-            transform: scale(1.3, 1.3);
-        }
-        tr {
-            opacity: 0.8;
-        }
-
-        tr:hover {
-            opacity: 1;
-        }
-    </style>
-{% endblock %}
-{% block js %}
-    <!-- DATA TABLE JS-->
-    <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'assets/js/table-data.js' %}"></script>
-{% endblock %}
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
 {% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% include 'loader.html' %}
+    <!-- /GLOBAL-LOADER -->
+
     <!-- app-Header -->
     {% include 'header.html' %}
     <!-- /app-Header -->
@@ -45,12 +26,20 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'index' %}">
+                            <a href="{% url 'client:users' %}">
                                 <i class="fa fa-arrow-right"></i>
-                                داشبرد
+                                کاربران
                             </a>
                         </h1>
-                        <h1 class="page-title px-2">کاربران بخش ادمین</h1>
+                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:users' %}">کاربران</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+                        </ol>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
@@ -64,21 +53,21 @@
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">کاربر</th>
-                                                <th class="wd-10p border-bottom-0">نام شرکت</th>
-                                                <th class="wd-25p border-bottom-0">وضعیت سایت</th>
+                                                <th class="wd-15p border-bottom-0">ورژن</th>
+                                                <th class="wd-10p border-bottom-0">موبایل</th>
+                                                <th class="wd-25p border-bottom-0">توضیحات</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for u in users %}
+                                            {% for i in images %}
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex flex-row">
                                                             <div class="d-flex flex-column justify-content-center me-3">
-                                                                <a class="user" href="{% url 'client:user_edit' u.id %}">
+                                                                <a class="user" href="{% url 'client:user_edit' i.id %}">
                                                                     <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ u.first_name.0 }} {{ u.last_name.0 }}
-                                                                        {% if u.status.active_user %}
+                                                                        {{ i.site_version }} {{ i.admin_version }}
+                                                                        {% if i.status.active_user %}
                                                                             <span class="avatar-status bg-green"></span>
                                                                         {% else %}
                                                                             <span class="avatar-status bg-red"></span>
@@ -87,14 +76,14 @@
                                                                 </a>
                                                             </div>
                                                             <div class="d-flex flex-column">
-                                                                <h5>{{ u.first_name }} {{ u.last_name }}</h5>
+                                                                <h5>{{ i.first_name }} {{ i.last_name }}</h5>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.email }}</a>
+                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.email }}</a>
                                                                 </div>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.cellphone }}</a>
+                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.cellphone }}</a>
                                                                 </div>
-                                                                <small class="text-muted">وضعیت: {% if u.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
+                                                                <small class="text-muted">وضعیت: {% if i.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -102,13 +91,13 @@
                                                         <div class="d-flex">
                                                             <div class="d-flex flex-column justify-content-center me-3">
                                                                 <h5 class=text-muted">
-                                                                    {{ u.organization_name }}
+                                                                    {{ i.organization_name }}
                                                                 </h5>
                                                                 <small class="mt-1 text-muted">
-                                                                    تاریخ تأسیس: {{ u.dateofestablishment|jformat:"%Y/%m/%d" }}
+                                                                    تاریخ تأسیس: {{ i.dateofestablishment|jformat:"%Y/%m/%d" }}
                                                                 </small>
                                                                 <small class="mt-1 text-muted">
-                                                                    روابط آموزشی: {{ u.educational_interface_name }}
+                                                                    روابط آموزشی: {{ i.educational_interface_name }}
                                                                 </small>
                                                             </div>
                                                         </div>
@@ -117,17 +106,17 @@
                                                         <div class="d-flex">
                                                             <div class="d-flex flex-column justify-content-around">
                                                                 <h5>سایت</h5>
-                                                                {% if u.extra.host %}
+                                                                {% if i.extra.host %}
                                                                     <small class="text-success">هاست ساخته شده</small>
                                                                 {% else %}
                                                                     <small class="text-danger">هاست ساخته نشده</small>
                                                                 {% endif %}
-                                                                {% if u.extra.site %}
+                                                                {% if i.extra.site %}
                                                                     <small class="text-success">سایت ساخته شده</small>
                                                                 {% else %}
                                                                     <small class="text-danger">سایت ساخته نشده</small>
                                                                 {% endif %}
-                                                                {% if u.extra.user %}
+                                                                {% if i.extra.user %}
                                                                     <small class="text-success">یوزر ساخته شده</small>
                                                                 {% else %}
                                                                     <small class="text-danger">یوزر ساخته نشده</small>
@@ -145,18 +134,24 @@
                     </div>
                 </div>
                 <!-- /write your code here -->
+
             </div>
             <!-- CONTAINER END -->
         </div>
     </div>
     <!--app-content close-->
 
+
     <!-- Sidebar-right -->
-{#    {% include 'side_bar.html' %}#}
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
     <!--/Sidebar-right-->
 
     <!-- Country-selector modal-->
-{#    {% include 'country_selector.html' %}#}
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
     <!-- Country-selector modal-->
 
     <!-- FOOTER -->

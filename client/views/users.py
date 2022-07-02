@@ -3,7 +3,7 @@ from .imports import *
 
 @login_required
 @allowed_users(allowed_roles=['admin'])
-def admin(request):
+def users(request):
     context = {}
     non_staff_users = User.objects.filter(is_staff=False)
     context['users'] = non_staff_users
