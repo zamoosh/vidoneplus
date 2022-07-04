@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}ساخت ورژن جدید{% endblock %}
+{% load jformat %}
+{% block css %}
+    <!--- FONT-ICONS CSS -->
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'client:view_verion' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                ورژن‌ها
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">ساخت ورژن بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:view_verion' %}">ورژن‌ها</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ساخت ورژن</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">ساخت ورژن جدید</h3>
+                            </div>
+                            <div class="container">
+                                <form
+                                    action="{% if request.user.setting_set.first %}{% url 'client:setting_edit' %}{% else %}{% url 'client:setting' %}{% endif %}"
+                                    method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="pwa_version">ورژن PWA</label>
+                                                    <input type="text" class="form-control" id="pwa_version" placeholder="ورژن PWA" name="pwa_version" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="pwa_description">توضیحات PWA</label>
+                                                    <input type="text" class="form-control" id="pwa_description" placeholder="توضیحات PWA" name="pwa_description" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="admin_version">ورژن Admin</label>
+                                                    <input type="text" class="form-control" id="admin_version" placeholder="ورژن Admin" name="admin_version" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="admin_description">توضیحات Admin</label>
+                                                    <input type="text" class="form-control" id="admin_description" placeholder="توضیحات Admin" name="admin_description" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="site_version">ورژن سایت (Site)</label>
+                                                    <input type="text" class="form-control" id="site_version" placeholder="ورژن سایت (Site)" name="site_version" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="site_description">توضیحات Site</label>
+                                                    <input type="text" class="form-control" id="site_description" placeholder="توضیحات Site" name="site_description" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="android_version">ورژن Android</label>
+                                                    <input type="text" class="form-control" id="android_version" placeholder="ورژن Android" name="android_version" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="android_description">توضیحات Android</label>
+                                                    <input type="text" class="form-control" id="android_description" placeholder="توضیحات Android" name="android_description" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="ios_version">ورژن IOS</label>
+                                                    <input type="text" class="form-control" id="ios_version" placeholder="ورژن IOS" name="ios_version" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label for="ios_description">توضیحات IOS</label>
+                                                    <input type="text" class="form-control" id="ios_description" placeholder="توضیحات IOS" name="ios_description" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <label class="custom-control custom-checkbox-md">
+                                                        <input
+                                                            type="checkbox" class="custom-control-input"
+                                                            name="force_update" value="True">
+                                                        <span class="custom-control-label">آپدیت اجباری</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <button type="submit" class="btn btn-success">ثبت</button>
+                                        <a href="{% url 'client:view_verion' %}" class="btn btn-danger">بازگشت</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

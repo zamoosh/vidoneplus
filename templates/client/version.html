@@ -7,7 +7,7 @@
 {% block body %}
 
     <!-- GLOBAL-LOADER -->
-    {% include 'loader.html' %}
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
     <!-- /GLOBAL-LOADER -->
 
     <!-- app-Header -->
@@ -28,17 +28,17 @@
                         <h1 class="page-title px-2">
                             <a href="{% url 'client:users' %}">
                                 <i class="fa fa-arrow-right"></i>
-                                کاربران
+                                داشبرد
                             </a>
                         </h1>
-                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                        <h1 class="page-title px-2">ورژن‌ها بخش ادمین</h1>
                     </div>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{% url 'client:users' %}">کاربران</a>
+                                <a href="{% url 'client:users' %}">داشبرد</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+                            <li class="breadcrumb-item active" aria-current="page">ورژن‌ها</li>
                         </ol>
                     </div>
                 </div>
@@ -49,6 +49,9 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
+                                <div class="d-flex justify-content-end">
+                                    <a href="{% url 'client:version_create' %}" class="btn btn-primary">ساخت ورژن جدید</a>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>

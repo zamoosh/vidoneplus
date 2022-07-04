@@ -35,8 +35,8 @@ urlpatterns = [
     path('admin/<str:id>/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
 
     path('version/', version, name="view_verion"),
-    path('version/edit/<int:id>/', edit_verion, name="edit_verion"),
-    path('version/create/', create_verion, name="create_verion"),
+    path('version/edit/<int:id>/', version_edit, name='version_edit'),
+    path('version/create/', version_create, name='version_create'),
     path('version/active/<int:id>/', edit_verion, {'action' : 'active'}, name="active_verion"),
     path('version/deactive/<int:id>/', edit_verion, {'action' : 'deactive'}, name="deactive_verion"),
 ]
