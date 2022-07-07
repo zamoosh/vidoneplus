@@ -66,7 +66,7 @@
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">کاربر</th>
                                                 <th class="wd-10p border-bottom-0">نام شرکت</th>
-                                                <th class="wd-25p border-bottom-0">وضعیت سایت</th>
+{#                                                <th class="wd-25p border-bottom-0">وضعیت سایت</th>#}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,28 +113,28 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <div class="d-flex flex-column justify-content-around">
-                                                                <h5>سایت</h5>
-                                                                {% if u.extra.host %}
-                                                                    <small class="text-success">هاست ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">هاست ساخته نشده</small>
-                                                                {% endif %}
-                                                                {% if u.extra.site %}
-                                                                    <small class="text-success">سایت ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">سایت ساخته نشده</small>
-                                                                {% endif %}
-                                                                {% if u.extra.user %}
-                                                                    <small class="text-success">یوزر ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">یوزر ساخته نشده</small>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                    </td>
+{#                                                    <td>#}
+{#                                                        <div class="d-flex">#}
+{#                                                            <div class="d-flex flex-column justify-content-around">#}
+{#                                                                <h5>سایت</h5>#}
+{#                                                                {% if u.extra.host %}#}
+{#                                                                    <small class="text-success">هاست ساخته شده</small>#}
+{#                                                                {% else %}#}
+{#                                                                    <small class="text-danger">هاست ساخته نشده</small>#}
+{#                                                                {% endif %}#}
+{#                                                                {% if u.extra.site %}#}
+{#                                                                    <small class="text-success">سایت ساخته شده</small>#}
+{#                                                                {% else %}#}
+{#                                                                    <small class="text-danger">سایت ساخته نشده</small>#}
+{#                                                                {% endif %}#}
+{#                                                                {% if u.extra.user %}#}
+{#                                                                    <small class="text-success">یوزر ساخته شده</small>#}
+{#                                                                {% else %}#}
+{#                                                                    <small class="text-danger">یوزر ساخته نشده</small>#}
+{#                                                                {% endif %}#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </td>#}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

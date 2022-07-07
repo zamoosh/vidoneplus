@@ -19,3 +19,4 @@ from .users import users
 from .version import version
 from .version_create import version_create
 from .version_edit import version_edit
+from .sites import sites
