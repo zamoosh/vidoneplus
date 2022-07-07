@@ -39,4 +39,7 @@ urlpatterns = [
     path('version/create/', version_create, name='version_create'),
     path('version/active/<int:id>/', edit_verion, {'action' : 'active'}, name="active_verion"),
     path('version/deactive/<int:id>/', edit_verion, {'action' : 'deactive'}, name="deactive_verion"),
+
+    path('sites/', sites, name="sites"),
+
 ]
