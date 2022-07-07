@@ -2,8 +2,7 @@ from .imports import *
 
 
 @login_required
-@allowed_users(allowed_roles=['admin'])
-def sites(request):
+def versions(request):
     context = {}
-    context['sites'] = Setting.objects.all()
+    context['images'] = Imagetag.objects.filter(status=True)
     return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
