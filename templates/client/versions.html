@@ -2,7 +2,24 @@
 {% load static %}
 {% block title %}ورژن‌ها{% endblock %}
 {% load jformat %}
-{% block css %}{% endblock %}
+{% block css %}
+    <style>
+        a, h5, tr {
+            transition: all 0.3s;
+        }
+
+        tr:hover a.user {
+            transform: scale(1.3, 1.3);
+        }
+        tr {
+            opacity: 0.8;
+        }
+
+        tr:hover {
+            opacity: 1;
+        }
+    </style>
+{% endblock %}
 {% block js %}{% endblock %}
 {% block body %}
 
@@ -26,7 +43,7 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'client:users' %}">
+                            <a href="{% url 'index' %}">
                                 <i class="fa fa-arrow-right"></i>
                                 داشبرد
                             </a>
@@ -36,7 +53,7 @@
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{% url 'client:users' %}">داشبرد</a>
+                                <a href="{% url 'index' %}">داشبرد</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">ورژن‌ها</li>
                         </ol>
@@ -56,9 +73,10 @@
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">ورژن</th>
-                                                <th class="wd-10p border-bottom-0">موبایل</th>
-                                                <th class="wd-25p border-bottom-0">توضیحات</th>
+                                                <th class="wd-15p border-bottom-0">ورژن سایت</th>
+                                                <th class="wd-10p border-bottom-0">ورژن موبایل</th>
+                                                <th class="wd-25p border-bottom-0">ورژن PWA</th>
+                                                <th class="wd-25p border-bottom-0">ویرایش</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,65 +84,39 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex flex-row">
-                                                            <div class="d-flex flex-column justify-content-center me-3">
-                                                                <a class="user" href="{% url 'client:user_edit' i.id %}">
-                                                                    <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ i.site_version }} {{ i.admin_version }}
-                                                                        {% if i.status.active_user %}
-                                                                            <span class="avatar-status bg-green"></span>
-                                                                        {% else %}
-                                                                            <span class="avatar-status bg-red"></span>
-                                                                        {% endif %}
-                                                                    </span>
-                                                                </a>
-                                                            </div>
                                                             <div class="d-flex flex-column">
-                                                                <h5>{{ i.first_name }} {{ i.last_name }}</h5>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.email }}</a>
+                                                                    site version: {{ i.site_version }}
                                                                 </div>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' i.id %}">{{ i.cellphone }}</a>
+                                                                    admin version: {{ i.admin_version }}
                                                                 </div>
-                                                                <small class="text-muted">وضعیت: {% if i.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
+                                                                <small class="text-muted">آپدیت اجباری: {% if i.forceupdate %}<span class="text-success">بله</span>{% else %}<span class="text-danger">خیر</span>{% endif %}</small>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
                                                             <div class="d-flex flex-column justify-content-center me-3">
-                                                                <h5 class=text-muted">
-                                                                    {{ i.organization_name }}
-                                                                </h5>
-                                                                <small class="mt-1 text-muted">
-                                                                    تاریخ تأسیس: {{ i.dateofestablishment|jformat:"%Y/%m/%d" }}
-                                                                </small>
-                                                                <small class="mt-1 text-muted">
-                                                                    روابط آموزشی: {{ i.educational_interface_name }}
-                                                                </small>
+                                                                <div class="text-muted">
+                                                                    <span class="text-success">Android: {{ i.android_version }}</span>
+                                                                </div>
+                                                                <div class="mt-1 text-muted">
+                                                                    <span class="text-info">IOS: {{ i.ios_version }}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <div class="d-flex flex-column justify-content-around">
-                                                                <h5>سایت</h5>
-                                                                {% if i.extra.host %}
-                                                                    <small class="text-success">هاست ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">هاست ساخته نشده</small>
-                                                                {% endif %}
-                                                                {% if i.extra.site %}
-                                                                    <small class="text-success">سایت ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">سایت ساخته نشده</small>
-                                                                {% endif %}
-                                                                {% if i.extra.user %}
-                                                                    <small class="text-success">یوزر ساخته شده</small>
-                                                                {% else %}
-                                                                    <small class="text-danger">یوزر ساخته نشده</small>
-                                                                {% endif %}
+                                                            <div class="text-muted">
+                                                                pwa version: {{ i.pwa_version }}
                                                             </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="pt-4">
+                                                            <a href="{% url 'client:version_edit' i.id %}" class="btn btn-primary btn-sm">ویرایش</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -137,7 +129,6 @@
                     </div>
                 </div>
                 <!-- /write your code here -->
-
             </div>
             <!-- CONTAINER END -->
         </div>

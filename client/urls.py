@@ -34,9 +34,13 @@ urlpatterns = [
     path('admin/<int:id>/siteuser/', check_or_createuser, name="siteuser"),
     path('admin/<str:id>/<str:user>/resetpassword/', resetpassword, name="resetpassword"),
 
-    path('version/', version, name="view_verion"),
-    path('version/edit/<int:id>/', version_edit, name='version_edit'),
+    path('versions/', versions, name="versions"),
+    path('versions/delete/<int:image_tag_id>/', version_delete, name="version_delete"),
+    path('version/edit/<int:image_tag_id>/', version_edit, name='version_edit'),
     path('version/create/', version_create, name='version_create'),
     path('version/active/<int:id>/', edit_verion, {'action' : 'active'}, name="active_verion"),
     path('version/deactive/<int:id>/', edit_verion, {'action' : 'deactive'}, name="deactive_verion"),
+
+    path('sites/', sites, name="sites"),
+
 ]

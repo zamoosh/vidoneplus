@@ -108,13 +108,13 @@
        })
    })
 
-    var position = window.location.pathname.split('/');
+    var position = window.location.pathname;
     $(".app-sidebar li a").each(function () {
         var $this = $(this);
         var pageUrl = $this.attr("href");
 
         if (pageUrl) {
-            if (position[position.length - 1] == pageUrl) {
+            if (position == pageUrl) {
                 $(this).addClass("active");
                 $(this).parent().addClass("is-expanded");
                 $(this).parent().parent().prev().addClass("active");

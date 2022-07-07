@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}کاربران{% endblock %}
+{% block title %}سایت ها{% endblock %}
 {% load jformat %}
 {% block css %}
     <style>
@@ -50,7 +50,7 @@
                                 داشبرد
                             </a>
                         </h1>
-                        <h1 class="page-title px-2">کاربران بخش ادمین</h1>
+                        <h1 class="page-title px-2">لیست سایت ها</h1>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
@@ -64,21 +64,24 @@
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">کاربر</th>
-                                                <th class="wd-10p border-bottom-0">نام شرکت</th>
-{#                                                <th class="wd-25p border-bottom-0">وضعیت سایت</th>#}
+                                                <th class="wd-15p border-bottom-0">نام سایت</th>
+                                                <th class="wd-10p border-bottom-0">آدرس دامنه</th>
+                                                <th class="wd-10p border-bottom-0">ورژن</th>
+                                                <th class="wd-10p border-bottom-0">نام مدیر</th>
+                                                <th class="wd-10p border-bottom-0">شماره تماس</th>
+                                                <th class="wd-25p border-bottom-0">وضعیت سایت</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for u in users %}
+                                            {% for s in sites %}
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex flex-row">
                                                             <div class="d-flex flex-column justify-content-center me-3">
-                                                                <a class="user" href="{% url 'client:user_edit' u.id %}">
+                                                                <a class="user" href="javascript:void(0)">
                                                                     <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ u.first_name.0 }} {{ u.last_name.0 }}
-                                                                        {% if u.status.active_user %}
+                                                                        {{ s.owner.first_name.0 }} {{ s.owner.last_name.0 }}
+                                                                        {% if s.status.active_user %}
                                                                             <span class="avatar-status bg-green"></span>
                                                                         {% else %}
                                                                             <span class="avatar-status bg-red"></span>
@@ -87,54 +90,32 @@
                                                                 </a>
                                                             </div>
                                                             <div class="d-flex flex-column">
-                                                                <h5>{{ u.first_name }} {{ u.last_name }}</h5>
+                                                                <h5>{{ s.site_name }}</h5>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.email }}</a>
+                                                                    <a href="{% url 'client:user_edit' s.id %}">{{ s.email }}</a>
                                                                 </div>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.cellphone }}</a>
+                                                                    <a href="{% url 'client:user_edit' s.id %}">{{ s.cellphone }}</a>
                                                                 </div>
-                                                                <small class="text-muted">وضعیت: {% if u.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
+                                                                <small class="text-muted">وضعیت: {% if s.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
                                                             </div>
                                                         </div>
                                                     </td>
+                                                    <td><a href="https://{{ s.domain }}">{{ s.domain }}</a></td>
+                                                    <td>{{ s.image_tag.site_version }}</td>
+                                                    <td>{{ s.owner.get_full_name }}</td>
+                                                    <td>{{ s.contact_phone }}</td>
                                                     <td>
                                                         <div class="d-flex">
                                                             <div class="d-flex flex-column justify-content-center me-3">
-                                                                <h5 class=text-muted">
-                                                                    {{ u.organization_name }}
-                                                                </h5>
-                                                                <small class="mt-1 text-muted">
-                                                                    تاریخ تأسیس: {{ u.dateofestablishment|jformat:"%Y/%m/%d" }}
-                                                                </small>
-                                                                <small class="mt-1 text-muted">
-                                                                    روابط آموزشی: {{ u.educational_interface_name }}
-                                                                </small>
+                                                                {% if s.image_tag.status %}
+                                                                    <span class="text-success">{{ s.image_tag.status }}</span>
+                                                                {% else %}
+                                                                    <span class="text-danger">{{ s.image_tag.status }}</span>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                     </td>
-{#                                                    <td>#}
-{#                                                        <div class="d-flex">#}
-{#                                                            <div class="d-flex flex-column justify-content-around">#}
-{#                                                                <h5>سایت</h5>#}
-{#                                                                {% if u.extra.host %}#}
-{#                                                                    <small class="text-success">هاست ساخته شده</small>#}
-{#                                                                {% else %}#}
-{#                                                                    <small class="text-danger">هاست ساخته نشده</small>#}
-{#                                                                {% endif %}#}
-{#                                                                {% if u.extra.site %}#}
-{#                                                                    <small class="text-success">سایت ساخته شده</small>#}
-{#                                                                {% else %}#}
-{#                                                                    <small class="text-danger">سایت ساخته نشده</small>#}
-{#                                                                {% endif %}#}
-{#                                                                {% if u.extra.user %}#}
-{#                                                                    <small class="text-success">یوزر ساخته شده</small>#}
-{#                                                                {% else %}#}
-{#                                                                    <small class="text-danger">یوزر ساخته نشده</small>#}
-{#                                                                {% endif %}#}
-{#                                                            </div>#}
-{#                                                        </div>#}
-{#                                                    </td>#}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
