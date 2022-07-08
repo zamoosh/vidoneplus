@@ -16,7 +16,8 @@ from .create_vidone import admininstall, adminremove, install_sites
 from .user_edit import user_edit
 from .deactivate_user import deactivate_user
 from .users import users
-from .version import version
+from .versions import versions
 from .version_create import version_create
 from .version_edit import version_edit
+from .version_delete import version_delete
 from .sites import sites

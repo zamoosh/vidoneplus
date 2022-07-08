@@ -2,8 +2,8 @@ from .imports import *
 
 
 def version_create(request):
-    if request.user.is_superuser:
-        pass
+    if not request.user.is_superuser:
+        return redirect(reverse('page_not_found'))
     context = {}
     if request.method == "POST":
         image_tag = Imagetag()
@@ -19,5 +19,12 @@ def version_create(request):
         image_tag.ios_description = request.POST.get('ios_description')
         if request.POST.get('force_update'):
             image_tag.forceupdate = True
+        else:
+            image_tag.forceupdate = False
         image_tag.save()
+        request.session['save'] = True
+        return redirect(reverse('client:version_edit', kwargs={'image_tag_id': image_tag.id}))
+    if request.session.get('save'):
+        context['save'] = True
+        del request.session['save']
     return render(request, f'{__name__.replace("views.", ".").replace(".", "/")}.html', context)

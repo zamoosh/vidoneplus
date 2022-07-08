@@ -1,9 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}ساخت ورژن جدید{% endblock %}
+{% block title %}ویرایش ویژن{% endblock %}
 {% load jformat %}
-{% block css %}{% endblock %}
-{% block js %}{% endblock %}
+{% block css %}
+    <!--- FONT-ICONS CSS -->
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+    <script>
+        {% if save %}
+            swal({
+                type: "success",
+                title: "تغییرات با موفقیت ذخیره شدند!",
+                confirmButtonText: 'باشه',
+                timer: 600
+            });
+        {% endif %}
+    </script>
+{% endblock %}
 {% block body %}
 
     <!-- GLOBAL-LOADER -->
@@ -31,14 +45,14 @@
                                 ورژن‌ها
                             </a>
                         </h1>
-                        <h1 class="page-title px-2">ساخت ورژن بخش ادمین</h1>
+                        <h1 class="page-title px-2">ویرایش ورژن بخش ادمین</h1>
                     </div>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="{% url 'client:versions' %}">ورژن‌ها</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">ساخت ورژن</li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش ورژن</li>
                         </ol>
                     </div>
                 </div>
@@ -49,26 +63,27 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">ساخت ورژن جدید</h3>
+                                <h3 class="card-title">ویرایش ورژن</h3>
                             </div>
                             <div class="container">
-                                <form action="{% url 'client:version_create' %}" method="post" enctype="multipart/form-data">
+                                <form
+                                    action="{% url 'client:version_edit' image_tag.id %}" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="card-body">
                                         <div class="row">
-                                            <!-- pwa -->
+                                        <!-- pwa -->
                                             <div class="col-12 mb-4">
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <div class="d-flex">
                                                             <h4 class="mx-auto">PWA</h4>
                                                         </div>
-                                                        <input type="text" class="form-control" id="pwa_version" placeholder="ورژن PWA" name="pwa_version" value="">
+                                                        <input type="text" class="form-control" id="pwa_version" placeholder="ورژن PWA" name="pwa_version" value="{{ image_tag.pwa_version }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <textarea id="pwa_description" class="form-control" name="pwa_description" placeholder="توضیحات PWA" rows="4"></textarea>
+                                                        <textarea id="pwa_description" class="form-control" name="pwa_description" placeholder="توضیحات PWA" rows="4">{{ image_tag.pwa_description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,12 +95,12 @@
                                                         <div class="d-flex">
                                                             <h4 class="mx-auto">Admin</h4>
                                                         </div>
-                                                        <input type="text" class="form-control" id="admin_version" placeholder="ورژن Admin" name="admin_version" value="">
+                                                        <input type="text" class="form-control" id="admin_version" placeholder="ورژن Admin" name="admin_version" value="{{ image_tag.admin_version }}">
                                                     </div>
                                                 </div>
                                                     <div class="col-12">
                                                     <div class="form-group">
-                                                        <textarea id="admin_description" class="form-control" name="admin_description" placeholder="توضیحات Admin" rows="4"></textarea>
+                                                        <textarea id="admin_description" class="form-control" name="admin_description" placeholder="توضیحات Admin" rows="4">{{ image_tag.admin_description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,12 +112,12 @@
                                                         <div class="d-flex">
                                                             <h4 class="mx-auto">Site</h4>
                                                         </div>
-                                                        <input type="text" class="form-control" id="site_version" placeholder="ورژن سایت (Site)" name="site_version" value="">
+                                                        <input type="text" class="form-control" id="site_version" placeholder="ورژن سایت (Site)" name="site_version" value="{{ image_tag.site_version }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <textarea id="site_description" class="form-control" name="site_description" placeholder="توضیحات سایت (Site)" rows="4"></textarea>
+                                                        <textarea id="site_description" class="form-control" name="site_description" placeholder="توضیحات سایت (Site)" rows="4">{{ image_tag.site_description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -114,12 +129,12 @@
                                                         <div class="d-flex">
                                                             <h4 class="mx-auto">Android</h4>
                                                         </div>
-                                                        <input type="text" class="form-control" id="android_version" placeholder="ورژن Android" name="android_version" value="">
+                                                        <input type="text" class="form-control" id="android_version" placeholder="ورژن Android" name="android_version" value="{{ image_tag.android_version }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <textarea id="android_description" class="form-control" name="android_description" placeholder="توضحیات Android" rows="4"></textarea>
+                                                        <textarea id="android_description" class="form-control" name="android_description" placeholder="توضحیات Android" rows="4">{{ image_tag.android_description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,12 +146,12 @@
                                                         <div class="d-flex">
                                                             <h4 class="mx-auto">IOS</h4>
                                                         </div>
-                                                        <input type="text" class="form-control" id="ios_version" placeholder="ورژن IOS" name="ios_version" value="">
+                                                        <input type="text" class="form-control" id="ios_version" placeholder="ورژن IOS" name="ios_version" value="{{ image_tag.ios_version }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <textarea id="ios_description" class="form-control" name="ios_description" placeholder="توضیحات IOS" rows="4"></textarea>
+                                                        <textarea id="ios_description" class="form-control" name="ios_description" placeholder="توضیحات IOS" rows="4">{{ image_tag.ios_description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,7 +163,8 @@
                                                         <label class="custom-control custom-checkbox-lg">
                                                             <input
                                                                 type="checkbox" class="custom-control-input"
-                                                                name="force_update" value="1">
+                                                                name="force_update" value="1"
+                                                                {% if image_tag.forceupdate %}checked{% endif %} >
                                                             <h4 class="custom-control-label">آپدیت اجباری</h4>
                                                         </label>
                                                     </div>
@@ -159,6 +175,7 @@
                                     <div class="card-body">
                                         <button type="submit" class="btn btn-success">ثبت</button>
                                         <a href="{% url 'client:versions' %}" class="btn btn-danger">بازگشت</a>
+                                        <a href="{% url 'client:version_delete' image_tag.id %}" class="btn btn-danger float-end">حذف</a>
                                     </div>
                                 </form>
                             </div>
