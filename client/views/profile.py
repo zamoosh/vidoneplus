@@ -17,7 +17,8 @@ def profile(request):
             u.organization_name = request.POST.get('organization_name')
             u.educational_interface_name = request.POST.get('educational_interface_name')
             u.description = request.POST.get('description')
-            u.dateofestablishment = User.str_to_date(request.POST.get('dateofestablishment'))
+            if request.POST.get('dateofestablishment'):
+                u.dateofestablishment = User.str_to_date(request.POST.get('dateofestablishment'))
             u.email = request.POST.get('email')
             u.save()
             request.session['save'] = True

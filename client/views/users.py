@@ -2,10 +2,13 @@ from .imports import *
 
 
 @login_required
-@allowed_users(allowed_roles=['admin'])
+@can_see_this_page
 def users(request):
     context = {}
-    non_staff_users = User.objects.filter(is_staff=False)
-    context['users'] = non_staff_users
-    context['status'] = Status.objects.filter(user__in=non_staff_users)
+    paginator = Paginator(User.objects.filter(is_staff=False), 10)
+    if request.GET.get('page_number'):
+        context['page'] = paginator.get_page(request.GET.get('page_number'))
+    else:
+        context['page'] = paginator.get_page(1)
+    context['page_url'] = 'client:users'
     return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
