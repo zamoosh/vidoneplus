@@ -64,7 +64,7 @@
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">نام سایت</th>
+                                                <th class="wd-15p border-bottom-0">مالک / سایت</th>
                                                 <th class="wd-10p border-bottom-0">آدرس دامنه</th>
                                                 <th class="wd-10p border-bottom-0">ورژن</th>
                                                 <th class="wd-10p border-bottom-0">نام مدیر</th>
@@ -80,7 +80,7 @@
                                                             <div class="d-flex flex-column justify-content-center me-3">
                                                                 <a class="user" href="javascript:void(0)">
                                                                     <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ s.owner.first_name.0 }} {{ s.owner.last_name.0 }}
+                                                                        <small>{{ s.owner.first_name }}</small>
                                                                         {% if s.status.active_user %}
                                                                             <span class="avatar-status bg-green"></span>
                                                                         {% else %}

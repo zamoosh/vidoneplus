@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect, reverse
 
 
 def allowed_users(allowed_roles=[]):
@@ -15,3 +16,12 @@ def allowed_users(allowed_roles=[]):
                 return HttpResponse('You are not authorized to view this page')
         return wrapper_func
     return decorator
+
+
+def can_see_this_page(function):
+    def wrapper(request, **kwargs):
+        if request.user.is_superuser:
+            return function(request, **kwargs)
+        return redirect(reverse('page_not_found'))
+
+    return wrapper

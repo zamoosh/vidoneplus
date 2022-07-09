@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load client %}
 {% block title %}کاربران{% endblock %}
 {% load jformat %}
 {% block css %}
@@ -61,6 +62,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
+                                    <div class="d-flex">
+                                        <h4 class="mx-auto text-muted">صفحه‌ی {{ users.number|persian_numbers }}</h4>
+                                    </div>
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
@@ -139,6 +143,42 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                    <div class="btn-group" role="group">
+                                        <!-- first -->
+                                        {% if users.number != users.paginator.page_range.0 %}
+                                            {% if users.paginator.page_range.0 %}
+                                                <a href="{% url 'client:users' %}?page_number={{ users.paginator.page_range.0 }}" class="btn btn-outline-primary btn-sm">اولین</a>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        <!-- current - 2 -->
+                                        {% if users.previous_page_number|add:-1 in users.paginator.page_range  and users.previous_page_number|add:-1 != users.paginator.page_range.0 %}
+                                            <a href="{% url 'client:users' %}?page_number={{ users.previous_page_number|add:-1 }}" class="btn btn-outline-primary btn-sm">{{ users.previous_page_number|add:-1|persian_numbers }}</a>
+                                        {% endif %}
+
+                                        <!-- current - 1 -->
+                                        {% if users.has_previous  and users.previous_page_number != users.paginator.page_range.0 %}
+                                            <a href="{% url 'client:users' %}?page_number={{ users.previous_page_number }}" class="btn btn-outline-primary btn-sm">{{ users.previous_page_number|persian_numbers }}</a>
+                                        {% endif %}
+
+                                        <!-- current -->
+                                        <a href="{% url 'client:users' %}?page_number={{ users.number }}" class="btn btn-outline-primary btn-sm">{{ users.number|persian_numbers }}</a>
+
+                                        <!-- current + 1 -->
+                                        {% if users.has_next and users.next_page_number != users.paginator.num_pages %}
+                                            <a href="{% url 'client:users' %}?page_number={{ users.next_page_number }}" class="btn btn-outline-primary btn-sm">{{ users.next_page_number|persian_numbers }}</a>
+                                        {% endif %}
+
+                                        <!-- current + 2 -->
+                                        {% if users.next_page_number|add:1 in users.paginator.page_range and users.next_page_number|add:1 != users.paginator.num_pages %}
+                                            <a href="{% url 'client:users' %}?page_number={{ users.next_page_number|add:1 }}" class="btn btn-outline-primary btn-sm">{{ users.next_page_number|add:1|persian_numbers }}</a>
+                                        {% endif %}
+
+                                        <!-- last -->
+                                        {% if users.number != users.paginator.num_pages %}
+                                            <a href="{% url 'client:users' %}?page_number={{ users.paginator.num_pages }}" class="btn btn-outline-primary btn-sm">آخر {{ users.paginator.num_pages|persian_numbers }}</a>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
