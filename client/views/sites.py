@@ -2,8 +2,13 @@ from .imports import *
 
 
 @login_required
-@allowed_users(allowed_roles=['admin'])
+@can_see_this_page
 def sites(request):
     context = {}
-    context['sites'] = Setting.objects.all()
+    paginator = Paginator(Setting.objects.all(), 1)
+    if request.GET.get('page_number'):
+        context['page'] = paginator.get_page(request.GET.get('page_number'))
+    else:
+        context['page'] = paginator.get_page(1)
+    context['page_url'] = 'client:sites'
     return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)

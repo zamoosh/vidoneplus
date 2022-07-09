@@ -25,9 +25,19 @@
     <!-- DATA TABLE JS-->
     <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>
+{#    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>#}
+{#    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>#}
     <script src="{% static 'assets/js/table-data.js' %}"></script>
+    <script>
+      $(window).on('load', function () {
+        let e = $('#responsive-datatable_length');
+        e = e.parent();
+        e.hide();
+        e = $('#responsive-datatable_filter').parent();
+        e.removeClass();
+        e.addClass('col-12');
+      });
+    </script>
 {% endblock %}
 {% block body %}
     <!-- app-Header -->
@@ -63,7 +73,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <div class="d-flex">
-                                        <h4 class="mx-auto text-muted">صفحه‌ی {{ users.number|persian_numbers }}</h4>
+                                        <h4 class="mx-auto text-muted">صفحه‌ی {{ page.number|persian_numbers }}</h4>
                                     </div>
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
@@ -74,15 +84,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for u in users %}
+                                            {% for user in page %}
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex flex-row">
                                                             <div class="d-flex flex-column justify-content-center me-3">
-                                                                <a class="user" href="{% url 'client:user_edit' u.id %}">
+                                                                <a class="user" href="{% url 'client:user_edit' user.id %}">
                                                                     <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ u.first_name.0 }} {{ u.last_name.0 }}
-                                                                        {% if u.status.active_user %}
+                                                                        {{ user.first_name.0 }} {{ user.last_name.0 }}
+                                                                        {% if user.status.active_user %}
                                                                             <span class="avatar-status bg-green"></span>
                                                                         {% else %}
                                                                             <span class="avatar-status bg-red"></span>
@@ -91,14 +101,14 @@
                                                                 </a>
                                                             </div>
                                                             <div class="d-flex flex-column">
-                                                                <h5>{{ u.first_name }} {{ u.last_name }}</h5>
+                                                                <h5>{{ user.first_name }} {{ user.last_name }}</h5>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.email }}</a>
+                                                                    <a href="{% url 'client:user_edit' user.id %}">{{ user.email }}</a>
                                                                 </div>
                                                                 <div class="text-muted">
-                                                                    <a href="{% url 'client:user_edit' u.id %}">{{ u.cellphone }}</a>
+                                                                    <a href="{% url 'client:user_edit' user.id %}">{{ user.cellphone }}</a>
                                                                 </div>
-                                                                <small class="text-muted">وضعیت: {% if u.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
+                                                                <small class="text-muted">وضعیت: {% if user.status.active_user %}<span class="text-success">فعال</span>{% else %}<span class="text-danger">غیرفعال</span>{% endif %}</small>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -106,13 +116,13 @@
                                                         <div class="d-flex">
                                                             <div class="d-flex flex-column justify-content-center me-3">
                                                                 <h5 class=text-muted">
-                                                                    {{ u.organization_name }}
+                                                                    {{ user.organization_name }}
                                                                 </h5>
                                                                 <small class="mt-1 text-muted">
-                                                                    تاریخ تأسیس: {{ u.dateofestablishment|jformat:"%Y/%m/%d" }}
+                                                                    تاریخ تأسیس: {{ user.dateofestablishment|jformat:"%Y/%m/%d" }}
                                                                 </small>
                                                                 <small class="mt-1 text-muted">
-                                                                    روابط آموزشی: {{ u.educational_interface_name }}
+                                                                    روابط آموزشی: {{ user.educational_interface_name }}
                                                                 </small>
                                                             </div>
                                                         </div>
@@ -121,17 +131,17 @@
 {#                                                        <div class="d-flex">#}
 {#                                                            <div class="d-flex flex-column justify-content-around">#}
 {#                                                                <h5>سایت</h5>#}
-{#                                                                {% if u.extra.host %}#}
+{#                                                                {% if user.extra.host %}#}
 {#                                                                    <small class="text-success">هاست ساخته شده</small>#}
 {#                                                                {% else %}#}
 {#                                                                    <small class="text-danger">هاست ساخته نشده</small>#}
 {#                                                                {% endif %}#}
-{#                                                                {% if u.extra.site %}#}
+{#                                                                {% if user.extra.site %}#}
 {#                                                                    <small class="text-success">سایت ساخته شده</small>#}
 {#                                                                {% else %}#}
 {#                                                                    <small class="text-danger">سایت ساخته نشده</small>#}
 {#                                                                {% endif %}#}
-{#                                                                {% if u.extra.user %}#}
+{#                                                                {% if user.extra.user %}#}
 {#                                                                    <small class="text-success">یوزر ساخته شده</small>#}
 {#                                                                {% else %}#}
 {#                                                                    <small class="text-danger">یوزر ساخته نشده</small>#}
@@ -143,42 +153,7 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
-                                    <div class="btn-group" role="group">
-                                        <!-- first -->
-                                        {% if users.number != users.paginator.page_range.0 %}
-                                            {% if users.paginator.page_range.0 %}
-                                                <a href="{% url 'client:users' %}?page_number={{ users.paginator.page_range.0 }}" class="btn btn-outline-primary btn-sm">اولین</a>
-                                            {% endif %}
-                                        {% endif %}
-
-                                        <!-- current - 2 -->
-                                        {% if users.previous_page_number|add:-1 in users.paginator.page_range  and users.previous_page_number|add:-1 != users.paginator.page_range.0 %}
-                                            <a href="{% url 'client:users' %}?page_number={{ users.previous_page_number|add:-1 }}" class="btn btn-outline-primary btn-sm">{{ users.previous_page_number|add:-1|persian_numbers }}</a>
-                                        {% endif %}
-
-                                        <!-- current - 1 -->
-                                        {% if users.has_previous  and users.previous_page_number != users.paginator.page_range.0 %}
-                                            <a href="{% url 'client:users' %}?page_number={{ users.previous_page_number }}" class="btn btn-outline-primary btn-sm">{{ users.previous_page_number|persian_numbers }}</a>
-                                        {% endif %}
-
-                                        <!-- current -->
-                                        <a href="{% url 'client:users' %}?page_number={{ users.number }}" class="btn btn-outline-primary btn-sm">{{ users.number|persian_numbers }}</a>
-
-                                        <!-- current + 1 -->
-                                        {% if users.has_next and users.next_page_number != users.paginator.num_pages %}
-                                            <a href="{% url 'client:users' %}?page_number={{ users.next_page_number }}" class="btn btn-outline-primary btn-sm">{{ users.next_page_number|persian_numbers }}</a>
-                                        {% endif %}
-
-                                        <!-- current + 2 -->
-                                        {% if users.next_page_number|add:1 in users.paginator.page_range and users.next_page_number|add:1 != users.paginator.num_pages %}
-                                            <a href="{% url 'client:users' %}?page_number={{ users.next_page_number|add:1 }}" class="btn btn-outline-primary btn-sm">{{ users.next_page_number|add:1|persian_numbers }}</a>
-                                        {% endif %}
-
-                                        <!-- last -->
-                                        {% if users.number != users.paginator.num_pages %}
-                                            <a href="{% url 'client:users' %}?page_number={{ users.paginator.num_pages }}" class="btn btn-outline-primary btn-sm">آخر {{ users.paginator.num_pages|persian_numbers }}</a>
-                                        {% endif %}
-                                    </div>
+                                    {% include 'pagination.html' %}
                                 </div>
                             </div>
                         </div>
