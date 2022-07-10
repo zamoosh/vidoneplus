@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load client %}
 {% block title %}سایت ها{% endblock %}
 {% load jformat %}
 {% block css %}
@@ -22,11 +23,21 @@
 {% endblock %}
 {% block js %}
     <!-- DATA TABLE JS-->
-{#    <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>#}
-{#    <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>#}
+    <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
 {#    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>#}
 {#    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>#}
-{#    <script src="{% static 'assets/js/table-data.js' %}"></script>#}
+    <script src="{% static 'assets/js/table-data.js' %}"></script>
+    <script>
+        $(window).on('load', function () {
+            let e = $('#responsive-datatable_length');
+            e = e.parent();
+            e.hide();
+            e = $('#responsive-datatable_filter').parent();
+            e.removeClass();
+            e.addClass('col-12');
+        });
+    </script>
 {% endblock %}
 {% block body %}
     <!-- app-Header -->
@@ -61,6 +72,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
+                                <div class="d-flex">
+                                    <h4 class="mx-auto text-muted">صفحه‌ی {{ page.number|persian_numbers }}</h4>
+                                </div>
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
