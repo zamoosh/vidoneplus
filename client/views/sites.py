@@ -5,7 +5,7 @@ from .imports import *
 @can_see_this_page
 def sites(request):
     context = {}
-    paginator = Paginator(Setting.objects.all(), 1)
+    paginator = Paginator(Setting.objects.all(), 5)
     if request.GET.get('page_number'):
         context['page'] = paginator.get_page(request.GET.get('page_number'))
     else:
