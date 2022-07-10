@@ -29,14 +29,14 @@
 {#    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>#}
     <script src="{% static 'assets/js/table-data.js' %}"></script>
     <script>
-      $(window).on('load', function () {
-        let e = $('#responsive-datatable_length');
-        e = e.parent();
-        e.hide();
-        e = $('#responsive-datatable_filter').parent();
-        e.removeClass();
-        e.addClass('col-12');
-      });
+        $(window).on('load', function () {
+            let e = $('#responsive-datatable_length');
+            e = e.parent();
+            e.hide();
+            e = $('#responsive-datatable_filter').parent();
+            e.removeClass();
+            e.addClass('col-12');
+        });
     </script>
 {% endblock %}
 {% block body %}

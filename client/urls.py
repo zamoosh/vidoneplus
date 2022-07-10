@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from .api import *
 
 app_name = 'client'
 urlpatterns = [
@@ -43,4 +44,6 @@ urlpatterns = [
 
     path('sites/', sites, name="sites"),
 
+
+    path('api/select/theme/', api_select_theme, name='api_select_theme'),
 ]
