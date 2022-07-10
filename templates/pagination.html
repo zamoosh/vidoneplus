@@ -9,18 +9,18 @@
     {% endif %}
 
     <!-- current - 3 -->
-    {% if page.previous_page_number|add:-3 in page.paginator.page_range and page.prefious_page_number|add:-3 != page.paginator.page_range.0 %}
+    {% if page.number|add:-3 in page.paginator.page_range and page.number|add:-3 != page.paginator.page_range.0 %}
         <a class="btn btn-outline-primary btn-sm">. . . </a>
     {% endif %}
 
     <!-- current - 2 -->
-    {% if page.previous_page_number|add:-1 in page.paginator.page_range  and page.previous_page_number|add:-1 != page.paginator.page_range.0 %}
-        <a href="{% url page_url %}?page_number={{ page.previous_page_number|add:-1 }}"
-           class="btn btn-outline-primary btn-sm">{{ page.previous_page_number|add:-1|persian_numbers }}</a>
+    {% if page.number|add:-2 in page.paginator.page_range  and page.number|add:-2 != page.paginator.page_range.0 %}
+        <a href="{% url page_url %}?page_number={{ page.number|add:-2 }}"
+           class="btn btn-outline-primary btn-sm">{{ page.number|add:-2|persian_numbers }}</a>
     {% endif %}
 
     <!-- current - 1 -->
-    {% if page.has_previous  and page.previous_page_number != page.paginator.page_range.0 %}
+    {% if page.has_previous and page.previous_page_number != page.paginator.page_range.0 %}
         <a href="{% url page_url %}?page_number={{ page.previous_page_number }}"
            class="btn btn-outline-primary btn-sm">{{ page.previous_page_number|persian_numbers }}</a>
     {% endif %}
@@ -36,13 +36,13 @@
     {% endif %}
 
     <!-- current + 2 -->
-    {% if page.next_page_number|add:1 in page.paginator.page_range and page.next_page_number|add:1 != page.paginator.num_pages %}
-        <a href="{% url page_url %}?page_number={{ page.next_page_number|add:1 }}"
-           class="btn btn-outline-primary btn-sm">{{ page.next_page_number|add:1|persian_numbers }}</a>
+    {% if page.number|add:2 in page.paginator.page_range and page.number|add:2 != page.paginator.num_pages %}
+        <a href="{% url page_url %}?page_number={{ page.number|add:2 }}"
+           class="btn btn-outline-primary btn-sm">{{ page.number|add:2|persian_numbers }}</a>
     {% endif %}
 
     <!-- current + 3 -->
-    {% if page.previous_page_number|add:+3 in page.paginator.page_range and page.previous_page_number|add:+3 != page.paginator.num_pages %}
+    {% if page.number|add:+3 in page.paginator.page_range and page.number|add:+3 != page.paginator.num_pages %}
         <a class="btn btn-outline-primary btn-sm">. . . </a>
     {% endif %}
 
