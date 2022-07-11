@@ -31,12 +31,14 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
 
+    <link rel="stylesheet" href="{% static 'assets/plugins/toastify/toastify.css' %}">
+
 
     {% block css %}{% endblock %}
 
 </head>
 
-<body class="app sidebar-mini rtl dark-mode">
+<body class="app sidebar-mini rtl {% if request.user.extra.dark_mode %}dark-mode{% endif %}">
 
     <!-- PAGE -->
     <div class="page">
@@ -79,6 +81,43 @@
     <!-- SWEET-ALERT JS -->
     <script src="{% static 'assets/plugins/sweet-alert/sweetalert.min.js' %}"></script>
     <script src="{% static 'assets/js/sweet-alert.js' %}"></script>
+
+    <script src="{% static 'assets/plugins/toastify/toastify.js' %}"></script>
+
+    <script>
+        let lay_out_set = $('.light-layout, .dark-layout');
+        lay_out_set.on('click', function () {
+            $(this).addClass('active');
+            lay_out_set.not($(this)).removeClass('active');
+            let text = '';
+            let mode = 'dark';
+            text = 'تم تاریک شد'
+            if ($(this).hasClass('light-layout')) {
+                text = 'تم روشن شد'
+                mode = 'light';
+            }
+            $.ajax({
+                url: '{% url 'client:api_select_theme' %}',
+                type: 'GET',
+                data: {'mode': mode},
+                success: function () {
+                    Toastify({
+                        text: text,
+                        duration: 1500,
+                        newWindow: true,
+                        close: true,
+                        gravity: 'top', // `top` or `bottom`
+                        position: 'center', // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: 'rgb(108,95,252)',
+                        },
+                        onClick: function () {} // Callback after click
+                    }).showToast();
+                },
+            });
+        });
+    </script>
 
     {% block js %}{% endblock %}
 

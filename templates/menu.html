@@ -35,10 +35,10 @@
                         <span class="side-menu__label">خانه</span>
                     </a>
                 </li>
-                <li class="sub-category">
-                    <h3>سایت</h3>
-                </li>
                 {% if request.user.status.active_user %}
+                    <li class="sub-category">
+                        <h3>سایت</h3>
+                    </li>
                     <li class="slide">
                         <a class="side-menu__item" data-bs-toggle="slide" href="{% url 'client:setting' %}">
                             <i class="side-menu__icon fe fe-settings"></i>

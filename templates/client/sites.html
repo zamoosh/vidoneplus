@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load client %}
 {% block title %}سایت ها{% endblock %}
 {% load jformat %}
 {% block css %}
@@ -24,9 +25,19 @@
     <!-- DATA TABLE JS-->
     <script src="{% static 'assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'assets/plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>
+{#    <script src="{% static 'assets/plugins/datatable/js/dataTables.buttons.min.js' %}"></script>#}
+{#    <script src="{% static 'assets/plugins/datatable/dataTables.responsive.min.js' %}"></script>#}
     <script src="{% static 'assets/js/table-data.js' %}"></script>
+    <script>
+        $(window).on('load', function () {
+            let e = $('#responsive-datatable_length');
+            e = e.parent();
+            e.hide();
+            e = $('#responsive-datatable_filter').parent();
+            e.removeClass();
+            e.addClass('col-12');
+        });
+    </script>
 {% endblock %}
 {% block body %}
     <!-- app-Header -->
@@ -61,10 +72,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
+                                <div class="d-flex">
+                                    <h4 class="mx-auto text-muted">صفحه‌ی {{ page.number|persian_numbers }}</h4>
+                                </div>
                                     <table class="table table-striped text-nowrap border-bottom" id="responsive-datatable">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">نام سایت</th>
+                                                <th class="wd-15p border-bottom-0">مالک / سایت</th>
                                                 <th class="wd-10p border-bottom-0">آدرس دامنه</th>
                                                 <th class="wd-10p border-bottom-0">ورژن</th>
                                                 <th class="wd-10p border-bottom-0">نام مدیر</th>
@@ -73,14 +87,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for s in sites %}
+                                            {% for s in page %}
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex flex-row">
                                                             <div class="d-flex flex-column justify-content-center me-3">
                                                                 <a class="user" href="javascript:void(0)">
                                                                     <span class="avatar avatar-lg brround bg-info">
-                                                                        {{ s.owner.first_name.0 }} {{ s.owner.last_name.0 }}
+                                                                        <small>{{ s.owner.first_name }}</small>
                                                                         {% if s.status.active_user %}
                                                                             <span class="avatar-status bg-green"></span>
                                                                         {% else %}
@@ -120,6 +134,7 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                {% include 'pagination.html' %}
                                 </div>
                             </div>
                         </div>

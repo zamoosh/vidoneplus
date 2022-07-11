@@ -10,9 +10,10 @@ from django.http.response import HttpResponseRedirect
 import datetime
 from client.models import Setting as usetting
 from client.models import *
-from client.decorators import allowed_users
+from client.decorators import *
 from client.apps import ClientConfig as app_name
 from jdatetime import JalaliToGregorian, date
+from django.core.paginator import Paginator
 
 from django.contrib.auth import get_user_model
 

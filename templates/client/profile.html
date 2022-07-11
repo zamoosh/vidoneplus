@@ -79,6 +79,7 @@
 
                 <!-- write your code here -->
                 <div class="row">
+                    {% comment %}
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-header">
@@ -90,7 +91,7 @@
                                 <div class="text-center chat-image mb-5">
                                     <div class="avatar avatar-xxl chat-profile mb-3 brround">
                                         <a class="" href="{% url 'client:profile' %}">
-{#                                            <img alt="avatar" src="{% static 'assets/images/users/7.jpg' %}" class="brround">#}
+                                            <img alt="avatar" src="{% static 'assets/images/users/7.jpg' %}" class="brround">
                                             <span class="avatar avatar-xxl brround bg-primary">
                                                 <span style="font-size: 1.5rem">
                                                     {{ request.user.first_name.0 }}
@@ -146,7 +147,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-8">
+                    {% endcomment %}
+                    <div class="col-12">
                         <form action="{% url 'client:profile' %}" method="post">
                                 {% csrf_token %}
                             <div class="card">
@@ -213,7 +215,7 @@
                                 </div>
                                 <div class="card-footer text-end">
                                     <button type="submit" href="{% url 'client:profile' %}" class="btn btn-primary my-1">ذخیره</button>
-                                    <a href="javascript:void(0)" class="btn btn-danger my-1 disabled">لغو</a>
+                                    <a href="{% url 'index' %}" class="btn btn-danger my-1">لغو</a>
                                 </div>
                             </div>
                         </form>

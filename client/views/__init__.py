@@ -5,7 +5,7 @@ from .dashboard import dashboard
 from .login import login
 from .logout import Logout
 from .profile import profile
-from .setting import user_settings, configs
+from .setting import user_settings
 from .verify import verify
 from .profile_change_password import changepassword
 from .installation import edit_verion

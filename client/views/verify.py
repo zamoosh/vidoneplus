@@ -20,6 +20,8 @@ def verify(request, user_cellphone):
         if not request.session.get('sent_sms'):
             u.sendsms()
             request.session['sent_sms'] = True
+        if request.user.is_authenticated:
+            return redirect(reverse('index'))
         if request.method == 'POST':
             if request.POST.get("code", "") == u.get_verificationcode():
                 u = User.get_user(user_cellphone)

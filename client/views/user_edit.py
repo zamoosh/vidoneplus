@@ -2,10 +2,9 @@ from .imports import *
 
 
 @login_required
+@can_see_this_page
 def user_edit(request, user_id):
     context = {}
-    if not request.user.is_superuser:
-        return redirect(reverse('page_not_found'))
     if not User.objects.filter(id=user_id).exists():
         return redirect(reverse('page_not_found'))
     if request.method == 'POST':

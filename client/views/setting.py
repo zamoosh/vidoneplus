@@ -159,36 +159,6 @@ def user_settings(request, action=None):
     return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)
 
 
-def configs(request, domain):
-    context = {}
-    try:
-        config = usetting.objects.get(domain=domain)
-        context = {'domain': config.domain,
-                   'org_colore': config.org_color,
-                   'sub_colore': config.sub_color,
-                   'contact_phone': config.contact_phone,
-                   'instagram': config.instagram,
-                   'twitter': config.twitter,
-                   'aparat': config.aparat,
-                   'facebook': config.facebook,
-                   'youtube': config.youtube,
-                   'slogan': config.slogan,
-                   'short_title': config.short_title}
-        if config.splashscreen:
-            context['splashscreen'] = request.build_absolute_uri() + config.splashscreen.url.split('/')[-1]
-        else:
-            context['splashscreen'] = ''
-        if config.company_logo:
-            context['company_logo'] = request.build_absolute_uri() + config.company_logo.url.split('/')[-1]
-        if config.favicon:
-            context['favicon'] = request.build_absolute_uri() + config.favicon.url.split('/')[-1]
-        else:
-            context['company_logo'] = ''
-    except:
-        pass
-    return JsonResponse(context)
-
-
 def static_files(request, domain, path=''):
     try:
         config = usetting.objects.get(domain=domain)
