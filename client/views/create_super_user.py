@@ -11,12 +11,10 @@ def _configpodname(tld):
 
 
 @login_required
-@allowed_users(allowed_roles=['admin'])
 def check_or_createuser(request, id):
     context = {}
-    u = User.objects.get(id=id)
-    u.extra['user'] = True
-    u.save()
+    if not (request.user.id == id or request.user.is_superuser):
+        return redirect(reverse('page_not_found', kwargs={'text': 'شما دسترسی لازم را ندارید!'}))
     import secrets
     import string
     alphabet = string.ascii_letters + string.digits
@@ -49,6 +47,9 @@ def check_or_createuser(request, id):
                                                       password=context['password'])
         pgenarator = serializers.serialize("json", pgenarator)
         requests.post('https://%s/update_admin_password/' % (settingconf.domain), data=json.dumps(pgenarator))
+    u = User.objects.get(id=id)
+    u.extra['user'] = True
+    u.save()
     return render(request, f"{app_name.name}/{__name__.split('.')[-1]}.html", context)
 
 
