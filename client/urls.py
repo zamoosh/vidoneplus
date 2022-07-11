@@ -4,16 +4,15 @@ from .api import *
 
 app_name = 'client'
 urlpatterns = [
-    path('', dashboard, name="dashboard"),
+    path('', dashboard, name='dashboard'),
 
-    # path('profile/', profile, name="profile"),
-    path('profile/', profile, name="profile"),
+    path('profile/', profile, name='profile'),
     path('profile/password/', changepassword, name="password"),
     path('user/edit/<int:user_id>/', user_edit, name='user_edit'),
 
     path('setting/', user_settings, name="setting"),
     path('setting/edit/', user_settings, {'action': 'edit'}, name="setting_edit"),
-    path('setting/<str:domain>/', configs, name="configs"),
+
     path('setting/<str:domain>/<path:path>', static_files, name="static_files"),
 
     path('login/', login, name="login"),
@@ -44,6 +43,8 @@ urlpatterns = [
 
     path('sites/', sites, name="sites"),
 
-
+    # api
     path('api/select/theme/', api_select_theme, name='api_select_theme'),
+    path('api/get/domain/config/<str:domain>/', api_get_domain_config, name='api_get_domain_donfig'),
+    path('api/available/versions/', api_get_available_force_version, name='api_available_versions')
 ]

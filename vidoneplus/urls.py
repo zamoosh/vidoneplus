@@ -25,6 +25,5 @@ urlpatterns = [
     path('accounts/', include('client.urls')),
     path('course/', include('course.urls')),
     path('page_not_found/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found'),
-
-    path('page_not_found/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found')
+    path('page_not_found/<str:text>/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found'),
 ]

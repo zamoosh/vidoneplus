@@ -32,12 +32,18 @@
                 <div class="container">
                     <div class="row justify-content-center align-items-end" style="height: 80vh">
                         <div class="col-12">
-                            <div class="row justify-content-center">
-                                <h4>ما خیلی متاسفیم که این اتفاق افتاد!</h4>
-                            </div>
-                            <div class="row justify-content-center">
-                                <h4>لطفا به صفحه‌ی اصلی برگردین</h4>
-                            </div>
+                            {% if text %}
+                                <div class="row justify-content-center">
+                                    <h4>ما خیلی متاسفیم که این اتفاق افتاد!</h4>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <h4>{{ text }}</h4>
+                                </div>
+                            {% else %}
+                                <div class="row justify-content-center">
+                                    <h4>لطفا به صفحه‌ی اصلی برگردین</h4>
+                                </div>
+                            {% endif %}
                             <div class="row justify-content-center">
                                 <a class="btn btn-outline-light" href="{% url 'index' %}">HOME</a>
                             </div>

@@ -1,2 +1,2 @@
 from django.http import JsonResponse
-from client.models import User
+from client.models import User, Setting as usetting, Imagetag
