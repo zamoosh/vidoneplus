@@ -3,7 +3,7 @@ from .imports import *
 
 def verify(request, user_cellphone):
     context = {}
-    if request.GET.get('recode'):
+    if request.GET.get('recode'):  # if user request for new login code
         context['user_cellphone'] = user_cellphone
         if request.session.get('sent_sms'):
             del request.session['sent_sms']

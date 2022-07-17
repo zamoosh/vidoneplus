@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}اطلاعات سرویس{% endblock %}
+{% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'order:orders' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                سرویس‌ها
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">خدمات دوره‌ای</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'order:orders' %}">سرویس‌ها</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">خدمات دوره‌ای</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                details
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}
