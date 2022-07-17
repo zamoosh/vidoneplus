@@ -45,6 +45,30 @@
                             <span class="side-menu__label">تنظیمات</span>
                         </a>
                     </li>
+                    <li class="sub-category">
+                        <h3>خدمات دوره‌ای</h3>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                            <i class="side-menu__icon fe fe-clock"></i>
+                            <span class="side-menu__label">سرویس‌های دوره‌ای</span>
+                            <i class="angle fe fe-chevron-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{% url 'order:orders' %}" class="slide-item">
+                                    <i class="side-menu__icon fe fe-shopping-bag"></i>
+                                    سرویس‌ها
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'order:order_create' %}" class="slide-item">
+                                    <i class="side-menu__icon bi bi-plus-lg"></i>
+                                    ساخت سرویس جدید
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 {% endif %}
                 {% if request.user.is_superuser %}
                     <li class="sub-category">

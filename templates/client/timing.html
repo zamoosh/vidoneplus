@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}زمان‌بندی{% endblock %}
+{% load jformat %}
+{% block css %}{% endblock %}
+{% block js %}
+    <script data-name="clock">
+        let live_date = $('#date');
+        let live_hour = $('#live_hours');
+        let live_minutes = $('#live_minutes');
+        let live_seconds = $('#live_seconds');
+        let now;
+        let date;
+
+        let diff = Number(String({{ diff }}));
+        let left_hour = $('#left_hour');
+        let left_minute = $('#left_minute');
+        let left_second = $('#left_second');
+
+        let h;
+        let min;
+        let sec;
+        function refresh_time () {
+            now = new Date()
+            date = Intl.DateTimeFormat('fa-u-ca-persian', {dateStyle: 'full'}).format(now);
+            let hour = (now.getHours() < 10 ? '0' : '') + now.getHours().toLocaleString();
+            let minute = (now.getMinutes() < 10 ? '0' : '') +  now.getMinutes().toLocaleString();
+            let second = (now.getSeconds() < 10 ? '0' : '') + now.getSeconds().toLocaleString();
+            live_date.html(date);
+            live_hour.html(hour);
+            live_minutes.html(minute);
+            live_seconds.html(second);
+
+            if (diff) {
+                h = Math.floor(diff / 3600);
+                min = diff % 3600 === 0 ? 0 : Math.floor((diff - (h * 3600)) / 60);
+                sec = diff % 60 === 0 ? 0 : diff - (h * 3600) - (min * 60);
+                diff--;
+                left_hour.html(h);
+                left_minute.html(min);
+                left_second.html(sec);
+            } else if (sec === 1) {
+                left_second.html(0);
+                sec = 0;
+                Toastify({
+                    text: 'زمان شما به پایان رسیده است',
+                    duration: 5000,
+                    newWindow: true,
+                    close: true,
+                    gravity: 'top', // `top` or `bottom`
+                    position: 'center', // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: 'rgb(108,95,252)',
+                    },
+                }).showToast();
+            }
+        }
+        setInterval(refresh_time, 1000);
+    </script>
+{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            <a href="{% url 'index' %}">
+                                <i class="fa fa-arrow-right"></i>
+                                داشبرد
+                            </a>
+                        </h1>
+                        <h1 class="page-title px-2">خدمات دوره‌ای</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">داشبرد</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">خدمات دوره‌ای</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- live clock -->
+                            <div class="card p-2">
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div class="h3" id="date"></div>
+                                </div>
+                                <div class="d-flex justify-content-around">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="live_seconds"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            ثانیه
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mx-auto h1 text-muted">
+                                            :
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="live_minutes"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            دقیقه
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mx-auto h1 text-muted">
+                                            :
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="live_hours"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            ساعت
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- left time -->
+                            <div class="card p-2">
+                                <div class="d-flex justify-content-around">
+                                    <div class="h3">
+                                        زمان باقی‌مانده
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-around">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="left_second"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            ثانیه
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mx-auto h1 text-muted">
+                                            :
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="left_minute"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            دقیقه
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mx-auto h1 text-muted">
+                                            :
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mx-auto">
+                                            <div class="h3" id="left_hour"></div>
+                                        </div>
+                                        <div class="mx-auto h4 text-muted">
+                                            ساعت
+                                        </div>
+                                    </div>
+                                </div>
+
+{#                                <div id="left_hour"></div>#}
+{#                                <div id="left_minute"></div>#}
+{#                                <div id="left_second"></div>#}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3 col-sm-6">
+                            <div class="card">
+                                <div class="product-grid6">
+                                    <div class="product-image6 p-5">
+                                        <ul class="icons">
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-primary">
+                                                    <i class="fe fe-eye"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-success">
+                                                    <i class="fe fe-edit"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-danger">
+                                                    <i class="fe fe-x"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <a href="javascript:void(0)">
+                                            <img class="img-fluid br-7 w-100" src="{% static 'assets/images/pngs/9.jpg' %}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="product-content text-center">
+                                            <h1 class="title fw-bold fs-20">
+                                                <a href="javascript:void(0)">یک ماهه</a>
+                                            </h1>
+                                            <div class="mb-2 text-warning">
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star-half-o text-warning"></i>
+                                                <i class="fa fa-star-o text-warning"></i>
+                                            </div>
+                                            <div class="price">$599<span class="ms-4">$799</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:void(0)" class="btn btn-primary mb-1">
+                                            <i class="fe fe-shopping-cart mx-2"></i>خرید
+                                        </a>
+{#                                        <a href="javascript:void(0)" class="btn btn-outline-primary mb-1">#}
+{#                                            <i class="fe fe-heart mx-2 wishlist-icon"></i>Add to wishlist#}
+{#                                        </a>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 col-sm-6">
+                            <div class="card">
+                                <div class="product-grid6">
+                                    <div class="product-image6 p-5">
+                                        <ul class="icons">
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-primary">
+                                                    <i class="fe fe-eye"> </i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-success">
+                                                    <i class="fe fe-edit"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-danger">
+                                                    <i class="fe fe-x"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <a href="javascript:void(0)">
+                                            <img class="img-fluid br-7 w-100" src="{% static 'assets/images/pngs/10.jpg' %}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="product-content text-center">
+                                            <h1 class="title fw-bold fs-20">
+                                                <a href="javascript:void(0)">سه ماهه</a>
+                                            </h1>
+                                            <div class="mb-2 text-warning">
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star-half-o text-warning"></i>
+                                                <i class="fa fa-star-o text-warning"></i>
+                                            </div>
+                                            <div class="price">$1,399<span class="ms-4">$1,599</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:void(0)" class="btn btn-primary mb-1">
+                                            <i class="fe fe-shopping-cart mx-2"></i>Add to cart
+                                        </a>
+{#                                        <a href="javascript:void(0)" class="btn btn-outline-primary mb-1">#}
+{#                                            <i class="fe fe-heart mx-2 wishlist-icon"></i>Add to wishlist#}
+{#                                        </a>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 col-sm-6">
+                            <div class="card">
+                                <div class="product-grid6">
+                                    <div class="product-image6 p-5">
+                                        <ul class="icons">
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-primary">
+                                                    <i class="fe fe-eye"> </i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-success">
+                                                    <i class="fe fe-edit"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-danger">
+                                                <i class="fe fe-x"></i></a>
+                                            </li>
+                                        </ul>
+                                        <a href="javascript:void(0)">
+                                            <img class="img-fluid br-7 w-100" src="{% static 'assets/images/pngs/4.jpg' %}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="product-content text-center">
+                                            <h1 class="title fw-bold fs-20">
+                                                <a href="javascript:void(0)">شش ماهه</a>
+                                            </h1>
+                                            <div class="mb-2 text-warning">
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star-half-o text-warning"></i>
+                                                <i class="fa fa-star-o text-warning"></i>
+                                            </div>
+                                            <div class="price">$1,299<span class="ms-4">$1,899</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:void(0)" class="btn btn-primary mb-1">
+                                            <i class="fe fe-shopping-cart mx-2"></i>Add to cart
+                                        </a>
+{#                                        <a href="javascript:void(0)" class="btn btn-outline-primary mb-1">#}
+{#                                            <i class="fe fe-heart mx-2 wishlist-icon"></i>Add to wishlist#}
+{#                                        </a>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 col-sm-6">
+                            <div class="card">
+                                <div class="product-grid6">
+                                    <div class="product-image6 p-5">
+                                        <ul class="icons">
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-primary">
+                                                    <i class="fe fe-eye"> </i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-success">
+                                                    <i class="fe fe-edit"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="btn btn-danger">
+                                                <i class="fe fe-x"></i></a>
+                                            </li>
+                                        </ul>
+                                        <a href="javascript:void(0)">
+                                            <img class="img-fluid br-7 w-100" src="{% static 'assets/images/pngs/4.jpg' %}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="product-content text-center">
+                                            <h1 class="title fw-bold fs-20">
+                                                <a href="javascript:void(0)">یک ساله</a>
+                                            </h1>
+                                            <div class="mb-2 text-warning">
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star text-warning"></i>
+                                                <i class="fa fa-star-half-o text-warning"></i>
+                                                <i class="fa fa-star-o text-warning"></i>
+                                            </div>
+                                            <div class="price">$1,299<span class="ms-4">$1,899</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:void(0)" class="btn btn-primary mb-1">
+                                            <i class="fe fe-shopping-cart mx-2"></i>Add to cart
+                                        </a>
+{#                                        <a href="javascript:void(0)" class="btn btn-outline-primary mb-1">#}
+{#                                            <i class="fe fe-heart mx-2 wishlist-icon"></i>Add to wishlist#}
+{#                                        </a>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

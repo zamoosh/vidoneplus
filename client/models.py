@@ -64,7 +64,7 @@ class User(AbstractUser):
         return str(vc.code)
 
     def get_verificationcode(self):
-        VerificationCode.objects.filter(name=self.username, trying__gte=5).delete()
+        VerificationCode.objects.filter(name=self.username, trying__gt=5).delete()
         try:
             vc = VerificationCode.objects.get(name=self.username)
             vc.trying += 1
