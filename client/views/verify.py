@@ -27,6 +27,8 @@ def verify(request, user_cellphone):
                 u = User.get_user(user_cellphone)
                 if u.is_active:
                     login(request, u)
+                    if request.session.get('sent_sms'):
+                        del request.session['sent_sms']
                     return redirect(reverse('index'))
         context['user_cellphone'] = user_cellphone
         return render(request, f'{__name__.replace("views.", "").replace(".", "/")}.html', context)

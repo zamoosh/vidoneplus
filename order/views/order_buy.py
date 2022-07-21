@@ -2,17 +2,21 @@ from .imports import *
 
 
 @login_required
-def order_buy(request, order_id):
+@id_is_real(Order)
+def order_buy(request, order_id, setting_id=None):
     context = {}
     user = User.objects.get(id=request.user.id)
     order = Order.objects.get(id=order_id)
     if request.method == 'POST':
-        if user.orderitem_set.exists():
+        user_setting = Setting.objects.get(id=setting_id)
+        if user_setting.orderitem_set.exists():
             order_item = user.orderitem_set.last()
-            if datetime.datetime.now().timestamp() > order_item.ended_at.timestamp():
+            now = datetime.datetime.now()
+            if now.timestamp() > order_item.ended_at.timestamp() and (not order_item.status):  # limited order
                 OrderItem.objects.create(
                     order=order,
                     owner=user,
+                    setting=user_setting
                 ).save()
             else:
                 request.session['active_order'] = True
@@ -21,6 +25,7 @@ def order_buy(request, order_id):
             OrderItem.objects.create(
                 order=order,
                 owner=user,
+                setting=user_setting
             ).save()
         return redirect(reverse('client:profile'))
     context['order'] = order

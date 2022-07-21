@@ -10,6 +10,7 @@ urlpatterns = [
     path('order/delete/<int:order_id>/', order_delete, name='order_delete'),
     path('order/detail/<int:order_id>/', order_detail, name='order_detail'),
     path('order/buy/<int:order_id>/', order_buy, name='order_buy'),
+    path('order/buy/<int:order_id>/<int:setting_id>/', order_buy, name='order_buy'),
 
     path('static/files/<int:order_id>/', static_files, name='static_files')
 ]

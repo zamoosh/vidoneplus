@@ -129,54 +129,80 @@
                 <!-- PAGE-HEADER END -->
 
                 <!-- write your code here -->
-                <form action="{% url 'order:order_edit' order.id %}" method="post">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-12 col-xl-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        خرید سرویس جدید
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 my-3 position-relative hero-container"
-                                             style="height:{% if order.image.height %}{{ order.image.height }}px{% else %}400px{% endif %}">
-                                            <div class="d-flex justify-content-center">
-                                                <div class="position-absolute hero-text">
-                                                    <p class="font-bold h2">مشخصات سرویس</p>
-                                                </div>
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    خرید سرویس جدید
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 my-3 position-relative hero-container"
+                                         style="height:{% if order.image.height %}{{ order.image.height }}px{% else %}400px{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="position-absolute hero-text">
+                                                <p class="font-bold h2">مشخصات سرویس</p>
                                             </div>
-                                            <div class="hero-picture h-100"></div>
                                         </div>
-                                        <div class="col-12 my-3">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="d-flex justify-content-start">
-                                                        <p class="font-bold h4 px-3">نام سرویس</p>
-                                                        <p class="px-3 h5">{{ order.title }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="d-flex justify-content-start">
-                                                        <p class="font-bold h4 px-3">نام قیمت</p>
-                                                        <p class="px-3 h5">{{ order.price|persian_numbers }} هزارتومان</p>
-                                                    </div>
+                                        <div class="hero-picture h-100"></div>
+                                    </div>
+                                    <div class="col-12 my-3">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                <div class="d-flex justify-content-start">
+                                                    <p class="font-bold h4 px-3">نام سرویس</p>
+                                                    <p class="px-3 h5">{{ order.title }}</p>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-12 px-5">
-                                                    <p class="font-thin lead">{{ order.description|linebreaksbr }}</p>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                <div class="d-flex justify-content-start">
+                                                    <p class="font-bold h4 px-3">نام قیمت</p>
+                                                    <p class="px-3 h5">{{ order.price|persian_numbers }} هزارتومان</p>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 px-5">
+                                                <p class="font-thin lead">{{ order.description|linebreaksbr }}</p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <h3><strong class="font-bold">سایت خود را انتخاب کنید</strong></h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            {% for s in user.setting_set.all %}
+                                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
+                                                    <div class="thumbnail">
+                                                        <a href="{% url 'client:setting' %}">
+                                                            <img src="{% url 'client:static_files' s.domain s.get_company_logo %}" alt="thumb1" class="thumbimg">
+                                                        </a>
+                                                        <div class="caption">
+                                                            <h4><strong>{{ s.domain }}</strong></h4>
+                                                            <p>{{ s.app_name }}</p>
+                                                            <form method="post" action="{% url 'order:order_buy' order.id s.id %}">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-primary w-100">خرید</button>
+                                                            </form>
+{#                                                                <label class="custom-control custom-radio custom-radio-md">#}
+{#                                                                    <input type="radio" class="custom-control-input" name="setting" value="{{ s.id }}">#}
+{#                                                                    <h4><span class="custom-control-label">انتخاب</span></h4>#}
+{#                                                                </label>#}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
                 <!-- /write your code here -->
 
             </div>
