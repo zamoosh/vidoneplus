@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'course',
     'django_jalali',
     'tag',
-    'order.apps.OrderConfig'
+    'order.apps.OrderConfig',
+    'bill.apps.BillConfig'
 ]
 AUTH_USER_MODEL = "client.User"
 

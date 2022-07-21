@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load client %}
+{% block title %}خرید سرویس{% endblock %}
+{% load jformat %}
+{% block css %}
+    <style>
+        .hero-picture {
+            background-image: url('{% url 'order:static_files' order.id %}');
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 6px;
+            transition: all 0.4s;
+        }
+
+        .hero-container:hover .hero-picture {
+            filter: blur(3px);
+        }
+
+        .hero-container:hover .hero-text {
+            filter: blur(0);
+        }
+
+        .hero-text {
+            transition: all 0.4s;
+            filter: blur(3px);
+            z-index: 2;
+            top: 2%;
+        }
+    </style>
+{% endblock %}
+{% block js %}
+
+    <!-- FILE UPLOADES JS -->
+    <script src="{% static 'assets/plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fileuploads/js/file-upload.js' %}"></script>
+
+    <!-- INTERNAL File-Uploads Js-->
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+
+    <script>
+        {% if save %}
+            $(window).on('load', () => {
+                setTimeout(function () {
+                    Toastify({
+                        text: 'سرویس ساخته شد!',
+                        duration: 1500,
+                        newWindow: true,
+                        close: true,
+                        gravity: 'top', // `top` or `bottom`
+                        position: 'center', // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: 'rgb(108,95,252)',
+                        },
+                        onClick: function () {
+                        } // Callback after click
+                    }).showToast();
+                }, 350);
+            });
+        {% endif %}
+        {% if update %}
+            $(window).on('load', () => {
+                setTimeout(function () {
+                    Toastify({
+                        text: 'تغییرات با موفقیت ذخیره شدند!',
+                        duration: 1500,
+                        newWindow: true,
+                        close: true,
+                        gravity: 'top', // `top` or `bottom`
+                        position: 'center', // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: 'rgb(108,95,252)',
+                        },
+                        onClick: function () {
+                        } // Callback after click
+                    }).showToast();
+                }, 350);
+            });
+        {% endif %}
+    </script>
+{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
+                        </h1>
+                        <h1 class="page-title px-2">خرید سرویس</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'order:orders' %}">سرویس‌ها</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">خرید سرویس</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    خرید سرویس جدید
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 my-3 position-relative hero-container"
+                                         style="height:{% if order.image.height %}{{ order.image.height }}px{% else %}400px{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="position-absolute hero-text">
+                                                <p class="font-bold h2">مشخصات سرویس</p>
+                                            </div>
+                                        </div>
+                                        <div class="hero-picture h-100"></div>
+                                    </div>
+                                    <div class="col-12 my-3">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                <div class="d-flex justify-content-start">
+                                                    <p class="font-bold h4 px-3">نام سرویس</p>
+                                                    <p class="px-3 h5">{{ order.title }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                <div class="d-flex justify-content-start">
+                                                    <p class="font-bold h4 px-3">نام قیمت</p>
+                                                    <p class="px-3 h5">{{ order.price|persian_numbers }} هزارتومان</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 px-5">
+                                                <p class="font-thin lead">{{ order.description|linebreaksbr }}</p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <h3><strong class="font-bold">سایت خود را انتخاب کنید</strong></h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            {% for s in user.setting_set.all %}
+                                                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-3">
+                                                    <div class="thumbnail">
+                                                        <a href="{% url 'client:setting' %}">
+                                                            <img src="{% url 'client:static_files' s.domain s.get_company_logo %}" alt="thumb1" class="thumbimg">
+                                                        </a>
+                                                        <div class="caption">
+                                                            <h4><strong>{{ s.domain }}</strong></h4>
+                                                            <p>{{ s.app_name }}</p>
+                                                            <form method="post" action="{% url 'order:order_buy' order.id s.id %}">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-primary w-100">خرید</button>
+                                                            </form>
+{#                                                                <label class="custom-control custom-radio custom-radio-md">#}
+{#                                                                    <input type="radio" class="custom-control-input" name="setting" value="{{ s.id }}">#}
+{#                                                                    <h4><span class="custom-control-label">انتخاب</span></h4>#}
+{#                                                                </label>#}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}

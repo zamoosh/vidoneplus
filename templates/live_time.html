@@ -1,0 +1,63 @@
+{% load static %}
+{% block js %}
+    <script data-name="clock">
+        window.addEventListener('load', function () {
+            let live_date = $('#date');
+            let live_hour = $('#live_hours');
+            let live_minutes = $('#live_minutes');
+            let live_seconds = $('#live_seconds');
+            let now;
+            let date;
+
+            function refresh_time() {
+                now = new Date()
+                date = Intl.DateTimeFormat('fa-u-ca-persian', {dateStyle: 'full'}).format(now);
+                let hour = (now.getHours() < 10 ? '0' : '') + now.getHours().toLocaleString();
+                let minute = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes().toLocaleString();
+                let second = (now.getSeconds() < 10 ? '0' : '') + now.getSeconds().toLocaleString();
+                live_date.html(date);
+                live_hour.html(hour);
+                live_minutes.html(minute);
+                live_seconds.html(second);
+            }
+
+            setInterval(refresh_time, 1000);
+        });
+    </script>
+{% endblock %}
+<div class="d-flex justify-content-around">
+    <div class="d-flex flex-column justify-content-center">
+        <div class="mx-auto">
+            <div id="live_seconds"></div>
+        </div>
+        {#            <div class="mx-auto h4 text-muted">#}
+        {#                ثانیه#}
+        {#            </div>#}
+    </div>
+
+    <div class="d-flex flex-column justify-content-center mx-1 text-muted">
+        :
+    </div>
+
+    <div class="d-flex flex-column justify-content-center">
+        <div class="mx-auto">
+            <div id="live_minutes"></div>
+        </div>
+        {#            <div class="mx-auto h4 text-muted">#}
+        {#                دقیقه#}
+        {#            </div>#}
+    </div>
+
+    <div class="d-flex flex-column justify-content-center mx-1 text-muted">
+        :
+    </div>
+
+    <div class="d-flex flex-column justify-content-center">
+        <div class="mx-auto">
+            <div id="live_hours"></div>
+        </div>
+        {#            <div class="mx-auto h4 text-muted">#}
+        {#                ساعت#}
+        {#            </div>#}
+    </div>
+</div>

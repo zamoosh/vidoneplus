@@ -30,6 +30,7 @@
                         </div>
                     </div>
                 </div>
+                {% include 'live_time.html' %}
                 <!-- SEARCH -->
                 <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
                         data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
@@ -244,6 +245,10 @@
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item" href="{% url 'client:profile' %}">
                                         <i class="dropdown-icon fe fe-user"></i>پروفایل
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'client:profile' %}">
+                                        <i class="dropdown-icon fe fe-activity"></i>
+                                        سرویس <span class="text-success">فعال</span>
                                     </a>
                                     <a class="dropdown-item" href="email-inbox.html">
                                         <i class="dropdown-icon fe fe-mail"></i> Inbox

@@ -44,10 +44,12 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'index' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                داشبرد
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
                         <h1 class="page-title px-2">ورژن‌ها بخش ادمین</h1>
                     </div>

@@ -21,10 +21,6 @@
     <script src="{% static 'assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
     <script src="{% static 'assets/plugins/fancyuploder/fancy-uploader.js' %}"></script>
 
-    <!-- SWEET-ALERT JS -->
-    <script src="{% static 'assets/plugins/sweet-alert/sweetalert.min.js' %}"></script>
-    <script src="{% static 'assets/js/sweet-alert.js' %}"></script>
-
     <script>
         let radioInp = $('input[name="domain_type"]');
 
@@ -103,10 +99,12 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'index' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                داشبرد
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
                         <h1 class="page-title px-2">ویرایش سایت بخش ادمین</h1>
                     </div>

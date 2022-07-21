@@ -61,12 +61,14 @@
                                     سرویس‌ها
                                 </a>
                             </li>
-                            <li>
-                                <a href="{% url 'order:order_create' %}" class="slide-item">
-                                    <i class="side-menu__icon bi bi-plus-lg"></i>
-                                    ساخت سرویس جدید
-                                </a>
-                            </li>
+                            {% if request.user.is_superuser %}
+                                <li>
+                                    <a href="{% url 'order:order_create' %}" class="slide-item">
+                                        <i class="side-menu__icon bi bi-plus-lg"></i>
+                                        ساخت سرویس جدید
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </li>
                 {% endif %}

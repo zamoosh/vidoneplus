@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load client %}
 {% block title %}پروفایل{% endblock %}
 {% load jformat %}
 {% block css %}
@@ -59,10 +60,12 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'client:dashboard' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                داشبرد
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
                         <h1 class="page-title px-2">پروفایل کاربری</h1>
                     </div>
@@ -149,6 +152,48 @@
                     </div>
                     {% endcomment %}
                     <div class="col-12">
+                        {% if user.orderitem_set and user.orderitem_set.last.status %}
+                            <div class="col-xl-12 col-xxl-6">
+                                <div class="row">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title font-bold">
+                                                سرویس فعال
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-1 col-sm-2 col-md-12">
+                                                    <div class="mt-3 mb-5">
+                                                        <a href="{% url 'order:order_detail' request.user.orderitem_set.last.order.id %}">
+                                                            <span class="settings-icon bg-primary-transparent text-primary">
+                                                                <i class="fe fe-settings"></i>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-10">
+                                                    <a href="{% url 'order:order_detail' request.user.orderitem_set.last.order.id %}">
+                                                        <h4 class="mb-1 text-dark font-bold">
+                                                            سرویس {{ request.user.orderitem_set.last.order.title }}
+                                                        </h4>
+                                                    </a>
+                                                    <p class="font-thin">
+                                                        {{ request.user.orderitem_set.last.order.description }}
+                                                    </p>
+                                                    <a href="{% url 'order:order_detail' request.user.orderitem_set.last.order.id %}">
+                                                        <p class="text-dark">
+                                                            مشاهده‌ی سرویس
+                                                            <i class="ion-chevron-right fs-10 ms-1"></i>
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <form action="{% url 'client:profile' %}" method="post">
                                 {% csrf_token %}
                             <div class="card">
@@ -186,7 +231,7 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="form-group">
                                                 <label for="cellphone">شماره تلفن</label>
-                                                <input type="text" disabled class="form-control" id="cellphone" placeholder="{{ request.user.cellphone }}">
+                                                <input type="text" disabled class="form-control" id="cellphone" placeholder="{{ request.user.cellphone|slice:"1:"|persian_numbers }}+">
                                             </div>
                                             <div class="form-group">
                                                 <label for="organization_name">نام شرکت</label>

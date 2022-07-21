@@ -15,16 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
-from vidoneplus import views
+from vidoneplus.views import *
 
 urlpatterns = [
-    path('', views.IndexPage, name="index"),
-    path('validate_course/', views.validate_course),
+    path('', index, name="index"),
+    path('validate_course/', validate_course),
     path('admin/', admin.site.urls),
     path('accounts/', include('client.urls')),
     path('course/', include('course.urls')),
     path('order/', include('order.urls')),
-    path('page_not_found/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found'),
-    path('page_not_found/<str:text>/', TemplateView.as_view(template_name='404_page.html'), name='page_not_found'),
+    path('page_not_found/', page_not_found, name='page_not_found'),
+    path('page_not_found/<str:text>/', page_not_found, name='page_not_found'),
+    path('page_not_found/<str:text>/<str:previous_url>/', page_not_found, name='page_not_found'),
 ]
