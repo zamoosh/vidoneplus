@@ -1,76 +1,79 @@
 {% load client %}
 <ul class="pagination">
-    {% if page.number != page.paginator.page_range.0 %}
+    {% if page.has_other_pages %}
+        {% if page.number != page.paginator.page_range.0 %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.paginator.page_range.0 }}">
+                    اولین
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- current - 3 -->
+        {% if page.number|add:-3 in page.paginator.page_range and page.number|add:-3 != page.paginator.page_range.0 %}
+            <li class="page-item">
+                <a class="page-link">. . . </a>
+            </li>
+        {% endif %}
+
+        <!-- current - 2 -->
+        {% if page.number|add:-2 in page.paginator.page_range  and page.number|add:-2 != page.paginator.page_range.0 %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.number|add:-2 }}">
+                    {{ page.number|add:-2|persian_numbers }}
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- current - 1 -->
+        {% if page.number|add:-1 in page.paginator.page_range and page.number|add:-1 != page.paginator.page_range.0 %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.previous_page_number }}">
+                    {{ page.number|add:-1|persian_numbers }}
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- current -->
         <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.paginator.page_range.0 }}">
-                اولین
+            <a class="page-link bg-cyan" href="{% url page_url %}?page_number={{ page.number }}">
+                {{ page.number|persian_numbers }}
             </a>
         </li>
+
+        <!-- current + 1 -->
+        {% if page.number|add:1 in page.paginator.page_range and page.number|add:1 != page.paginator.num_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.next_page_number }}">
+                    {{ page.number|add:1|persian_numbers }}
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- current + 2 -->
+        {% if page.number|add:2 in page.paginator.page_range and page.number|add:2 != page.paginator.num_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.number|add:2 }}">
+                    {{ page.number|add:2|persian_numbers }}
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- current + 3 -->
+        {% if page.number|add:+3 in page.paginator.page_range and page.number|add:+3 != page.paginator.num_pages %}
+            <li class="page-item">
+                <a class="page-link">. . . </a>
+            </li>
+        {% endif %}
+
+        <!-- last -->
+        {% if page.number != page.paginator.num_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{% url page_url %}?page_number={{ page.paginator.num_pages }}">
+                    آخر {{ page.paginator.num_pages|persian_numbers }}
+                </a>
+            </li>
+        {% endif %}
     {% endif %}
 
-    <!-- current - 3 -->
-    {% if page.number|add:-3 in page.paginator.page_range and page.number|add:-3 != page.paginator.page_range.0 %}
-        <li class="page-item">
-            <a class="page-link">. . . </a>
-        </li>
-    {% endif %}
-
-    <!-- current - 2 -->
-    {% if page.number|add:-2 in page.paginator.page_range  and page.number|add:-2 != page.paginator.page_range.0 %}
-        <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.number|add:-2 }}">
-                {{ page.number|add:-2|persian_numbers }}
-            </a>
-        </li>
-    {% endif %}
-
-    <!-- current - 1 -->
-    {% if page.number|add:-1 in page.paginator.page_range and page.number|add:-1 != page.paginator.page_range.0 %}
-        <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.previous_page_number }}">
-                {{ page.number|add:-1|persian_numbers }}
-            </a>
-        </li>
-    {% endif %}
-
-    <!-- current -->
-    <li class="page-item">
-        <a class="page-link bg-cyan" href="{% url page_url %}?page_number={{ page.number }}">
-            {{ page.number|persian_numbers }}
-        </a>
-    </li>
-
-    <!-- current + 1 -->
-    {% if page.number|add:1 in page.paginator.page_range and page.number|add:1 != page.paginator.num_pages %}
-        <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.next_page_number }}">
-                {{ page.number|add:1|persian_numbers }}
-            </a>
-        </li>
-    {% endif %}
-
-    <!-- current + 2 -->
-    {% if page.number|add:2 in page.paginator.page_range and page.number|add:2 != page.paginator.num_pages %}
-        <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.number|add:2 }}">
-                {{ page.number|add:2|persian_numbers }}
-            </a>
-        </li>
-    {% endif %}
-
-    <!-- current + 3 -->
-    {% if page.number|add:+3 in page.paginator.page_range and page.number|add:+3 != page.paginator.num_pages %}
-        <li class="page-item">
-            <a class="page-link">. . . </a>
-        </li>
-    {% endif %}
-
-    <!-- last -->
-    {% if page.number != page.paginator.num_pages %}
-        <li class="page-item">
-            <a class="page-link" href="{% url page_url %}?page_number={{ page.paginator.num_pages }}">
-                آخر {{ page.paginator.num_pages|persian_numbers }}
-            </a>
-        </li>
-    {% endif %}
 </ul>

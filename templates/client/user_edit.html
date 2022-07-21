@@ -51,10 +51,12 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'client:users' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                کاربران
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
                         <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
                     </div>

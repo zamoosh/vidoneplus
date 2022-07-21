@@ -9,7 +9,11 @@ def order_edit(request, order_id):
         order.title = request.POST.get('title')
         order.description = request.POST.get('description')
         order.price = request.POST.get('price')
-        order.period = request.POST.get('period')
+        if not request.POST.get('period').isnumeric():
+            return redirect(reverse('order:order_create'))
+        order.period = int(request.POST.get('period'))
+        if request.FILES.get('image'):
+            order.image = request.FILES.get('image')
         order.save()
         request.session['update'] = True
         return redirect(reverse('order:order_edit', kwargs={'order_id': order_id}))

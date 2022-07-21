@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load client %}
 {% block title %}اطلاعات سرویس{% endblock %}
 {% load jformat %}
 {% block css %}{% endblock %}
@@ -26,26 +27,73 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'order:orders' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                سرویس‌ها
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
-                        <h1 class="page-title px-2">خدمات دوره‌ای</h1>
+                        <h1 class="page-title px-2">توضیحات سرویس <span class="font-extra-bold">{{ order.title }}</span></h1>
                     </div>
                     <div>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="{% url 'order:orders' %}">سرویس‌ها</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">خدمات دوره‌ای</li>
+                            <li class="breadcrumb-item active" aria-current="page">توضیحات سرویس <span class="font-extra-bold">{{ order.title }}</span></li>
                         </ol>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
 
                 <!-- write your code here -->
-                details
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div>
+                                        <h3 class="card-title">
+                                            مدت <span class="font-extra-bold">{{ order.title }} ({{ order.period|persian_numbers }} روز)</span>
+                                        </h3>
+                                    </div>
+                                    <div>
+                                        <h3 class="card-title">
+                                            قیمت <span class="font-extra-bold">{{ order.price|persian_numbers }} هزار تومان</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <img src="{% url 'order:static_files' order.id %}" alt="" class="thumbimg">
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="d-flex justify-content-center">
+                                                    <strong class="font-extra-bold h3 mt-5 mt-lg-0">
+                                                        توضیحات
+                                                    </strong>
+                                                </div>
+                                                <p class="font-ultra-thin">
+                                                    {{ order.description|slice:'850' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="font-ultra-thin">
+                                            {{ order.description|slice:'850:' }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- /write your code here -->
 
             </div>

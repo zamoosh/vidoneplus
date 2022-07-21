@@ -3,7 +3,18 @@
 {% block title %}ساخت سرویس جدید{% endblock %}
 {% load jformat %}
 {% block css %}{% endblock %}
-{% block js %}{% endblock %}
+{% block js %}
+    <!-- FILE UPLOADES JS -->
+    <script src="{% static 'assets/plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fileuploads/js/file-upload.js' %}"></script>
+
+    <!-- INTERNAL File-Uploads Js-->
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'assets/plugins/fancyuploder/fancy-uploader.js' %}"></script>
+{% endblock %}
 {% block body %}
 
     <!-- GLOBAL-LOADER -->
@@ -26,10 +37,12 @@
                 <div class="page-header">
                     <div class="d-flex">
                         <h1 class="page-title px-2">
-                            <a href="{% url 'order:orders' %}">
-                                <i class="fa fa-arrow-right"></i>
-                                سرویس‌ها
-                            </a>
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
                         </h1>
                         <h1 class="page-title px-2">خدمات دوره‌ای</h1>
                     </div>
@@ -45,7 +58,7 @@
                 <!-- PAGE-HEADER END -->
 
                 <!-- write your code here -->
-                <form action="{% url 'order:order_create' %}" method="post">
+                <form action="{% url 'order:order_create' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12 col-xl-12">
@@ -70,9 +83,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 mb-0">
-                                            <div class="form-group ">
-                                                <label for="period" class="form-label h5">مدت‌زمان دوره به روز</label>
-                                                <input id="period" min="1" max="365" type="number" value="" class="form-control" placeholder="مدت‌زمان دوره به روز" name="period">
+                                            <div class="form-group">
+                                                <label for="period" class="form-label">مدت‌زمان دوره به روز</label>
+                                                <select id="period" name="period" class="form-control form-select select2" data-bs-placeholder="Select">
+                                                    <option value="1">۱ ماهه</option>
+                                                    <option value="3">۳ ماهه</option>
+                                                    <option value="6">۶ ماهه</option>
+                                                    <option value="12">۱۲ ماهه</option>
+                                                    <option value="-1">نامحدود</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -82,6 +101,12 @@
                                                 <label for="description" class="form-label h5">توضیحات</label>
                                                 <textarea id="description" class="form-control mb-4" rows="4" name="description" placeholder="توضیحات"></textarea>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-0">
+                                        <div class="form-group">
+                                            <label for="image">تصویر سرویس</label>
+                                            <input name="image" id="image" type="file" class="dropify" data-bs-height="200" />
                                         </div>
                                     </div>
                                     <div class="form-footer mt-2">

@@ -31,7 +31,11 @@
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static 'assets/colors/color1.css' %}" />
 
+    <!-- TOASTIFY JS -->
     <link rel="stylesheet" href="{% static 'assets/plugins/toastify/toastify.css' %}">
+
+    <!-- CUSTOM IRANSANSX FONTS -->
+    <link rel="stylesheet" href="{% static 'assets/css/font_style.css' %}">
 
 
     {% block css %}{% endblock %}
@@ -121,6 +125,9 @@
     </script>
 
     {% block js %}{% endblock %}
+
+    <!-- Sticky js -->
+    <script src="{% static 'assets/js/select2.js' %}"></script>
 
     <!-- CUSTOM JS -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
