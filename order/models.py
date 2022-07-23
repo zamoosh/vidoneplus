@@ -17,7 +17,6 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    owner = models.ForeignKey('client.User', on_delete=models.CASCADE)
     setting = models.ForeignKey('client.Setting', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField()

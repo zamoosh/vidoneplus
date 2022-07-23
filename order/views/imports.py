@@ -4,5 +4,6 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from order.models import *
 from client.models import User, Setting
+from bill.models import Bill
 from library.decorators import is_superuser, id_is_real
 import os, mimetypes, datetime, math

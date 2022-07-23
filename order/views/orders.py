@@ -13,7 +13,4 @@ def orders(request):
     future = now + datetime.timedelta(seconds=10)
     diff = math.floor(future.timestamp() - now.timestamp())
     context['diff'] = diff
-    if request.session.get('active_order'):
-        context['active_order'] = True
-        del request.session['active_order']
     return render(request, f'{__name__.replace(".", "/")}.html', context)

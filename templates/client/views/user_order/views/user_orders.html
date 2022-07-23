@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}سرویس‌های کاربر{% endblock %}
+{% load jformat %}
+{% block css %}
+    <style>
+        .order-hover {
+            transition: 300ms;
+            filter: blur(6px);
+        }
+
+        .order-hover:hover {
+            filter: blur(0);
+            box-shadow: 0 0 15px 5px #323254;
+            color: #33c93b;
+        }
+
+
+    </style>
+{% endblock %}
+{% block js %}{% endblock %}
+{% block body %}
+
+    <!-- GLOBAL-LOADER -->
+    {% comment %}{% include 'loader.html' %}{% endcomment %}
+    <!-- /GLOBAL-LOADER -->
+
+    <!-- app-Header -->
+    {% include 'header.html' %}
+    <!-- /app-Header -->
+
+    <!--APP-SIDEBAR-->
+    {% include 'menu.html' %}
+
+    <!--app-content open-->
+    <div class="main-content app-content mt-0">
+        <div class="side-app">
+            <!-- CONTAINER -->
+            <div class="main-container container-fluid">
+                <!-- PAGE-HEADER OPTIONAL TO WRITE SOME DATA ABOUT request.user -->
+                <div class="page-header">
+                    <div class="d-flex">
+                        <h1 class="page-title px-2">
+                            {% if request.META.HTTP_REFERER %}
+                                <a href="{{ request.META.HTTP_REFERER }}">
+                                    <i class="fa fa-arrow-right"></i>
+                                    برگشت
+                                </a>
+                            {% endif %}
+                        </h1>
+                        <h1 class="page-title px-2">ویرایش کاربر بخش ادمین</h1>
+                    </div>
+                    <div>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'client:users' %}">کاربران</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- PAGE-HEADER END -->
+
+                <!-- write your code here -->
+                <div class="row d-flex align-items-center h-60vh">
+                    <div class="col-12 d-flex flex-column h-100">
+                        <div class="row h-100">
+                            <div class="col-6">
+                                <a href="{% url 'client:user_order:user_order_active' %}" class="text-light">
+                                    <div class="card h-100 d-flex justify-content-center order-hover">
+                                        <div class="d-flex justify-content-center">
+                                            <p class="font-bold display-5">سرویس‌های فعال</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{% url 'client:user_order:user_order_inactive' %}" class="text-light">
+                                    <div class="card h-100 d-flex justify-content-center order-hover">
+                                        <div class="d-flex justify-content-center">
+                                            <p class="font-bold display-5">سرویس‌های غیرفعال</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /write your code here -->
+
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+
+
+    <!-- Sidebar-right -->
+    {% comment %}
+    {% include 'side_bar.html' %}
+    {% endcomment %}
+    <!--/Sidebar-right-->
+
+    <!-- Country-selector modal-->
+    {% comment %}
+    {% include 'country_selector.html' %}
+    {% endcomment %}
+    <!-- Country-selector modal-->
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+    <!-- FOOTER END -->
+
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+{% endblock %}
