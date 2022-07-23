@@ -84,6 +84,22 @@
                 }, 350);
             });
         {% endif %}
+        {% if active_order %}
+            setTimeout(function () {
+                Toastify({
+                    text: 'دوره‌ی سرویس شما هنوز تمام نشده است!',
+                    duration: 4000,
+                    newWindow: true,
+                    close: true,
+                    gravity: 'top', // `top` or `bottom`
+                    position: 'center', // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: 'rgb(108,95,252)',
+                    },
+                }).showToast();
+            }, 350);
+        {% endif %}
     </script>
 {% endblock %}
 {% block body %}

@@ -79,14 +79,14 @@
                                                     </strong>
                                                 </div>
                                                 <p class="font-ultra-thin">
-                                                    {{ order.description|slice:'850' }}
+                                                    {{ order.description|split:' '|slice:'200'|join:' ' }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <p class="font-ultra-thin">
-                                            {{ order.description|slice:'850:' }}
+                                            {{ order.description|split:' '|slice:'200:'|join:' ' }}
                                         </p>
                                     </div>
                                 </div>

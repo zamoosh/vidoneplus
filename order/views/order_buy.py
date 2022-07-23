@@ -9,24 +9,29 @@ def order_buy(request, order_id, setting_id=None):
     order = Order.objects.get(id=order_id)
     if request.method == 'POST':
         user_setting = Setting.objects.get(id=setting_id)
-        if user_setting.orderitem_set.exists():
-            order_item = user.orderitem_set.last()
+        if user_setting.orderitem_set.exists():  # if user's site has order
+            order_item = user.setting_set.get(id=setting_id).orderitem_set.last()
             now = datetime.datetime.now()
-            if now.timestamp() > order_item.ended_at.timestamp() and (not order_item.status):  # limited order
-                OrderItem.objects.create(
+            if now.timestamp() > order_item.ended_at.timestamp() and (not order_item.status):  # if user's site time end
+                order = OrderItem.objects.create(
                     order=order,
-                    owner=user,
                     setting=user_setting
-                ).save()
+                )
+                order.save()
+                Bill.objects.create(order_item=order).save()
             else:
                 request.session['active_order'] = True
-                return redirect(reverse('order:orders'))
+                return redirect(reverse('order:order_buy', kwargs={'order_id': order_id, 'setting_id': setting_id}))
         else:
-            OrderItem.objects.create(
+            order = OrderItem.objects.create(
                 order=order,
-                owner=user,
                 setting=user_setting
-            ).save()
+            )
+            order.save()
+            Bill.objects.create(order_item=order).save()
         return redirect(reverse('client:profile'))
     context['order'] = order
+    if request.session.get('active_order'):
+        context['active_order'] = True
+        del request.session['active_order']
     return render(request, f'{__name__.replace(".", "/")}.html', context)

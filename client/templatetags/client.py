@@ -30,3 +30,8 @@ def persian_numbers(english_int):
     devanagari_nums = ('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹')
     number = str(english_int)
     return ''.join(devanagari_nums[int(digit)] for digit in number)
+
+
+@register.filter(name='split')
+def split(text, argument):
+    return text.split(argument)

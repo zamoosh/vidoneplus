@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
 from .api import *
 
@@ -51,5 +51,8 @@ urlpatterns = [
 
 
     # should be moved
-    path('timing/<int:user_id>/', timing, name='timing')
+    path('timing/<int:user_id>/', timing, name='timing'),
+
+
+    path('user/orders/', include('client.views.user_order.urls'), name='user_order'),
 ]
